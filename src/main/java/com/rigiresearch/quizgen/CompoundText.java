@@ -51,7 +51,7 @@ public final class CompoundText implements TextSegment {
     public String text() {
         return this.segments.stream()
             .map(segment -> segment.text().trim())
-            .collect(Collectors.joining(" "));
+            .collect(Collectors.joining());
     }
 
     /* (non-Javadoc)
@@ -68,6 +68,18 @@ public final class CompoundText implements TextSegment {
     @Override
     public boolean inline() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.segments.stream()
+            .map(segment -> {
+                StringBuilder builder = new StringBuilder();
+                builder.append(segment.toString());
+                builder.append(segment.inline() ? " " : "\n");
+                return builder.toString();
+            })
+            .collect(Collectors.joining());
     }
 
 }
