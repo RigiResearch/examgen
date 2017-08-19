@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.quizgen;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -63,7 +64,12 @@ public final class CompoundQuestion implements Question {
     @Override
     public List<TextSegment> body() {
         return this.children.stream()
-            .flatMap(child -> child.body().stream())
+            .map(child -> {
+                final List<TextSegment> segments = new ArrayList<>();
+                segments.add(child.header());
+                segments.addAll(child.body());
+                return new CompoundText(segments);
+            })
             .collect(Collectors.toList());
     }
 
