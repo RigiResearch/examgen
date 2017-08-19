@@ -60,4 +60,12 @@ public final class OpenEnded implements Question {
         return Collections.emptyList();
     }
 
+    /* (non-Javadoc)
+     * @see com.rigiresearch.quizgen.Question#children()
+     */
+    @Override
+    public List<Question> children() {
+        return Collections.emptyList();
+    }
+
 }

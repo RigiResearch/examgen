@@ -58,6 +58,14 @@ public final class LatexQuestion implements Question {
         return this.origin.body();
     }
 
+    /* (non-Javadoc)
+     * @see com.rigiresearch.quizgen.Question#children()
+     */
+    @Override
+    public List<Question> children() {
+        return this.origin.children();
+    }
+
     /**
      * Format this question as LateX code.
      * @return a String representation of this question.

@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.quizgen;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -89,6 +90,14 @@ public final class CloseEnded implements Question {
         return this.options.stream()
             .map(option -> option.statement())
             .collect(Collectors.toList());
+    }
+
+    /* (non-Javadoc)
+     * @see com.rigiresearch.quizgen.Question#children()
+     */
+    @Override
+    public List<Question> children() {
+        return Collections.emptyList();
     }
 
 }

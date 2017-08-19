@@ -40,8 +40,14 @@ public interface Question {
 
     /**
      * This question's body.
-     * @return a text segment.
+     * @return a list of text segments that may represent answer options.
      */
     List<TextSegment> body();
+
+    /**
+     * Sub-questions.
+     * @return a list of sub-questions.
+     */
+    List<Question> children();
 
 }
