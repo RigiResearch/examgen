@@ -1,3 +1,9 @@
+import com.rigiresearch.quizgen.CloseEnded;
+import com.rigiresearch.quizgen.CompoundQuestion;
+import com.rigiresearch.quizgen.OpenEnded;
+import com.rigiresearch.quizgen.TextSegment;
+import java.util.Arrays;
+
 /**
  * Copyright 2017 University of Victoria
  * 
@@ -30,7 +36,27 @@
 public final class Application {
 
     public static void main(final String[] args) {
-
+        new CompoundQuestion(
+            new TextSegment.Simple("This is a group of questions"),
+            Arrays.asList(
+                new CloseEnded(
+                    new TextSegment.Simple("This is a question with options"),
+                    Arrays.asList(
+                        new CloseEnded.Option(
+                            true,
+                            new TextSegment.Simple("This is an option")
+                        ),
+                        new CloseEnded.Option(
+                            false,
+                            new TextSegment.Simple("This is another option")
+                        )
+                    )
+                ),
+                new OpenEnded(
+                    new TextSegment.Simple("Is this an open question?")
+                )
+            )
+        );
     }
 
 }
