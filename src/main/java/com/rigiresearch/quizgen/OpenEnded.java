@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
  * @version $Id$
  * @since 0.0.1
  */
-@Accessors
+@Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
 public final class OpenEnded implements Question {

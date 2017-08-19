@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
  * @version $Id$
  * @since 0.0.1
  */
-@Accessors
+@Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
 public final class CloseEnded implements Question {
@@ -46,7 +46,7 @@ public final class CloseEnded implements Question {
      * @version $Id$
      * @since 0.0.1
      */
-    @Accessors
+    @Accessors(fluent = true)
     @AllArgsConstructor
     @Getter
     public static final class Option {
@@ -87,7 +87,7 @@ public final class CloseEnded implements Question {
     @Override
     public List<TextSegment> body() {
         return this.options.stream()
-            .map(option -> option.statement)
+            .map(option -> option.statement())
             .collect(Collectors.toList());
     }
 
