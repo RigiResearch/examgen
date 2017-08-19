@@ -75,6 +75,15 @@ public interface TextSegment {
          */
         private final boolean inline;
 
+        /**
+         * Instantiates a text segment assuming that it does not represent code
+         * and it should be formatted in a new line.
+         * @param text
+         */
+        public Simple(final String text) {
+            this(text, false, false);
+        }
+
         /* (non-Javadoc)
          * @see com.rigiresearch.quizgen.TextSegment#text()
          */
