@@ -21,7 +21,7 @@
  */
 package com.rigiresearch.examgen.latex;
 
-import com.rigiresearch.examgen.TextSegment;
+import com.rigiresearch.examgen.model.TextSegment;
 import lombok.AllArgsConstructor;
 
 /**

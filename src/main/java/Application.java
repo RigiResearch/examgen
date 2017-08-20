@@ -1,9 +1,9 @@
-import com.rigiresearch.examgen.ClosedEnded;
-import com.rigiresearch.examgen.CompoundQuestion;
-import com.rigiresearch.examgen.CompoundText;
-import com.rigiresearch.examgen.Examination;
-import com.rigiresearch.examgen.OpenEnded;
-import com.rigiresearch.examgen.TextSegment;
+import com.rigiresearch.examgen.model.ClosedEnded;
+import com.rigiresearch.examgen.model.CompoundQuestion;
+import com.rigiresearch.examgen.model.CompoundText;
+import com.rigiresearch.examgen.model.Examination;
+import com.rigiresearch.examgen.model.OpenEnded;
+import com.rigiresearch.examgen.model.TextSegment;
 import java.util.Arrays;
 import java.util.HashMap;
 

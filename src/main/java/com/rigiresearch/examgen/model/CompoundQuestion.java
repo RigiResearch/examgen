@@ -19,7 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen;
+package com.rigiresearch.examgen.model;
 
 import java.util.ArrayList;
 import java.util.List;

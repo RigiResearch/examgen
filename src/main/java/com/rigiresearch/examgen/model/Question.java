@@ -19,46 +19,35 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen;
+package com.rigiresearch.examgen.model;
 
 import java.util.List;
-import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 /**
- * A written examination.
+ * A midterm/quiz question.
  * @author Miguel Jimenez (miguel@uvic.ca)
- * @date 2017-08-20
+ * @date 2017-08-13
  * @version $Id$
  * @since 0.0.1
  */
-@Accessors(fluent = true)
-@AllArgsConstructor
-@Getter
-public final class Examination {
+public interface Question {
 
     /**
-     * The document header.
+     * This question's statement (header).
+     * @return a text segment.
      */
-    private final TextSegment header;
+    TextSegment header();
 
     /**
-     * This examination's title.
+     * This question's body.
+     * @return a list of text segments that may represent answer options.
      */
-    private final TextSegment title;
+    List<TextSegment> body();
 
     /**
-     * Fields printed below the document header. The value is optional.
-     * <p>
-     * E.g., Name, Student Number, Grade, Lab Section: 08
+     * Sub-questions.
+     * @return a list of sub-questions.
      */
-    private final Map<String, String> fields;
-
-    /**
-     * This examination's set of questions.
-     */
-    private final List<Question> questions;
+    List<Question> children();
 
 }

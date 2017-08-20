@@ -19,67 +19,46 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen;
+package com.rigiresearch.examgen.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * A compound block of text.
+ * A written examination.
  * @author Miguel Jimenez (miguel@uvic.ca)
- * @date 2017-08-13
+ * @date 2017-08-20
  * @version $Id$
  * @since 0.0.1
  */
 @Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
-public final class CompoundText implements TextSegment {
+public final class Examination {
 
     /**
-     * The segments composing this text.
+     * The document header.
      */
-    private final List<TextSegment> segments;
+    private final TextSegment header;
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#text()
+    /**
+     * This examination's title.
      */
-    @Override
-    public String text() {
-        return this.segments.stream()
-            .map(segment -> segment.text().trim())
-            .collect(Collectors.joining());
-    }
+    private final TextSegment title;
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#code()
+    /**
+     * Fields printed below the document header. The value is optional.
+     * <p>
+     * E.g., Name, Student Number, Grade, Lab Section: 08
      */
-    @Override
-    public boolean code() {
-        return false;
-    }
+    private final Map<String, String> fields;
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#inline()
+    /**
+     * This examination's set of questions.
      */
-    @Override
-    public boolean inline() {
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return this.segments.stream()
-            .map(segment -> {
-                StringBuilder builder = new StringBuilder();
-                builder.append(segment.toString());
-                builder.append(segment.inline() ? " " : "\n");
-                return builder.toString();
-            })
-            .collect(Collectors.joining());
-    }
+    private final List<Question> questions;
 
 }

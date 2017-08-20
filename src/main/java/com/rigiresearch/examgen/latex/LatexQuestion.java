@@ -21,8 +21,8 @@
  */
 package com.rigiresearch.examgen.latex;
 
-import com.rigiresearch.examgen.Question;
-import com.rigiresearch.examgen.TextSegment;
+import com.rigiresearch.examgen.model.Question;
+import com.rigiresearch.examgen.model.TextSegment;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;

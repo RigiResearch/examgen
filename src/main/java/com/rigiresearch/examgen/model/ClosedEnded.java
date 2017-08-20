@@ -19,16 +19,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen;
+package com.rigiresearch.examgen.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * An open-ended question.
+ * A question with a limited set of possible answers.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-08-13
  * @version $Id$
@@ -37,12 +38,41 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
-public final class OpenEnded implements Question {
+public final class ClosedEnded implements Question {
+
+    /**
+     * A question's possible answer.
+     * @author Miguel Jimenez (miguel@uvic.ca)
+     * @date 2017-08-13
+     * @version $Id$
+     * @since 0.0.1
+     */
+    @Accessors(fluent = true)
+    @AllArgsConstructor
+    @Getter
+    public static final class Option {
+
+        /**
+         * Whether this option represents an answer.
+         */
+        private final boolean answer;
+
+        /**
+         * This option's statement.
+         */
+        private final TextSegment statement;
+
+    }
 
     /**
      * This question's statement.
      */
     private final TextSegment statement;
+
+    /**
+     * List of possible answers.
+     */
+    private final List<Option> options;
 
     /* (non-Javadoc)
      * @see com.rigiresearch.quizgen.Question#statement()
@@ -57,7 +87,9 @@ public final class OpenEnded implements Question {
      */
     @Override
     public List<TextSegment> body() {
-        return Collections.emptyList();
+        return this.options.stream()
+            .map(option -> option.statement())
+            .collect(Collectors.toList());
     }
 
     /* (non-Javadoc)
