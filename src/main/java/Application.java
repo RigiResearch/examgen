@@ -1,4 +1,4 @@
-import com.rigiresearch.quizgen.CloseEnded;
+import com.rigiresearch.quizgen.ClosedEnded;
 import com.rigiresearch.quizgen.CompoundQuestion;
 import com.rigiresearch.quizgen.OpenEnded;
 import com.rigiresearch.quizgen.TextSegment;
@@ -39,14 +39,14 @@ public final class Application {
         new CompoundQuestion(
             new TextSegment.Simple("This is a group of questions"),
             Arrays.asList(
-                new CloseEnded(
+                new ClosedEnded(
                     new TextSegment.Simple("This is a question with options"),
                     Arrays.asList(
-                        new CloseEnded.Option(
+                        new ClosedEnded.Option(
                             true,
                             new TextSegment.Simple("This is an option")
                         ),
-                        new CloseEnded.Option(
+                        new ClosedEnded.Option(
                             false,
                             new TextSegment.Simple("This is another option")
                         )

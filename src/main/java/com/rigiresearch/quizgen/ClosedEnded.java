@@ -29,7 +29,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * A multiple choice question.
+ * A question with a limited set of possible answers.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-08-13
  * @version $Id$
@@ -38,7 +38,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
-public final class CloseEnded implements Question {
+public final class ClosedEnded implements Question {
 
     /**
      * A question's possible answer.
