@@ -1,12 +1,3 @@
-import com.rigiresearch.examgen.model.ClosedEnded;
-import com.rigiresearch.examgen.model.CompoundQuestion;
-import com.rigiresearch.examgen.model.CompoundText;
-import com.rigiresearch.examgen.model.Examination;
-import com.rigiresearch.examgen.model.OpenEnded;
-import com.rigiresearch.examgen.model.TextSegment;
-import java.util.Arrays;
-import java.util.HashMap;
-
 /**
  * Copyright 2017 University of Victoria
  * 
@@ -28,6 +19,14 @@ import java.util.HashMap;
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import com.rigiresearch.examgen.model.ClosedEnded;
+import com.rigiresearch.examgen.model.CompoundQuestion;
+import com.rigiresearch.examgen.model.CompoundText;
+import com.rigiresearch.examgen.model.Examination;
+import com.rigiresearch.examgen.model.OpenEnded;
+import com.rigiresearch.examgen.model.TextSegment;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Main program.
@@ -40,7 +39,8 @@ public final class Application {
 
     @SuppressWarnings("serial")
     public static void main(final String[] args) {
-        new Examination(
+        final long seed = 1234;
+        final Examination exam01 = new Examination(
             new CompoundText(
                 Arrays.asList(
                     new TextSegment.Simple("Quiz 1"),
@@ -79,6 +79,8 @@ public final class Application {
                 )
             )
         );
+        final Examination exam02 = exam01.scrambled(seed);
+        final Examination exam03 = exam02.scrambled(seed);
     }
 
 }
