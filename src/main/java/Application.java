@@ -1,8 +1,11 @@
 import com.rigiresearch.examgen.ClosedEnded;
 import com.rigiresearch.examgen.CompoundQuestion;
+import com.rigiresearch.examgen.CompoundText;
+import com.rigiresearch.examgen.Examination;
 import com.rigiresearch.examgen.OpenEnded;
 import com.rigiresearch.examgen.TextSegment;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Copyright 2017 University of Victoria
@@ -35,25 +38,44 @@ import java.util.Arrays;
  */
 public final class Application {
 
+    @SuppressWarnings("serial")
     public static void main(final String[] args) {
-        new CompoundQuestion(
-            new TextSegment.Simple("This is a group of questions"),
+        new Examination(
+            new CompoundText(
+                Arrays.asList(
+                    new TextSegment.Simple("Quiz 1"),
+                    new TextSegment.Simple("CSC 111"),
+                    new TextSegment.Simple("Fall 2017")
+                )
+            ),
+            new TextSegment.Simple("Quiz 1"),
+            new HashMap<String, String>(){{
+                put("V Number", "");
+                put("Name", "");
+                put("Lab Section", "B01");
+                put("Grade", "");
+            }},
             Arrays.asList(
-                new ClosedEnded(
-                    new TextSegment.Simple("This is a question with options"),
+                new CompoundQuestion(
+                    new TextSegment.Simple("This is a group of questions"),
                     Arrays.asList(
-                        new ClosedEnded.Option(
-                            true,
-                            new TextSegment.Simple("This is an option")
+                        new ClosedEnded(
+                            new TextSegment.Simple("This is a question with options"),
+                            Arrays.asList(
+                                new ClosedEnded.Option(
+                                    true,
+                                    new TextSegment.Simple("This is an option")
+                                ),
+                                new ClosedEnded.Option(
+                                    false,
+                                    new TextSegment.Simple("This is another option")
+                                )
+                            )
                         ),
-                        new ClosedEnded.Option(
-                            false,
-                            new TextSegment.Simple("This is another option")
+                        new OpenEnded(
+                            new TextSegment.Simple("Is this an open question?")
                         )
                     )
-                ),
-                new OpenEnded(
-                    new TextSegment.Simple("Is this an open question?")
                 )
             )
         );
