@@ -66,6 +66,14 @@ public final class LatexQuestion implements Question {
         return this.origin.children();
     }
 
+    /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#scrambled(long)
+     */
+    @Override
+    public Question scrambled(long seed) {
+        return this.origin.scrambled(seed);
+    }
+
     /**
      * Format this question as LateX code.
      * @return a String representation of this question.

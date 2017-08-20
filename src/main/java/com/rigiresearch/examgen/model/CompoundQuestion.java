@@ -22,7 +22,9 @@
 package com.rigiresearch.examgen.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -79,6 +81,24 @@ public final class CompoundQuestion implements Question {
     @Override
     public List<Question> children() {
         return this.children;
+    }
+
+    /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#scrambled(long)
+     */
+    @Override
+    public Question scrambled(final long seed) {
+        final List<Question> scrambledChildren = this.children.stream()
+            .map(question -> question.scrambled(seed))
+            .collect(Collectors.toList());
+        Collections.shuffle(
+            scrambledChildren,
+            new Random(seed)
+        );
+        return new CompoundQuestion(
+            this.statement,
+            scrambledChildren
+        );
     }
 
 }

@@ -21,8 +21,11 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -60,5 +63,26 @@ public final class Examination {
      * This examination's set of questions.
      */
     private final List<Question> questions;
+
+    /**
+     * Scramble this exam.
+     * @param seed the seed for the random number generator
+     * @return a scrambled version of this exam
+     */
+    public Examination scrambled(final long seed) {
+        final List<Question> scrambledQuestions = this.questions.stream()
+            .map(question -> question.scrambled(seed))
+            .collect(Collectors.toList());
+        Collections.shuffle(
+            scrambledQuestions,
+            new Random(seed)
+        );
+        return new Examination(
+            this.header,
+            this.title,
+            this.fields,
+            scrambledQuestions
+        );
+    }
 
 }

@@ -68,4 +68,12 @@ public final class OpenEnded implements Question {
         return Collections.emptyList();
     }
 
+    /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#scrambled(long)
+     */
+    @Override
+    public Question scrambled(final long seed) {
+        return new OpenEnded(this.statement);
+    }
+
 }

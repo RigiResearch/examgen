@@ -21,8 +21,10 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -98,6 +100,22 @@ public final class ClosedEnded implements Question {
     @Override
     public List<Question> children() {
         return Collections.emptyList();
+    }
+
+    /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#scrambled(long)
+     */
+    @Override
+    public Question scrambled(final long seed) {
+        final List<Option> scrambledOptions = new ArrayList<>(this.options);
+        Collections.shuffle(
+            scrambledOptions,
+            new Random(seed)
+        );
+        return new ClosedEnded(
+            this.statement,
+            scrambledOptions
+        );
     }
 
 }

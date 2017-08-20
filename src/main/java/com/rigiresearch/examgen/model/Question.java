@@ -50,4 +50,11 @@ public interface Question {
      */
     List<Question> children();
 
+    /**
+     * Scramble this question.
+     * @param seed the seed for the random number generator
+     * @return a scrambled version of this question
+     */
+    Question scrambled(long seed);
+
 }
