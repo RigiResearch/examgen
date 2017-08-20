@@ -19,9 +19,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.quizgen.latex;
+package com.rigiresearch.examgen.latex;
 
-import com.rigiresearch.quizgen.TextSegment;
+import com.rigiresearch.examgen.TextSegment;
 import lombok.AllArgsConstructor;
 
 /**

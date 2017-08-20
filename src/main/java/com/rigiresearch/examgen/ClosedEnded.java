@@ -19,8 +19,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.quizgen;
+package com.rigiresearch.examgen;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * A compound block of text.
+ * A question with a limited set of possible answers.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-08-13
  * @version $Id$
@@ -37,49 +38,66 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
-public final class CompoundText implements TextSegment {
+public final class ClosedEnded implements Question {
 
     /**
-     * The segments composing this text.
+     * A question's possible answer.
+     * @author Miguel Jimenez (miguel@uvic.ca)
+     * @date 2017-08-13
+     * @version $Id$
+     * @since 0.0.1
      */
-    private final List<TextSegment> segments;
+    @Accessors(fluent = true)
+    @AllArgsConstructor
+    @Getter
+    public static final class Option {
+
+        /**
+         * Whether this option represents an answer.
+         */
+        private final boolean answer;
+
+        /**
+         * This option's statement.
+         */
+        private final TextSegment statement;
+
+    }
+
+    /**
+     * This question's statement.
+     */
+    private final TextSegment statement;
+
+    /**
+     * List of possible answers.
+     */
+    private final List<Option> options;
 
     /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#text()
+     * @see com.rigiresearch.quizgen.Question#statement()
      */
     @Override
-    public String text() {
-        return this.segments.stream()
-            .map(segment -> segment.text().trim())
-            .collect(Collectors.joining());
+    public TextSegment header() {
+        return this.statement;
     }
 
     /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#code()
+     * @see com.rigiresearch.quizgen.Question#body()
      */
     @Override
-    public boolean code() {
-        return false;
+    public List<TextSegment> body() {
+        return this.options.stream()
+            .map(option -> option.statement())
+            .collect(Collectors.toList());
     }
 
     /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#inline()
+     * @see com.rigiresearch.quizgen.Question#children()
      */
     @Override
-    public boolean inline() {
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return this.segments.stream()
-            .map(segment -> {
-                StringBuilder builder = new StringBuilder();
-                builder.append(segment.toString());
-                builder.append(segment.inline() ? " " : "\n");
-                return builder.toString();
-            })
-            .collect(Collectors.joining());
+    public List<Question> children() {
+        return Collections.emptyList();
     }
 
 }

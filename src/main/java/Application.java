@@ -1,7 +1,7 @@
-import com.rigiresearch.quizgen.ClosedEnded;
-import com.rigiresearch.quizgen.CompoundQuestion;
-import com.rigiresearch.quizgen.OpenEnded;
-import com.rigiresearch.quizgen.TextSegment;
+import com.rigiresearch.examgen.ClosedEnded;
+import com.rigiresearch.examgen.CompoundQuestion;
+import com.rigiresearch.examgen.OpenEnded;
+import com.rigiresearch.examgen.TextSegment;
 import java.util.Arrays;
 
 /**

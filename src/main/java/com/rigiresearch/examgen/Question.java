@@ -19,53 +19,35 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.quizgen;
+package com.rigiresearch.examgen;
 
-import java.util.Collections;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 /**
- * An open-ended question.
+ * A midterm/quiz question.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-08-13
  * @version $Id$
  * @since 0.0.1
  */
-@Accessors(fluent = true)
-@AllArgsConstructor
-@Getter
-public final class OpenEnded implements Question {
+public interface Question {
 
     /**
-     * This question's statement.
+     * This question's statement (header).
+     * @return a text segment.
      */
-    private final TextSegment statement;
+    TextSegment header();
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.Question#statement()
+    /**
+     * This question's body.
+     * @return a list of text segments that may represent answer options.
      */
-    @Override
-    public TextSegment header() {
-        return this.statement;
-    }
+    List<TextSegment> body();
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.Question#body()
+    /**
+     * Sub-questions.
+     * @return a list of sub-questions.
      */
-    @Override
-    public List<TextSegment> body() {
-        return Collections.emptyList();
-    }
-
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.Question#children()
-     */
-    @Override
-    public List<Question> children() {
-        return Collections.emptyList();
-    }
+    List<Question> children();
 
 }

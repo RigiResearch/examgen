@@ -19,9 +19,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.quizgen;
+package com.rigiresearch.examgen;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -29,53 +29,29 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
- * A question with a limited set of possible answers.
+ * A question composed of several sub-questions.
  * @author Miguel Jimenez (miguel@uvic.ca)
- * @date 2017-08-13
+ * @date 2017-08-19
  * @version $Id$
  * @since 0.0.1
  */
 @Accessors(fluent = true)
 @AllArgsConstructor
 @Getter
-public final class ClosedEnded implements Question {
+public final class CompoundQuestion implements Question {
 
     /**
-     * A question's possible answer.
-     * @author Miguel Jimenez (miguel@uvic.ca)
-     * @date 2017-08-13
-     * @version $Id$
-     * @since 0.0.1
-     */
-    @Accessors(fluent = true)
-    @AllArgsConstructor
-    @Getter
-    public static final class Option {
-
-        /**
-         * Whether this option represents an answer.
-         */
-        private final boolean answer;
-
-        /**
-         * This option's statement.
-         */
-        private final TextSegment statement;
-
-    }
-
-    /**
-     * This question's statement.
+     * This question's segment.
      */
     private final TextSegment statement;
 
     /**
-     * List of possible answers.
+     * This question's sub-questions.
      */
-    private final List<Option> options;
+    private final List<Question> children;
 
     /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.Question#statement()
+     * @see com.rigiresearch.quizgen.Question#header()
      */
     @Override
     public TextSegment header() {
@@ -87,8 +63,13 @@ public final class ClosedEnded implements Question {
      */
     @Override
     public List<TextSegment> body() {
-        return this.options.stream()
-            .map(option -> option.statement())
+        return this.children.stream()
+            .map(child -> {
+                final List<TextSegment> segments = new ArrayList<>();
+                segments.add(child.header());
+                segments.addAll(child.body());
+                return new CompoundText(segments);
+            })
             .collect(Collectors.toList());
     }
 
@@ -97,7 +78,7 @@ public final class ClosedEnded implements Question {
      */
     @Override
     public List<Question> children() {
-        return Collections.emptyList();
+        return this.children;
     }
 
 }
