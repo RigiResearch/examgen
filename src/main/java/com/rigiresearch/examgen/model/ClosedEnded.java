@@ -72,6 +72,11 @@ public final class ClosedEnded implements Question {
     private final TextSegment statement;
 
     /**
+     * The number of points assigned to this question.
+     */
+    private final int points;
+
+    /**
      * List of possible answers.
      */
     private final List<Option> options;
@@ -114,6 +119,7 @@ public final class ClosedEnded implements Question {
         );
         return new ClosedEnded(
             this.statement,
+            this.points,
             scrambledOptions
         );
     }

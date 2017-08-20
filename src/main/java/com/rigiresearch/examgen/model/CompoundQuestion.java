@@ -84,6 +84,16 @@ public final class CompoundQuestion implements Question {
     }
 
     /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#points()
+     */
+    @Override
+    public int points() {
+        return this.children.stream()
+            .map(question -> question.points())
+            .reduce(0, (a, b) -> a + b);
+    }
+
+    /* (non-Javadoc)
      * @see com.rigiresearch.examgen.model.Question#scrambled(long)
      */
     @Override

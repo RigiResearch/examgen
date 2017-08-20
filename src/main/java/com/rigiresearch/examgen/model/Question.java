@@ -51,6 +51,12 @@ public interface Question {
     List<Question> children();
 
     /**
+     * The amount of points this question is worth.
+     * @return the number of points assigned to this question
+     */
+    int points();
+
+    /**
      * Scramble this question.
      * @param seed the seed for the random number generator
      * @return a scrambled version of this question

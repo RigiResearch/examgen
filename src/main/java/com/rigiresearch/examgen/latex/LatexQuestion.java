@@ -74,6 +74,14 @@ public final class LatexQuestion implements Question {
         return this.origin.scrambled(seed);
     }
 
+    /* (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.Question#points()
+     */
+    @Override
+    public int points() {
+        return this.origin.points();
+    }
+
     /**
      * Format this question as LateX code.
      * @return a String representation of this question.

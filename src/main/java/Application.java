@@ -61,6 +61,7 @@ public final class Application {
                     Arrays.asList(
                         new ClosedEnded(
                             new TextSegment.Simple("This is a question with options"),
+                            50,
                             Arrays.asList(
                                 new ClosedEnded.Option(
                                     true,
@@ -73,7 +74,8 @@ public final class Application {
                             )
                         ),
                         new OpenEnded(
-                            new TextSegment.Simple("Is this an open question?")
+                            new TextSegment.Simple("Is this an open question?"),
+                            50
                         )
                     )
                 )

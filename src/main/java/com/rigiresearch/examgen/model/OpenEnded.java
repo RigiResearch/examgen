@@ -44,6 +44,11 @@ public final class OpenEnded implements Question {
      */
     private final TextSegment statement;
 
+    /**
+     * The number of points assigned to this question.
+     */
+    private final int points;
+
     /* (non-Javadoc)
      * @see com.rigiresearch.quizgen.Question#statement()
      */
@@ -73,7 +78,10 @@ public final class OpenEnded implements Question {
      */
     @Override
     public Question scrambled(final long seed) {
-        return new OpenEnded(this.statement);
+        return new OpenEnded(
+            this.statement,
+            this.points
+        );
     }
 
 }
