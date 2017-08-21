@@ -43,21 +43,77 @@ import lombok.experimental.Accessors;
 public final class Examination {
 
     /**
-     * The document header.
+     * Parameters regarding this exam.
+     * @author Miguel Jimenez (miguel@uvic.ca)
+     * @date 2017-08-21
+     * @version $Id$
+     * @since 0.0.1
      */
-    private final TextSegment header;
+    public enum Parameter {
+        /**
+         * The class to which this exam belongs.
+         */
+        CLASS,
+
+        /**
+         * The expected date in which this exam takes place.
+         */
+        DATE,
+
+        /**
+         * The specific class section, if any.
+         */
+        SECTION,
+
+        /**
+         * The corresponding term.
+         */
+        TERM,
+
+        /**
+         * The time allocated to this exam.
+         */
+        TIME_LIMIT,
+
+        /**
+         * This exam's title.
+         */
+        TITLE,
+    }
 
     /**
-     * This examination's title.
+     * Optional fields regarding the student's information.
+     * @author Miguel Jimenez (miguel@uvic.ca)
+     * @date 2017-08-21
+     * @version $Id$
+     * @since 0.0.1
      */
-    private final TextSegment title;
+    public enum Field {
+        /**
+         * The assigned grade.
+         */
+        GRADE,
+
+        /**
+         * The student identification number.
+         */
+        STUDENT_ID,
+
+        /**
+         * The student name.
+         */
+        STUDENT_NAME,
+    }
 
     /**
-     * Fields printed below the document header. The value is optional.
-     * <p>
-     * E.g., Name, Student Number, Grade, Lab Section: 08
+     * Parameters composing the document header. Values are expected.
      */
-    private final Map<String, String> fields;
+    private final Map<Parameter, String> parameters;
+
+    /**
+     * Fields printed below the document header. Values are optional.
+     */
+    private final Map<Field, String> fields;
 
     /**
      * This examination's set of questions.
@@ -78,8 +134,7 @@ public final class Examination {
             new Random(seed)
         );
         return new Examination(
-            this.header,
-            this.title,
+            this.parameters,
             this.fields,
             scrambledQuestions
         );
