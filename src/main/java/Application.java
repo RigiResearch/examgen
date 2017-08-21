@@ -21,11 +21,12 @@
  */
 import com.rigiresearch.examgen.model.ClosedEnded;
 import com.rigiresearch.examgen.model.CompoundQuestion;
-import com.rigiresearch.examgen.model.CompoundText;
 import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.TextSegment;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -40,20 +41,21 @@ public final class Application {
     @SuppressWarnings("serial")
     public static void main(final String[] args) {
         final long seed = 1234;
+        final String today = new SimpleDateFormat("yyyy-MM-dd")
+            .format(new Date());
         final Examination exam01 = new Examination(
-            new CompoundText(
-                Arrays.asList(
-                    new TextSegment.Simple("Quiz 1"),
-                    new TextSegment.Simple("CSC 111"),
-                    new TextSegment.Simple("Fall 2017")
-                )
-            ),
-            new TextSegment.Simple("Quiz 1"),
-            new HashMap<String, String>(){{
-                put("V Number", "");
-                put("Name", "");
-                put("Lab Section", "B01");
-                put("Grade", "");
+            new HashMap<Examination.Parameter, String>(){{
+                put(Examination.Parameter.CLASS, "CSC 111");
+                put(Examination.Parameter.DATE, today);
+                put(Examination.Parameter.SECTION, "B01");
+                put(Examination.Parameter.TERM, "Fall 2017");
+                put(Examination.Parameter.TIME_LIMIT, "20 min");
+                put(Examination.Parameter.TITLE, "Quiz 1");
+            }},
+            new HashMap<Examination.Field, String>(){{
+                put(Examination.Field.STUDENT_NAME, "");
+                put(Examination.Field.STUDENT_ID, "");
+                put(Examination.Field.GRADE, "");
             }},
             Arrays.asList(
                 new CompoundQuestion(
