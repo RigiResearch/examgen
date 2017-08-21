@@ -44,8 +44,9 @@ public final class CompoundText implements TextSegment {
      */
     private final List<TextSegment> segments;
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#text()
+    /*
+     * (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.TextSegment#text()
      */
     @Override
     public String text() {
@@ -54,29 +55,28 @@ public final class CompoundText implements TextSegment {
             .collect(Collectors.joining());
     }
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#code()
+    /*
+     * (non-Javadoc)
+     * @see com.rigiresearch.examgen.model.TextSegment#style()
      */
     @Override
-    public boolean code() {
-        return false;
+    public TextSegment.Style style() {
+        return TextSegment.Style.NEW_LINE;
     }
 
-    /* (non-Javadoc)
-     * @see com.rigiresearch.quizgen.TextSegment#inline()
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
      */
-    @Override
-    public boolean inline() {
-        return false;
-    }
-
     @Override
     public String toString() {
         return this.segments.stream()
             .map(segment -> {
                 StringBuilder builder = new StringBuilder();
                 builder.append(segment.toString());
-                builder.append(segment.inline() ? " " : "\n");
+                builder.append(
+                    segment.style() == TextSegment.Style.NEW_LINE ? "\n" : " "
+                );
                 return builder.toString();
             })
             .collect(Collectors.joining());

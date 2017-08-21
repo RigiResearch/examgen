@@ -33,22 +33,33 @@ import lombok.AllArgsConstructor;
 public interface TextSegment {
 
     /**
+     * Text formatting styles.
+     * @author Miguel Jimenez (miguel@uvic.ca)
+     * @date 2017-08-21
+     * @version $Id$
+     * @since 0.0.1
+     */
+    public enum Style {
+        BOLD,
+        CODE,
+        INHERIT,
+        ITALIC,
+        NEW_LINE,
+        SUBSCRIPT,
+        SUPERSCRIPT
+    }
+
+    /**
      * This segment's plain text.
      * @return this segment's text
      */
     public String text();
 
     /**
-     * Whether this segment represents a piece of code.
-     * @return whether this segment is code or not
+     * Describes this segment's formatting style.
+     * @return a style value
      */
-    public boolean code();
-
-    /**
-     * Whether this segment should be appended in the same line or in a new one.
-     * @return whether this text is appended inline or not
-     */
-    public boolean inline();
+    public Style style();
 
     /**
      * A simple text segment.
@@ -66,22 +77,16 @@ public interface TextSegment {
         private final String text;
 
         /**
-         * Whether this text should be formatted as code.
+         * This segment's formatting style.
          */
-        private final boolean code;
+        private final Style style;
 
         /**
-         * Whether this text should be included in the current line or a new one.
-         */
-        private final boolean inline;
-
-        /**
-         * Instantiates a text segment assuming that it does not represent code
-         * and it should be formatted in a new line.
-         * @param text
+         * Instantiates a text segment assuming inherited style.
+         * @param text the text value
          */
         public Simple(final String text) {
-            this(text, false, false);
+            this(text, Style.INHERIT);
         }
 
         /* (non-Javadoc)
@@ -92,20 +97,13 @@ public interface TextSegment {
             return this.text;
         }
 
-        /* (non-Javadoc)
-         * @see com.rigiresearch.quizgen.TextSegment#code()
+        /*
+         * (non-Javadoc)
+         * @see com.rigiresearch.examgen.model.TextSegment#style()
          */
         @Override
-        public boolean code() {
-            return this.code;
-        }
-
-        /* (non-Javadoc)
-         * @see com.rigiresearch.quizgen.TextSegment#inline()
-         */
-        @Override
-        public boolean inline() {
-            return this.inline;
+        public Style style() {
+            return this.style;
         }
 
         /*
