@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -38,12 +38,14 @@ import lombok.experimental.Accessors;
  * @since 0.0.1
  */
 @Accessors(fluent = true)
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public final class Examination {
 
     /**
      * Parameters regarding this exam.
+     * Parameters related to the course can be removed if course is modeled as
+     * a separate entity.
      * @author Miguel Jimenez (miguel@uvic.ca)
      * @date 2017-08-21
      * @version $Id$
@@ -51,9 +53,14 @@ public final class Examination {
      */
     public enum Parameter {
         /**
-         * The class to which this exam belongs.
+         * The course to which this exam belongs.
          */
-        CLASS,
+        COURSE,
+
+        /**
+         * The course identifier.
+         */
+        COURSE_REFERENCE_NUMBER,
 
         /**
          * The expected date in which this exam takes place.
@@ -61,9 +68,14 @@ public final class Examination {
         DATE,
 
         /**
-         * The specific class section, if any.
+         * The course instructors.
          */
-        SECTION,
+        INSTRUCTORS,
+
+        /**
+         * The specific course sections, if any.
+         */
+        SECTIONS,
 
         /**
          * The corresponding term.
@@ -116,9 +128,28 @@ public final class Examination {
     private final Map<Field, String> fields;
 
     /**
-     * This examination's set of questions.
+     * Optional instructions.
+     */
+    private TextSegment instructions = new TextSegment.Simple("");
+
+    /**
+     * This exam's set of questions.
      */
     private final List<Question> questions;
+
+    /**
+     * Instantiates an exam setting the instructions field.
+     * @param parameters parameters composing the document header
+     * @param fields fields printed below the document header
+     * @param instructions optional exam instructions
+     * @param questions this exam's set of questions
+     */
+    public Examination(final Map<Parameter, String> parameters,
+        final Map<Field, String> fields, final TextSegment instructions,
+        final List<Question> questions) {
+        this(parameters, fields, questions);
+        this.instructions = instructions;
+    }
 
     /**
      * Scramble this exam.
@@ -136,6 +167,7 @@ public final class Examination {
         return new Examination(
             this.parameters,
             this.fields,
+            this.instructions,
             scrambledQuestions
         );
     }

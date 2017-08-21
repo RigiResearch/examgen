@@ -45,9 +45,10 @@ public final class Application {
             .format(new Date());
         final Examination exam01 = new Examination(
             new HashMap<Examination.Parameter, String>(){{
-                put(Examination.Parameter.CLASS, "CSC 111");
+                put(Examination.Parameter.COURSE, "CSC 111");
+                put(Examination.Parameter.COURSE_REFERENCE_NUMBER, "10691");
                 put(Examination.Parameter.DATE, today);
-                put(Examination.Parameter.SECTION, "B01");
+                put(Examination.Parameter.SECTIONS, "B01");
                 put(Examination.Parameter.TERM, "Fall 2017");
                 put(Examination.Parameter.TIME_LIMIT, "20 min");
                 put(Examination.Parameter.TITLE, "Quiz 1");
