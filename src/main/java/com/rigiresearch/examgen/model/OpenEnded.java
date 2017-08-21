@@ -23,8 +23,12 @@ package com.rigiresearch.examgen.model;
 
 import java.util.Collections;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import javax.measure.DecimalMeasure;
+import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
+import javax.measure.unit.Unit;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -35,7 +39,7 @@ import lombok.experimental.Accessors;
  * @since 0.0.1
  */
 @Accessors(fluent = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public final class OpenEnded implements Question {
 
@@ -48,6 +52,26 @@ public final class OpenEnded implements Question {
      * The number of points assigned to this question.
      */
     private final int points;
+
+    /**
+     * Expected vertical length of the answer on a printed sheet.
+     */
+    private Measure<Double, ? extends Quantity> expectedLength =
+        DecimalMeasure.valueOf(2.5, Unit.valueOf("in"));
+
+    /**
+     * Instantiates an open-ended question setting a different expected length
+     * value.
+     * @param statement this question's statement
+     * @param points the number of points assigned to this question
+     * @param expectedLength expected vertical length of the answer on a
+     *  printed sheet
+     */
+    public OpenEnded(final TextSegment statement, final int points,
+        final Measure<Double, ? extends Quantity> expectedLength) {
+        this(statement, points);
+        this.expectedLength = expectedLength;
+    }
 
     /* (non-Javadoc)
      * @see com.rigiresearch.quizgen.Question#statement()
