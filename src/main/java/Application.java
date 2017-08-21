@@ -53,11 +53,6 @@ public final class Application {
                 put(Examination.Parameter.TIME_LIMIT, "20 min");
                 put(Examination.Parameter.TITLE, "Quiz 1");
             }},
-            new HashMap<Examination.Field, String>(){{
-                put(Examination.Field.STUDENT_NAME, "");
-                put(Examination.Field.STUDENT_ID, "");
-                put(Examination.Field.GRADE, "");
-            }},
             Arrays.asList(
                 new CompoundQuestion(
                     new TextSegment.Simple("This is a group of questions"),

@@ -94,38 +94,9 @@ public final class Examination {
     }
 
     /**
-     * Optional fields regarding the student's information.
-     * @author Miguel Jimenez (miguel@uvic.ca)
-     * @date 2017-08-21
-     * @version $Id$
-     * @since 0.0.1
-     */
-    public enum Field {
-        /**
-         * The assigned grade.
-         */
-        GRADE,
-
-        /**
-         * The student identification number.
-         */
-        STUDENT_ID,
-
-        /**
-         * The student name.
-         */
-        STUDENT_NAME,
-    }
-
-    /**
      * Parameters composing the document header. Values are expected.
      */
     private final Map<Parameter, String> parameters;
-
-    /**
-     * Fields printed below the document header. Values are optional.
-     */
-    private final Map<Field, String> fields;
 
     /**
      * Optional instructions.
@@ -140,14 +111,13 @@ public final class Examination {
     /**
      * Instantiates an exam setting the instructions field.
      * @param parameters parameters composing the document header
-     * @param fields fields printed below the document header
      * @param instructions optional exam instructions
      * @param questions this exam's set of questions
      */
     public Examination(final Map<Parameter, String> parameters,
-        final Map<Field, String> fields, final TextSegment instructions,
+        final TextSegment instructions,
         final List<Question> questions) {
-        this(parameters, fields, questions);
+        this(parameters, questions);
         this.instructions = instructions;
     }
 
@@ -166,7 +136,6 @@ public final class Examination {
         );
         return new Examination(
             this.parameters,
-            this.fields,
             this.instructions,
             scrambledQuestions
         );
