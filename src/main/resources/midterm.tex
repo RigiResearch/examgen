@@ -3,35 +3,44 @@
 
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb}
+\usepackage{tabularx}
 \usepackage{multicol}
 
-\newcommand{\class}{Math I}
-\newcommand{\term}{Winter 2014}
-\newcommand{\examnum}{Exam 1}
-\newcommand{\examdate}{1/1/2014}
+\newcommand{\class}{CSC 111}
+\renewcommand{\section}{B01}
+\newcommand{\term}{Fall 2017}
+\newcommand{\examtitle}{Midterm I}
+\newcommand{\examdate}{2017-10-15}
 \newcommand{\timelimit}{60 Minutes}
 
 \pagestyle{head}
 \firstpageheader{}{}{}
-\runningheader{\class}{\examnum\ - Page \thepage\ of \numpages}{\examdate}
+\runningheader{\class}{\examtitle\ - Page \thepage\ of \numpages}{\examdate}
 \runningheadrule
 
 \begin{document}
 
 \noindent
-\begin{tabular*}{\textwidth}{l @{\extracolsep{\fill}} r @{\extracolsep{6pt}} l}
-\textbf{\class} & \textbf{Name:} & \makebox[2in]{\hrulefill}\\
-\textbf{\term} &&\\
-\textbf{\examnum} &&\\
-\textbf{\examdate} &&\\
-\textbf{Time Limit: \timelimit} & Teaching Assistant & \makebox[2in]{\hrulefill}
-\end{tabular*}\\
+\textbf{\examtitle} \\
+\textbf{\class} - Section \section \\
+\term{} (\examdate). Time limit: \timelimit \\
+
+\noindent
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
+	\hline
+	\small{Student name} & \small{} & \small{Student ID} & \small\bfseries{V00} & \small{Grade} & \small{} \\
+	\hline
+\end{tabularx}
+
+\noindent \\
 \rule[2ex]{\textwidth}{2pt}
 
-This exam contains \numpages\ pages (including this cover page) and \numquestions\ questions. The total of points is \numpoints.
+\noindent
+This exam contains \numpages\ pages (including this cover page) and \numquestions\ questions. \\
+The total of points is \numpoints.
 
 \begin{center}
-Grade Table (for teacher use only)\\
+\small{Grade Table (for teacher use only)} \\
 \addpoints
 \gradetable[v][questions]
 \end{center}
