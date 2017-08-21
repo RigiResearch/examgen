@@ -21,6 +21,8 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 
 /**
@@ -40,13 +42,36 @@ public interface TextSegment {
      * @since 0.0.1
      */
     public enum Style {
+        /**
+         * Bold text.
+         */
         BOLD,
+
+        /**
+         * The text is formatted as code according to the target language.
+         */
         CODE,
+
+        /**
+         * Custom styling based on the target language (e.g., latex). The text
+         * will be formatted as it is.
+         */
+        CUSTOM,
+
+        /**
+         * No additional style is applied.
+         */
         INHERIT,
+
+        /**
+         * Italic text.
+         */
         ITALIC,
+
+        /**
+         * A new line is added before the text.
+         */
         NEW_LINE,
-        SUBSCRIPT,
-        SUPERSCRIPT
     }
 
     /**
@@ -56,10 +81,10 @@ public interface TextSegment {
     public String text();
 
     /**
-     * Describes this segment's formatting style.
-     * @return a style value
+     * Describes this segment's formatting styles.
+     * @return a list of styles
      */
-    public Style style();
+    public List<Style> styles();
 
     /**
      * A simple text segment.
@@ -77,16 +102,16 @@ public interface TextSegment {
         private final String text;
 
         /**
-         * This segment's formatting style.
+         * This segment's formatting styles.
          */
-        private final Style style;
+        private final List<Style> styles;
 
         /**
          * Instantiates a text segment assuming inherited style.
          * @param text the text value
          */
         public Simple(final String text) {
-            this(text, Style.INHERIT);
+            this(text, Arrays.asList(Style.INHERIT));
         }
 
         /* (non-Javadoc)
@@ -99,11 +124,11 @@ public interface TextSegment {
 
         /*
          * (non-Javadoc)
-         * @see com.rigiresearch.examgen.model.TextSegment#style()
+         * @see com.rigiresearch.examgen.model.TextSegment#styles()
          */
         @Override
-        public Style style() {
-            return this.style;
+        public List<Style> styles() {
+            return this.styles;
         }
 
         /*

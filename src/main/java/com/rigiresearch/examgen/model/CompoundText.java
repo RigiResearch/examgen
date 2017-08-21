@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -57,11 +58,11 @@ public final class CompoundText implements TextSegment {
 
     /*
      * (non-Javadoc)
-     * @see com.rigiresearch.examgen.model.TextSegment#style()
+     * @see com.rigiresearch.examgen.model.TextSegment#styles()
      */
     @Override
-    public TextSegment.Style style() {
-        return TextSegment.Style.NEW_LINE;
+    public List<Style> styles() {
+        return Arrays.asList(Style.NEW_LINE);
     }
 
     /*
@@ -75,7 +76,7 @@ public final class CompoundText implements TextSegment {
                 StringBuilder builder = new StringBuilder();
                 builder.append(segment.toString());
                 builder.append(
-                    segment.style() == TextSegment.Style.NEW_LINE ? "\n" : " "
+                    segment.styles().contains(Style.NEW_LINE) ? "\n" : " "
                 );
                 return builder.toString();
             })
