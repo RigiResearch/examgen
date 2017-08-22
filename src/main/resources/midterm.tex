@@ -1,0 +1,245 @@
+\documentclass[12pt]{exam}
+% general
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+%math
+\usepackage{amsmath, amssymb}
+% lists
+\usepackage{enumitem}
+% tables
+\usepackage{tabularx}
+\usepackage{multicol}
+% listings
+\usepackage{color}
+\usepackage[scaled=0.85]{sourcecodepro}
+\usepackage{listings}
+
+% Exam parameters
+\newcommand{\institution}{University of Victoria}
+\newcommand{\course}{Fundaments of Programming with Engineering Applications}
+\newcommand{\coursenumber}{CSC 111}
+\newcommand{\courseid}{10691}
+\newcommand{\sections}{B01}
+\newcommand{\term}{Fall 2017}
+\newcommand{\instructors}{Hausi A. M\"{u}ller}
+\newcommand{\timelimit}{60 Minutes}
+\newcommand{\examtitle}{Final Examination}
+\newcommand{\examdate}{November 15, 2017}
+\newcommand{\examversion}{A}
+
+% listings configuration
+\definecolor{keywords}{RGB}{127,0,85}
+\definecolor{comments}{RGB}{63,127,95}
+\definecolor{strings}{RGB}{42,0,255}
+\definecolor{frame}{RGB}{150,150,150}
+\definecolor{numbers}{RGB}{100,100,100}
+\lstdefinestyle{code}{
+	language=C,
+	tabsize=4,
+	captionpos=b,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	escapeinside={(*@}{@*)},
+	commentstyle=\color{comments},
+	keywordstyle=\bfseries\color{keywords},
+	stringstyle=\color{strings},
+	basicstyle=\small\ttfamily,
+	frame=lines,
+	rulecolor=\color{frame},
+	xleftmargin=2em,
+	framexleftmargin=1.5em,
+	numbers=left,
+	numbersep=10pt,
+	numberstyle=\scriptsize\ttfamily\color{numbers}
+}
+\lstset{style=code}
+
+% page configuration
+\pagestyle{head}
+\firstpageheader{}{}{}
+\runningheader{\scriptsize \coursenumber{}}{\scriptsize \examtitle\ - Page \thepage\ of \numpages}{\scriptsize \examdate}
+\runningheadrule
+
+\begin{document}
+
+% title
+\begin{center}
+	{\LARGE\bfseries
+		\term\\
+		\examtitle\\
+		\institution\\
+	}
+	\vspace{0.2cm}
+	{\large \examdate}
+\end{center}
+
+% student information
+\vspace{0.5cm}
+\noindent
+\renewcommand{\arraystretch}{3}
+\begin{tabularx}{\textwidth}{|l|X|}
+	\hline
+	\textbf{Last Name} & \\
+	\hline
+	\textbf{First Name} & \\
+	\hline
+	\textbf{UVic Student Number} & \textbf{V00} \\
+	\hline
+\end{tabularx}
+
+% course information
+\vspace{1cm}
+\noindent
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|l|X|}
+	\hline
+	\textbf{Course Number \& Name} & \coursenumber{} (\examversion) - \course \\
+	\hline
+	\textbf{Sections} & \sections \\
+	\hline
+	\textbf{CRN} & \courseid \\
+	\hline
+	\textbf{Instructors} & \instructors \\
+	\hline
+	\textbf{Duration} & \timelimit \\
+	\hline
+\end{tabularx}
+\renewcommand{\arraystretch}{1}
+
+% exam instructions
+\vspace{1cm}
+\noindent
+{\large\bfseries Instructions}
+{\small
+	\begin{itemize}[noitemsep]
+		\item This examination contains \numquestions{} questions on \numpages{} pages, including this cover page. Please verify that your copy has all pages and notify the invigilator immediately in any pages are missing.
+		\item You have \timelimit to complete this exam.
+		\item Write all of your the answers on this examination paper.
+		\item This examination is worth a total of \numpoints{} marks. The mark value of each question is given in parenthesis at the beginning of each question.
+		\item No books, notes, calculators, phones, computers, smart devices or other electronic devices are permitted.
+		\item In multiple choice questions, clearly mark exactly one choice with an \textbf{X}.
+		\item Be sure to complete the information on the declaration attached to this examination including your signature. Do not detach the declaration.
+		\item Place your student ID card face up on your desk.
+		\item Turn in your completed exam at the front of the room as you leave.
+	\end{itemize}
+}
+\clearpage
+
+% uncomment this code to include the grade table
+%\begin{center}
+%	{\Large Grade Table (for teacher use only)} \\
+%	\vspace{1cm}
+%	\addpoints
+%	\gradetable[v][questions]
+%\end{center}
+%\clearpage
+
+\begin{questions}
+
+\question[2] What is the output of the syntactically correct C program below?
+\vspace{0.3cm}
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+	int k = 25;
+	while (k < 50) {
+		if (k%7 == 0) printf("%d ", k);
+		k = k + 3;
+	} /* while */
+	printf("\n");
+	return EXIT_SUCCESS;
+} /* main */
+\end{lstlisting}
+\makeemptybox{1cm}{Your answer:}
+\addpoints
+
+\question[20] Consider the function $f(x)=3x^3+2x^2+x+1$.
+\noaddpoints % to omit double points count
+\begin{parts}
+\part[10]{} Calculate $f'(x)$.
+\part[10]{} Calculate $f''(x)$.
+\end{parts}
+\addpoints
+
+\question[2] One of these things is not like the others; one of these
+things is not the same. Which one is different?
+\begin{choices}
+\choice John
+\choice Paul
+\choice George
+\choice Ringo
+\choice Socrates
+\end{choices}
+
+\question[2] One of these things is not like the others; one of these
+things is not the same. Which one is different?
+\begin{oneparchoices}
+\choice John
+\choice Paul
+\choice George
+\choice Ringo
+\choice Socrates
+\end{oneparchoices}
+
+\question[3] Mark box if true.
+\addpoints
+\begin{checkboxes}
+\choice 2+2=4
+\choice $\frac{d}{dx} (x^2+1) = 2x+1$
+\choice The Moon is made of cheese.
+\end{checkboxes}
+
+{%
+\checkboxchar{$\Box$} % changing checkbox style locally
+\question[3] Mark box if true.
+\addpoints
+\begin{checkboxes}
+\choice 2+2=4
+\choice $\frac{d}{dx} (x^2+1) = 2x+1$
+\choice The Moon is made of cheese.
+\end{checkboxes}
+}%
+
+{%
+% changing choice items style locally
+\renewcommand*\thechoice{\arabic{choice}} 
+\renewcommand*\choicelabel{\thechoice)}
+%
+\question[2] Element with $Z=92$ is:
+\begin{multicols}{2}
+\begin{choices}
+\choice H
+\choice O
+\choice F
+\choice S
+\choice Ba
+\choice Pb
+\choice U
+\choice Pu
+\end{choices}
+\end{multicols}
+}%
+
+\question[10]
+In no more than one paragraph, explain why the earth is round.
+\makeemptybox{2in}
+
+\question[20]
+Explain blah, blah\ldots
+\makeemptybox{\fill}
+
+\question[20]
+Explain blah, blah\ldots
+\fillwithlines{\fill}
+
+\question[20]
+Explain blah, blah\ldots
+\fillwithdottedlines{8em}
+
+\end{questions}
+
+\end{document}
