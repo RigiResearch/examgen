@@ -1,30 +1,75 @@
 \documentclass[12pt]{exam}
+% general
 \usepackage[utf8]{inputenc}
-
 \usepackage[margin=1in]{geometry}
+% math
 \usepackage{amsmath, amssymb}
+% tables
 \usepackage{tabularx}
 \usepackage{multicol}
+% listings
+\usepackage{color}
+\usepackage[scaled=0.85]{sourcecodepro}
+\usepackage{listings}
 
-\newcommand{\class}{CSC 111}
-\renewcommand{\section}{B01}
+% exam parameters
+\newcommand{\institution}{University of Victoria}
+\newcommand{\course}{Fundaments of Programming with Engineering Applications}
+\newcommand{\coursenumber}{CSC 111}
+\newcommand{\courseid}{10691}
+\newcommand{\sections}{B01}
 \newcommand{\term}{Fall 2017}
-\newcommand{\examtitle}{Midterm I}
-\newcommand{\examdate}{2017-10-15}
-\newcommand{\timelimit}{60 Minutes}
+\newcommand{\timelimit}{20 Minutes}
+\newcommand{\examtitle}{Quiz 1}
+\newcommand{\examdate}{November 15, 2017}
+\newcommand{\examversion}{A}
 
+% listings configuration
+\definecolor{keywords}{RGB}{127,0,85}
+\definecolor{comments}{RGB}{63,127,95}
+\definecolor{strings}{RGB}{42,0,255}
+\definecolor{frame}{RGB}{150,150,150}
+\definecolor{numbers}{RGB}{100,100,100}
+\lstdefinestyle{code}{
+	language=C,
+	tabsize=4,
+	captionpos=b,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	escapeinside={(*@}{@*)},
+	commentstyle=\color{comments},
+	keywordstyle=\bfseries\color{keywords},
+	stringstyle=\color{strings},
+	basicstyle=\small\ttfamily,
+	frame=lines,
+	rulecolor=\color{frame},
+	xleftmargin=2em,
+	framexleftmargin=1.5em,
+	numbers=left,
+	numbersep=10pt,
+	numberstyle=\scriptsize\ttfamily\color{numbers}
+}
+\lstset{style=code}
+
+% page configuration
 \pagestyle{head}
 \firstpageheader{}{}{}
-\runningheader{\class}{\examtitle\ - Page \thepage\ of \numpages}{\examdate}
+\runningheader{\footnotesize \coursenumber}{\footnotesize \examtitle\ - Page \thepage\ of \numpages}{\footnotesize \examdate}
 \runningheadrule
 
 \begin{document}
 
+% header
 \noindent
-\textbf{\examtitle} \\
-\textbf{\class} - Section \section \\
-\term{} (\examdate). Time limit: \timelimit \\
+\section*{\examtitle}
+\textbf{\course} \\
+{\footnotesize \coursenumber{} Section \sections. Time limit: \timelimit} \\
+{\footnotesize \term{} (\examdate)} \\
 
+% student information
 \noindent
 \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
     \hline
@@ -35,22 +80,27 @@
 \noindent \\
 \rule[2ex]{\textwidth}{2pt}
 
-\noindent
-This exam contains \numpages\ pages (including this cover page) and \numquestions\ questions. \\
-The total of points is \numpoints.
-
-\begin{center}
-\small{Grade Table (for teacher use only)} \\
-\addpoints
-\gradetable[v][questions]
-\end{center}
-
-\noindent
-\rule[2ex]{\textwidth}{2pt}
+\centering
+{\footnotesize This exam is worth a total of \numpoints{} marks and contains \numquestions{} questions on \numpages{} pages.}
 
 \begin{questions}
 
-\question[1] Calculate 2+2.
+\question[2] What is the output of the syntactically correct C program below?
+\vspace{0.3cm}
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+	int k = 25;
+	while (k < 50) {
+		if (k%7 == 0) printf("%d ", k);
+		k = k + 3;
+	} /* while */
+	printf("\n");
+	return EXIT_SUCCESS;
+} /* main */
+\end{lstlisting}
+\makeemptybox{1cm}
 \addpoints
 
 \question[20] Consider the function $f(x)=3x^3+2x^2+x+1$.
