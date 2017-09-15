@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,7 +43,12 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Getter
 @RequiredArgsConstructor
-public final class Examination {
+public final class Examination implements Serializable {
+
+    /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 8470495506838570825L;
 
     /**
      * Parameters regarding this exam.

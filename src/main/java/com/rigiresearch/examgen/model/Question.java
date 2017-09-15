@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ import java.util.List;
  * @version $Id$
  * @since 0.0.1
  */
-public interface Question {
+public interface Question extends Serializable {
 
     /**
      * This question's statement (header).

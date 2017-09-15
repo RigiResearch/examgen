@@ -42,6 +42,11 @@ import lombok.experimental.Accessors;
 public final class OpenEnded implements Question {
 
     /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 5439416765980874621L;
+
+    /**
      * This question's statement.
      */
     private final TextSegment statement;

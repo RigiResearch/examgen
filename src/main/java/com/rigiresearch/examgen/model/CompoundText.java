@@ -41,6 +41,11 @@ import lombok.experimental.Accessors;
 public final class CompoundText implements TextSegment {
 
     /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 8512539964357274285L;
+
+    /**
      * The segments composing this text.
      */
     private final List<TextSegment> segments;

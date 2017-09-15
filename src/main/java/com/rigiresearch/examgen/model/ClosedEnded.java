@@ -43,6 +43,11 @@ import lombok.experimental.Accessors;
 public final class ClosedEnded implements Question {
 
     /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = 4768954898385773415L;
+
+    /**
      * A question's possible answer.
      * @author Miguel Jimenez (miguel@uvic.ca)
      * @date 2017-08-13

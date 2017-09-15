@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ import lombok.AllArgsConstructor;
  * @version $Id$
  * @since 0.0.1
  */
-public interface TextSegment {
+public interface TextSegment extends Serializable {
 
     /**
      * Text formatting styles.
@@ -100,6 +101,11 @@ public interface TextSegment {
      */
     @AllArgsConstructor
     public final class Simple implements TextSegment {
+
+        /**
+         * Serial version UID.
+         */
+        private static final long serialVersionUID = 7350376731414050519L;
 
         /**
          * This segment's value.

@@ -43,6 +43,11 @@ import lombok.experimental.Accessors;
 public final class CompoundQuestion implements Question {
 
     /**
+     * Serial version UID.
+     */
+    private static final long serialVersionUID = -1020344027785770943L;
+
+    /**
      * This question's segment.
      */
     private final TextSegment statement;
