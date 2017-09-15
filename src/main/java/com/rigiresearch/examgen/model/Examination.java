@@ -73,7 +73,7 @@ public final class Examination {
         INSTRUCTORS,
 
         /**
-         * The specific course sections, if any.
+         * The specific course sections (a list), if any.
          */
         SECTIONS,
 
@@ -96,7 +96,7 @@ public final class Examination {
     /**
      * Parameters composing the document header. Values are expected.
      */
-    private final Map<Parameter, String> parameters;
+    private final Map<Parameter, Object> parameters;
 
     /**
      * Optional instructions.
@@ -114,7 +114,7 @@ public final class Examination {
      * @param instructions optional exam instructions
      * @param questions this exam's set of questions
      */
-    public Examination(final Map<Parameter, String> parameters,
+    public Examination(final Map<Parameter, Object> parameters,
         final TextSegment instructions,
         final List<Question> questions) {
         this(parameters, questions);
