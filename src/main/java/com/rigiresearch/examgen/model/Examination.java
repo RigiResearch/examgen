@@ -21,7 +21,9 @@
  */
 package com.rigiresearch.examgen.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -141,4 +143,36 @@ public final class Examination {
         );
     }
 
+    public List<Examination> variants(final long seed,
+        final int questionsLimit) throws Exception {
+        final List<Examination> quizzes = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        final List<String> sections =
+            (List<String>) this.parameters.get(Parameter.SECTIONS);
+        long _seed = seed;
+        for (int i = 0; i < sections.size(); i++) {
+            parameters.put(Parameter.SECTIONS, sections.get(i));
+            quizzes.add(
+                new Examination(
+                    new HashMap<>(parameters),
+                    this.randomisedQuestions(_seed, questionsLimit)
+                ).scrambled(_seed)
+            );
+            // Use consecutive to randomize results & still control the output
+            _seed++;
+        }
+        return quizzes;
+    }
+
+    private List<Question> randomisedQuestions(final long seed,
+        final int questionsLimit) throws Exception {
+        if (this.questions.size() < questionsLimit)
+            throw new IllegalArgumentException("questions limit > questions");
+        final List<Question> copy = new ArrayList<>(this.questions);
+        Collections.shuffle(
+            copy,
+            new Random(seed)
+        );
+        return copy.subList(0, questionsLimit);
+    }
 }
