@@ -19,6 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import com.rigiresearch.examgen.latex.LatexProcessor;
 import com.rigiresearch.examgen.model.ClosedEnded;
 import com.rigiresearch.examgen.model.ClosedEnded.Option;
 import com.rigiresearch.examgen.model.CompoundText;
@@ -27,14 +28,10 @@ import com.rigiresearch.examgen.model.Examination.Parameter;
 import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.templates.WritableExamination;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.SequenceInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.function.Function;
 import javax.measure.DecimalMeasure;
 import javax.measure.unit.Unit;
 
@@ -345,62 +342,8 @@ public final class Application {
                     e.printStackTrace();
                 }
             });
-        postprocess(new File(output, "examinations"));
-        postprocess(new File(output, "solutions"));
-    }
-
-    /**
-     * Invokes pdflatex to process the generated tex files.
-     * @param directory The directory containing the .tex files
-     */
-    public static void postprocess(File directory) {
-        File PDFs = new File(directory, "PDF");
-        PDFs.mkdir();
-        Function<String, String> execute = (command) -> {
-            String output = new String();
-            System.out.printf("Working directory: %s\n", directory);
-            System.out.printf("Executing command: %s\n", command);
-            try {
-                String line;
-                final String[] cmd = {"/bin/sh", "-c", command};
-                final String[] env = {};
-                final Process p = Runtime.getRuntime().exec(cmd, env, directory);
-                final BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                        new SequenceInputStream(
-                            p.getInputStream(),
-                            p.getErrorStream()
-                        )
-                    )
-                );
-                while ((line = in.readLine()) != null) {
-                    output += "\n" + line;
-                }
-                in.close();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            return output;
-        };
-        execute.apply(
-            String.format(
-                "find . -name \"*.tex\" -exec /Library/TeX/texbin/pdflatex -output-directory=%s {} \\;",
-                PDFs.getName()
-            )
-        );
-        // Run a second time to count question points
-        execute.apply(
-            String.format(
-                "find . -name \"*.tex\" -exec /Library/TeX/texbin/pdflatex -output-directory=%s {} \\;",
-                PDFs.getName()
-            )
-        );
-        execute.apply(
-            String.format(
-                "find %s -type f ! -name '*.pdf' -delete",
-                PDFs.getName()
-            )
-        );
+        new LatexProcessor(new File(output, "examinations")).process();
+        new LatexProcessor(new File(output, "solutions")).process();
     }
 
     public static TextSegment text(final String contents) {
