@@ -19,32 +19,47 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen.latex;
+package com.rigiresearch.examgen.templates;
 
+import com.rigiresearch.examgen.model.Examination;
+import com.rigiresearch.examgen.model.Question;
 import com.rigiresearch.examgen.model.TextSegment;
-import lombok.AllArgsConstructor;
 
 /**
- * A text segment decorator to format latex code.
+ * Basic template behavior to render an examination and its main parts to
+ * plain text.
  * @author Miguel Jimenez (miguel@uvic.ca)
- * @date 2017-08-13
+ * @date 2017-09-14
  * @version $Id$
  * @since 0.0.1
  */
-@AllArgsConstructor
-public final class LatexTextSegment {
+public interface Template {
 
     /**
-     * The decorated text segment.
+     * Produces a string representation from an {@link Examination}.
+     * @param examination The input instance
+     * @param printSolutions Whether to print the solutions in the rendered
+     *  string
+     * @return A string representation of the input instance
      */
-    private final TextSegment origin;
+    CharSequence render(Examination examination, boolean printSolutions);
 
     /**
-     * Format this block of text as LateX code.
-     * @return a String representation of this block of text.
+     * Produces a string representation from a {@link Question}.
+     * @param question The input instance
+     * @param printSolutions Whether to print the solutions in the rendered
+     *  string
+     * @return A string representation of the input instance
      */
-    public String asLatex() {
-        throw new UnsupportedOperationException();
-    }
+    CharSequence render(Question question, boolean printSolutions);
+
+    /**
+     * Produces a string representation from a {@link TextSegment}.
+     * @param segment The input instance
+     * @param printSolutions Whether to print the solutions in the rendered
+     *  string
+     * @return A string representation of the input instance
+     */
+    CharSequence render(TextSegment segment, boolean printSolutions);
 
 }
