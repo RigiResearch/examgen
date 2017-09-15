@@ -64,6 +64,11 @@ public interface TextSegment {
         INHERIT,
 
         /**
+         * The text is formatted as inline code according to the target language.
+         */
+        INLINE_CODE,
+
+        /**
          * Italic text.
          */
         ITALIC,
