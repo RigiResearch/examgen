@@ -19,13 +19,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-package com.rigiresearch.examgen.latex;
+package com.rigiresearch.examgen.io;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.SequenceInputStream;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,7 +64,11 @@ public final class LatexProcessor {
             try {
                 String line;
                 final String[] cmd = {"/bin/sh", "-c", command};
-                final String[] env = {};
+                List<String> pairs = System.getenv().keySet()
+                    .stream()
+                    .map(k -> String.format("%s=%s", k, System.getenv(k)))
+                    .collect(Collectors.toList());
+                final String[] env = pairs.toArray(new String[]{});
                 final Process p = Runtime.getRuntime().exec(cmd, env, parent);
                 final BufferedReader in = new BufferedReader(
                     new InputStreamReader(
@@ -82,8 +88,8 @@ public final class LatexProcessor {
             return output.toString();
         };
         Stream.of(
-            "find . -name \"*.tex\" -exec /Library/TeX/texbin/pdflatex -output-directory=%s {} \\;",
-            "find . -name \"*.tex\" -exec /Library/TeX/texbin/pdflatex -output-directory=%s {} \\;",
+            "find . -name \"*.tex\" -exec pdflatex -output-directory=%s {} \\;",
+            "find . -name \"*.tex\" -exec pdflatex -output-directory=%s {} \\;",
             "find %s -type f ! -name '*.pdf' -delete"
         ).map(input -> String.format(input, this.output.getName()))
          .forEach(command -> System.out.println(execute.apply(command)));
