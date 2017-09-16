@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rigiresearch</groupId>
-	<artifactId>quizgen</artifactId>
+	<artifactId>examgen</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CSC 111 - Exam generator</name>
+	<name>Exam generator</name>
 	<description>Latex exam generator</description>
     <url>https://github.com/jachinte/examgen</url>
     <inceptionYear>2017</inceptionYear>
@@ -47,18 +47,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
-	   <!-- Annotations to streamline development -->
+        <!-- Annotations to streamline development -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.16.18</version>
 			<scope>provided</scope>
-		</dependency>
-		<!-- Measurement units -->
-		<dependency>
-			<groupId>org.jscience</groupId>
-			<artifactId>jscience</artifactId>
-			<version>4.3.1</version>
 		</dependency>
 		<!-- Template engine -->
 		<dependency>
@@ -72,22 +66,31 @@
 			<artifactId>snakeyaml</artifactId>
 			<version>1.18</version>
 		</dependency>
+		<!-- CLI -->
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.72</version>
+		</dependency>
 	</dependencies>
 	<build>
         <plugins>
 			<plugin>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>xtend-maven-plugin</artifactId>
-				<version>2.12.0</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
 						<goals>
-							<goal>compile</goal>
-							<goal>testCompile</goal>
+							<goal>add-source</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/xtend-gen/main</outputDirectory>
-							<testOutputDirectory>${project.build.directory}/xtend-gen/test</testOutputDirectory>
+							<sources>
+								<!-- Workaround for chicken & egg issue between lombok and Xtend -->
+								<source>src/main/xtend-gen/</source>
+							</sources>
 						</configuration>
 					</execution>
 				</executions>
@@ -103,6 +106,8 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+                    <finalName>${project.artifactId}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
 					<execution>
