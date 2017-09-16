@@ -85,6 +85,7 @@ public final class WritableExamination {
         File solutions = new File(
             String.join(File.separator, directory.getAbsolutePath(), "solutions")
         );
+        directory.mkdir();
         examination.mkdir();
         solutions.mkdir();
         final String name = String.format(

@@ -148,7 +148,11 @@ public interface TextSegment extends Serializable {
          */
         @Override
         public String toString() {
-            return this.text;
+            return String.format(
+                "(%s %s)",
+                this.styles,
+                this.text
+            );
         }
 
     }

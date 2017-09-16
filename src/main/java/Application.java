@@ -32,8 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import javax.measure.DecimalMeasure;
-import javax.measure.unit.Unit;
 
 /**
  * Main program.
@@ -77,7 +75,7 @@ public final class Application {
                     text("What is the difference between a multi-line comment and a single-line comment?"),
                     "A single line comment allows to comment out only one line of text, whereas the multiline comment encloses multiple lines of text.",
                     2,
-                    DecimalMeasure.valueOf(2.0, Unit.valueOf("cm"))
+                    "2cm"
                 ),
                 new ClosedEnded(
                     compound(

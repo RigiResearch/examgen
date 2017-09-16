@@ -23,8 +23,6 @@ package com.rigiresearch.examgen.model;
 
 import java.util.Collections;
 import java.util.List;
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -64,7 +62,7 @@ public final class OpenEnded implements Question {
     /**
      * Expected vertical length of the answer on a printed sheet.
      */
-    private final Measure<Double, ? extends Quantity> expectedLength;
+    private final String expectedLength;
 
     /* (non-Javadoc)
      * @see com.rigiresearch.quizgen.Question#statement()

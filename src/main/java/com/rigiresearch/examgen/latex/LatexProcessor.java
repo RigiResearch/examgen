@@ -86,7 +86,7 @@ public final class LatexProcessor {
             "find . -name \"*.tex\" -exec /Library/TeX/texbin/pdflatex -output-directory=%s {} \\;",
             "find %s -type f ! -name '*.pdf' -delete"
         ).map(input -> String.format(input, this.output.getName()))
-         .forEach(command -> execute.apply(command));
+         .forEach(command -> System.out.println(execute.apply(command)));
     }
 
 }
