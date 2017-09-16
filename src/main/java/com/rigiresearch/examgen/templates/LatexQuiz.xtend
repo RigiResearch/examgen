@@ -37,7 +37,7 @@ import com.rigiresearch.examgen.model.CompoundQuestion
 import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 
 /**
- * A template implementation with Latex as target notation.
+ * A Latex template implementation.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-09-14
  * @version $Id$
@@ -110,18 +110,18 @@ class LatexQuiz implements Template {
 
     override render(TextSegment segment, boolean printSolutions) {
         switch (segment) {
-            TextSegment.Simple: segment.applyStyle
-            CompoundText: segment.segments.map[it.applyStyle].join(" ")
+            TextSegment.Simple: segment.styled
+            CompoundText: segment.segments.map[it.styled].join(" ")
         }
     }
 
     /**
      * Applies styles to a rendered text segment.
      */
-    def applyStyle(TextSegment segment) {
+    def styled(TextSegment segment) {
         var CharSequence result = segment.text
         for (style : segment.styles) {
-            result = result.applyStyle(style)
+            result = result.styled(style)
         }
         return if (segment.styles.contains(TextSegment.Style.NEW_LINE))
             "\n" + result
@@ -132,9 +132,9 @@ class LatexQuiz implements Template {
     /**
      * Applies the given style to a rendered text.
      */
-    def applyStyle(CharSequence text, TextSegment.Style style) {
+    def styled(CharSequence text, TextSegment.Style style) {
         switch (style) {
-            case BOLD: '''\textbf{«text»}'''
+            case BOLD: '''\textbf{«text.escaped»}'''
             case CODE: '''
             \vspace{0.3cm}
             \begin{lstlisting}
@@ -142,9 +142,27 @@ class LatexQuiz implements Template {
             \end{lstlisting}
             '''
             case INLINE_CODE: '''\lstinline|«text»|'''
-            case ITALIC: '''\textit{«text»}'''
-            default: text
+            case ITALIC: '''\textit{«text.escaped»}'''
+            case CUSTOM: text
+            case INHERIT: text.escaped
+            case NEW_LINE: '''\n«text.escaped»'''
         }
+    }
+
+    /**
+     * Escapes special Latex characters
+     */
+    def escaped(CharSequence text) {
+        text.toString
+            .replace("\\", "\\textbackslash")
+            .replace("~", "\\textasciitilde")
+            .replace("^", "\\textasciicircum")
+            .replace("#", "\\#")
+            .replace("&", "\\&")
+            .replace("%", "\\%")
+            .replace("{", "\\{")
+            .replace("}", "\\}")
+            .replace("$", "\\$")
     }
 
     /**
