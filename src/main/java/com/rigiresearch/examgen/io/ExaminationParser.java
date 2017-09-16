@@ -1,3 +1,4 @@
+package com.rigiresearch.examgen.io;
 /**
  * Copyright 2017 University of Victoria
  * 
@@ -19,7 +20,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import com.rigiresearch.examgen.latex.LatexProcessor;
 import com.rigiresearch.examgen.model.ClosedEnded;
 import com.rigiresearch.examgen.model.ClosedEnded.Option;
 import com.rigiresearch.examgen.model.CompoundQuestion;
@@ -30,23 +30,21 @@ import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.Question;
 import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.model.TextSegment.Style;
-import com.rigiresearch.examgen.templates.WritableExamination;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * A simple parser implementation to read examinations from a YAML file.
+ * A simple (and optimistic) parser implementation to read examinations from a
+ * YAML file.
  * @author Miguel Jimenez (miguel@uvic.ca)
  * @date 2017-09-15
  * @version $Id$
@@ -54,44 +52,6 @@ import org.yaml.snakeyaml.Yaml;
  */
 @SuppressWarnings("unchecked")
 public class ExaminationParser {
-
-    public static void main(String[] args) throws FileNotFoundException {
-        final long seed = 1234;
-        final int limit = 4;
-        final String input = "/Users/miguel/Dropbox/PhD/TA/CS111-Fall2017/quizzes/Q1/quiz1.yml";
-        final String output = "/Users/miguel/Dropbox/PhD/TA/CS111-Fall2017/quizzes/TEST";
-
-        final AtomicInteger i = new AtomicInteger(0);
-        new ExaminationParser()
-            .examinations(new File(input))
-            .stream()
-            .forEach(examination -> {
-                File outputDir = new File(
-                    String.format(
-                        "%s%s",
-                        output,
-                        i.get() > 0 ? i.get() : ""
-                    )
-                );
-                try {
-                    examination.variants(seed, limit)
-                        .stream()
-                        .map(e -> new WritableExamination(e, WritableExamination.Target.LATEX_QUIZ))
-                        .forEach(w -> {
-                            try {
-                                w.write(outputDir);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                new LatexProcessor(new File(output, "examinations/PDF")).process();
-                new LatexProcessor(new File(output, "solutions/PDF")).process();
-                i.incrementAndGet();
-            });
-    }
 
     /**
      * Parses a list of examinations from a YAML file.
@@ -213,6 +173,11 @@ public class ExaminationParser {
         );
     }
 
+    /**
+     * Parses a text segment.
+     * @param data The segment data
+     * @return a segment
+     */
     private TextSegment textSegment(Object obj) {
         List<TextSegment> segments = this._textSegments(obj.toString());
         if (segments.size() == 1) {
@@ -223,18 +188,22 @@ public class ExaminationParser {
     }
 
     /**
+     * Parses a text into a sequential list of text segments.
      * TODO make it recursive
-     * @param text
-     * @return
+     * @param text The input text
+     * @return a sequence of text segments
      */
     private List<TextSegment> _textSegments(String text) {
         List<TextSegment> segments = new ArrayList<>();
-        Pattern pattern = Pattern.compile("(?<before>.*)<style:(?<style>[a-zA-Z_]+)>(?<text>[.\\s\\S]*)<\\/style:\\k<style>>(?<after>.*)", Pattern.MULTILINE);
+        Pattern pattern = Pattern.compile(
+            "(?<before>[.\\s\\S]*)<(?<style>[a-zA-Z_]+)>(?<text>[.\\s\\S]*)<\\/\\k<style>>(?<after>[.\\s\\S]*)",
+            Pattern.MULTILINE
+        );
         Matcher matcher = null;
         while ((matcher = pattern.matcher(text)).find()) {
             text = matcher.group("text");
-            String before = matcher.group("before");
-            String after = matcher.group("after");
+            final String before = matcher.group("before");
+            final String after = matcher.group("after");
             segments.addAll(_textSegments(before));
             segments.add(
                 new TextSegment.Simple(
