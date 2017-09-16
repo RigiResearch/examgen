@@ -131,7 +131,7 @@ public class ExaminationParser {
     private Question openEnded(Map<String, Object> data) {
         return new OpenEnded(
             this.textSegment(data.get("statement")),
-            data.get("answer").toString(),
+            this.textSegment(data.get("answer")),
             (Integer) data.get("points"),
             data.get("length").toString()
         );

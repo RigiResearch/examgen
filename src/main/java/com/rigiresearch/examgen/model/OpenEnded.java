@@ -52,7 +52,7 @@ public final class OpenEnded implements Question {
     /**
      * The answer to this question.
      */
-    private final String answer;
+    private final TextSegment answer;
 
     /**
      * The number of points assigned to this question.

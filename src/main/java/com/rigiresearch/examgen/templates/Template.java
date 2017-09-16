@@ -56,10 +56,8 @@ public interface Template {
     /**
      * Produces a string representation from a {@link TextSegment}.
      * @param segment The input instance
-     * @param printSolutions Whether to print the solutions in the rendered
-     *  string
      * @return A string representation of the input instance
      */
-    CharSequence render(TextSegment segment, boolean printSolutions);
+    CharSequence render(TextSegment segment);
 
 }

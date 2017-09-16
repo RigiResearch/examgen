@@ -108,7 +108,7 @@ class LatexQuiz implements Template {
         }
     }
 
-    override render(TextSegment segment, boolean printSolutions) {
+    override render(TextSegment segment) {
         switch (segment) {
             TextSegment.Simple: segment.styled
             CompoundText: segment.segments.map[it.styled].join(" ")
@@ -163,6 +163,7 @@ class LatexQuiz implements Template {
             .replace("{", "\\{")
             .replace("}", "\\}")
             .replace("$", "\\$")
+            .replace("_", "\\_")
     }
 
     /**
@@ -170,10 +171,10 @@ class LatexQuiz implements Template {
      */
     def render(OpenEnded question, boolean child, boolean printSolutions) '''
         «IF !child»\question[«question.points»]«ENDIF»
-        «question.statement.render(printSolutions)»
+        «question.statement.render»
         «IF printSolutions»
             \begin{solution}
-                «question.answer»
+                «question.answer.render»
             \end{solution}
         «ELSE»
             \makeemptybox{«question.expectedLength»}
@@ -185,10 +186,10 @@ class LatexQuiz implements Template {
      */
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
         «IF !child»\question[«question.points»]«ENDIF»
-        «question.statement.render(printSolutions)»
+        «question.statement.render»
         \begin{choices}
             «FOR option : question.options»
-                «IF option.answer»\CorrectChoice«ELSE»\choice«ENDIF» «option.statement.render(printSolutions)»
+                «IF option.answer»\CorrectChoice«ELSE»\choice«ENDIF» «option.statement.render»
             «ENDFOR»
         \end{choices}
     '''
@@ -198,7 +199,7 @@ class LatexQuiz implements Template {
      */
     def render(CompoundQuestion question, boolean printSolutions) '''
         \question[«question.points»]
-        «question.statement.render(printSolutions)»
+        «question.statement.render»
         \noaddpoints % to omit double points count
         \begin{parts}
             «FOR child : question.children SEPARATOR "\n"»
