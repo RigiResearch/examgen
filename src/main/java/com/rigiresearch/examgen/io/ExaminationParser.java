@@ -94,7 +94,7 @@ public class ExaminationParser {
                             new Section(
                                 (String) smap.get("name"),
                                 (String) smap.get("TA"),
-                                (Integer) smap.get("copies")
+                                (Integer) smap.get("students")
                             )
                         );
                     });
