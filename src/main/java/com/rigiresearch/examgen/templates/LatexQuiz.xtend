@@ -46,11 +46,14 @@ import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 class LatexQuiz implements Template {
 
     override render(Examination e, boolean printSolutions) '''
-        \documentclass[10pt,addpoints«IF printSolutions»,answers«ENDIF»]{exam}
+        \documentclass[9pt,addpoints«IF printSolutions»,answers«ENDIF»]{exam}
         
         % packages configuration
         «packages»
-        
+
+        % choices configuration
+        «choices»
+
         % listings configuration
         «listings»
         
@@ -78,9 +81,9 @@ class LatexQuiz implements Template {
         
         % student information
         \noindent
-        \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|}
+        \begin{tabularx}{\textwidth}{|X|X|X|X|}
             \hline
-            \small{Student name} & \small{} & \small{Student ID} & \small\bfseries{V00} & \small{Grade} & \small{} \\
+            \small{Student name} & \small{} & \small{Student ID} & \small\bfseries{V00} \\
             \hline
         \end{tabularx}
         
@@ -88,8 +91,8 @@ class LatexQuiz implements Template {
         \rule[2ex]{\textwidth}{2pt}
         
         \centering
-        {\footnotesize This exam is worth a total of \numpoints{} marks and contains \numquestions{} questions on \numpages{} pages.}
-        
+«««        {\footnotesize This exam is worth a total of \numpoints{} marks and contains \numquestions{} questions on \numpages{} pages.}
+        \vspace{0.2cm}
         \begin{questions}
         \bracketedpoints
         \marksnotpoints
@@ -141,7 +144,7 @@ class LatexQuiz implements Template {
             «text»
             \end{lstlisting}
             '''
-            case INLINE_CODE: '''\lstinline|«text»|'''
+            case INLINE_CODE: '''\lstinline|«text.scapedInline»|'''
             case ITALIC: '''\textit{«text.escaped»}'''
             case CUSTOM: text
             case INHERIT: text.escaped
@@ -166,6 +169,15 @@ class LatexQuiz implements Template {
             .replace("_", "\\_")
     }
 
+    def scapedInline(CharSequence text) {
+        text.toString
+            .replace("\\", "\\\\")
+            .replace("&", "\\&")
+            .replace("%", "\\%")
+            .replace("{", "\\{")
+            .replace("}", "\\}")
+    }
+
     /**
      * Renders an open-ended question.
      */
@@ -187,11 +199,11 @@ class LatexQuiz implements Template {
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
         «IF !child»\question[«question.points»]«ENDIF»
         «question.statement.render»
-        \begin{choices}
+        \begin{items}
             «FOR option : question.options»
-                «IF option.answer»\CorrectChoice«ELSE»\choice«ENDIF» «option.statement.render»
+                «IF option.answer»\item*«ELSE»\item«ENDIF» «option.statement.render»
             «ENDFOR»
-        \end{choices}
+        \end{items}
     '''
 
     /**
@@ -221,7 +233,7 @@ class LatexQuiz implements Template {
     def packages() '''
     % general
     \usepackage[utf8]{inputenc}
-    \usepackage[margin=1in]{geometry}
+    \usepackage[margin=0.5in]{geometry}
     % math
     \usepackage{amsmath, amssymb}
     % tables
@@ -231,6 +243,12 @@ class LatexQuiz implements Template {
     \usepackage{color}
     \usepackage[scaled=0.85]{sourcecodepro}
     \usepackage{listings}
+    % horizontal list of options
+    \usepackage{environ}
+    \usepackage[normalem]{ulem}
+    \usepackage{etoolbox}
+    \usepackage[export]{adjustbox}
+    \usepackage{enumitem}
     '''
 
     /**
@@ -265,6 +283,101 @@ class LatexQuiz implements Template {
         numberstyle=\scriptsize\ttfamily\color{numbers}
     }
     \lstset{style=code}
+    '''
+
+    /**
+     * Configuration to display choices horizontally.
+     */
+    def choices() '''
+    \renewcommand{\questionshook}{%
+        \setlength{\itemsep}{0.5\baselineskip}
+        \setlength{\topsep}{0pt}
+        \setlength\partopsep{0pt} 
+        \setlength\parsep{5pt}
+    }
+    
+    \makeatletter
+    \newlength\choiceitemwidth
+    \newif\ifshowsolution \showsolutiontrue
+    \newcounter{choiceitem}%
+    
+    \def\thechoiceitem{\Alph{choiceitem}}%
+    \setlength{\fboxsep}{0pt}
+    \def\makechoicelabel#1{#1\uline{\bfseries \thechoiceitem.}\else\thechoiceitem.\fi\space}
+    %\def\makechoicelabel#1{#1\uline{\thechoiceitem.}\else\thechoiceitem.\fi\space} %underline the answer item label if we want to print the answer
+    %\def\makechoicelabel#1{#1\framebox[1.25em][l]{\thechoiceitem.}\else\makebox[1.25em][l]{\thechoiceitem.}\fi} %underline the answer item label if we want to print the answer
+    
+    \def\choice@mesureitem#1{\cr\stepcounter{choiceitem}\makechoicelabel#1}%
+    
+    %measure the choices, this is the first time we need to parse the \BODY
+    \def\choicemesureitem{\@ifstar
+        {\choice@mesureitem\ifprintanswers \xappto\theanswer{\thechoiceitem}\ignorespaces}%
+        {\choice@mesureitem\iffalse}}%
+    
+    \def\choice@blockitem#1{%
+        \ifnum\value{choiceitem}>0\hfill\fi
+        \egroup\hskip0pt
+        \hbox to \choiceitemwidth\bgroup\hss\refstepcounter{choiceitem}\makechoicelabel#1}
+    
+    \def\choiceblockitem{\@ifstar
+        {\choice@blockitem\ifprintanswers\ignorespaces}%
+        {\choice@blockitem\iffalse}}
+    
+    \def\choice@paraitem#1{%
+        \par\noindent\refstepcounter{choiceitem}\makechoicelabel#1\hangindent=1.25em\hangafter=1\relax}% only the first line need indent
+    
+    \def\choiceparaitem{\@ifstar
+        {\choice@paraitem\ifprintanswers\ignorespaces}%
+        {\choice@paraitem\iffalse}}
+    
+    \newdimen\qanswd
+    \newdimen\qanswdtmp
+    \newbox\qimgbox
+    \NewEnviron{items}[1][]{%
+        \def\theanswer{}
+        \begingroup
+        \let\item\choicemesureitem
+        \setcounter{choiceitem}{0}%
+        \settowidth{\global\choiceitemwidth}{\vbox{\halign{##\hfil\cr\BODY\crcr}}}%
+        \endgroup
+        \setbox\qimgbox\hbox{#1}%
+        \setlist[trivlist]{nosep}
+        \trivlist\item\relax%
+        \qanswd=\linewidth%
+        \advance\qanswd-\wd\qimgbox%
+        % handle large images (leaving less than 30% space)
+        \qanswdtmp=0.3\linewidth%
+        \ifnum\qanswd<\qanswdtmp%
+        %\strut\hfill% uncomment to right-align large images
+        \unhbox\qimgbox%
+        %\hfill\strut% uncomment this too to center them
+        \par%
+        \qanswd=\linewidth%
+        \setbox\qimgbox\hbox{}%
+        \fi%
+        % end of handling for large images
+        \begin{minipage}[t]{\qanswd}
+            \trivlist\item\relax%
+            \parindent0pt%  
+            \setcounter{choiceitem}{0}%
+            \ifdim\choiceitemwidth<0.25\columnwidth
+            \choiceitemwidth=0.25\columnwidth
+            \let\item\choiceblockitem
+            \bgroup\BODY\hfill\egroup
+            \else\ifdim\choiceitemwidth<0.5\columnwidth
+            \choiceitemwidth=0.5\columnwidth
+            \let\item\choiceblockitem
+            \bgroup\BODY\hfill\egroup
+            \else % \choiceitemwidth > 0.5\columnwidth
+            \let\item\choiceparaitem
+            \BODY
+            \fi\fi
+            \endtrivlist
+        \end{minipage}%
+        \adjustbox{valign=t}{\unhbox\qimgbox}
+        \endtrivlist
+    }
+    \makeatother
     '''
 
 }
