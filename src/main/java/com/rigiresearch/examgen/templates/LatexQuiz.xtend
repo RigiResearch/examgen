@@ -21,20 +21,21 @@
  */
 package com.rigiresearch.examgen.templates
 
+import com.rigiresearch.examgen.model.ClosedEnded
+import com.rigiresearch.examgen.model.CompoundQuestion
 import com.rigiresearch.examgen.model.CompoundText
 import com.rigiresearch.examgen.model.Examination
+import com.rigiresearch.examgen.model.OpenEnded
 import com.rigiresearch.examgen.model.Question
+import com.rigiresearch.examgen.model.Section
 import com.rigiresearch.examgen.model.TextSegment
 
 import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE
 import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE_REFERENCE_NUMBER
+import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 import static com.rigiresearch.examgen.model.Examination.Parameter.TERM
 import static com.rigiresearch.examgen.model.Examination.Parameter.TIME_LIMIT
 import static com.rigiresearch.examgen.model.Examination.Parameter.TITLE
-import com.rigiresearch.examgen.model.OpenEnded
-import com.rigiresearch.examgen.model.ClosedEnded
-import com.rigiresearch.examgen.model.CompoundQuestion
-import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 
 /**
  * A Latex template implementation.
@@ -46,6 +47,7 @@ import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 class LatexQuiz implements Template {
 
     override render(Examination e, boolean printSolutions) '''
+        «val section = e.parameters.get(SECTIONS) as Section»
         \documentclass[9pt,addpoints«IF printSolutions»,answers«ENDIF»]{exam}
         
         % packages configuration
@@ -59,9 +61,11 @@ class LatexQuiz implements Template {
         
         % parameters
         \newcommand{\institution}{University of Victoria}
+        \newcommand{\students}{«section.students»}
         \newcommand{\course}{«e.parameters.get(COURSE)»}
         \newcommand{\coursenumber}{«e.parameters.get(COURSE_REFERENCE_NUMBER)»}
-        \newcommand{\sections}{«e.parameters.get(SECTIONS)»}
+        \newcommand{\sections}{«section.name»}
+        \newcommand{\TA}{«section.TA»}
         \newcommand{\term}{«e.parameters.get(TERM)»}
         \newcommand{\timelimit}{«e.parameters.get(TIME_LIMIT)»}
         \newcommand{\examtitle}{«e.parameters.get(TITLE)»}
@@ -77,7 +81,8 @@ class LatexQuiz implements Template {
         \noindent
         \section*{\examtitle}
         \textbf{\course{}  -- \term{}} \\
-        {\footnotesize \coursenumber{} Section \sections. Time limit: \timelimit{}. Circle the appropriate letter in multiple choice questions.} \\
+        {\footnotesize \coursenumber{} Section \sections. TA: \TA{}. \textbf{\# of copies: \students}} \\
+        {\footnotesize \textbf{Instructions:} Circle the appropriate letter in multiple choice questions. Time limit: \timelimit{}} \\
         
         % student information
         \noindent

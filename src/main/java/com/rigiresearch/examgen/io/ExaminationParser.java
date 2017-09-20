@@ -28,6 +28,7 @@ import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.Examination.Parameter;
 import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.Question;
+import com.rigiresearch.examgen.model.Section;
 import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.model.TextSegment.Style;
 import java.io.File;
@@ -85,7 +86,22 @@ public class ExaminationParser {
             .forEach(map -> {
                 String key = map.keySet().stream().findFirst().get();
                 Object value = map.get(key);
-                params.put(Parameter.valueOf(key), value);
+                if (key.equals("SECTIONS")) {
+                    List<Map<String, Object>> data = (List<Map<String, Object>>) value;
+                    List<Section> sections = new ArrayList<>();
+                    data.forEach(smap -> {
+                        sections.add(
+                            new Section(
+                                (String) smap.get("name"),
+                                (String) smap.get("TA"),
+                                (Integer) smap.get("copies")
+                            )
+                        );
+                    });
+                    params.put(Parameter.SECTIONS, sections);
+                } else {
+                    params.put(Parameter.valueOf(key), value);
+                }
             });
         return params;
     }
