@@ -1,3 +1,4 @@
+package com.rigiresearch.examgen;
 /**
  * Copyright 2017 University of Victoria
  * 
