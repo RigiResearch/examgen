@@ -119,7 +119,7 @@ class LatexQuiz implements Template {
     override render(TextSegment segment) {
         switch (segment) {
             TextSegment.Simple: segment.styled
-            CompoundText: segment.segments.map[it.styled].join(" ")
+            CompoundText: segment.segments.map[it.styled].join
         }
     }
 
