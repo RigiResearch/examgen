@@ -14,14 +14,14 @@ This project generates examinations along with their solutions from a [YAML](htt
 
 First, clone or download this repository and then package the application artefacts using [Maven](https://maven.apache.org/):
 
-```
+```bash
 git clone https://github.com/amelia/examgen
 mvn package
 ```
 
 Then, run the application:
 
-```
+```bash
 # this command only shows the application menu
 java -jar target/examgen.jar --help
 ```
@@ -30,7 +30,7 @@ java -jar target/examgen.jar --help
 
 Every exam has a set of parameters and a set of questions. Currently, the only template supported expects the parameters: course, course reference number, term, time limit, exam title, and class sections. The following listing exemplifies how to specify these parameters:
 
-```
+```yaml
 parameters:
   - COURSE: Fundaments of Programming with Engineering Applications
   - COURSE_REFERENCE_NUMBER: CSC 111
@@ -48,7 +48,7 @@ parameters:
 
 The list of questions contains questions of type open-close, closed-ended, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
 
-```
+```yaml
 - type: closed-ended
   statement: Who created the C programming language?
   points: 10
@@ -61,7 +61,7 @@ The list of questions contains questions of type open-close, closed-ended, and c
 
 In the case of an open-ended question, the length represents the length of the answer box.
 
-```
+```yaml
 - type: open-ended
   statement: What is the difference between a multi-line and a single-line comment?
   answer: A single line comment allows to comment out only one line of text, whereas the multiline comment encloses multiple lines of text.
@@ -69,7 +69,7 @@ In the case of an open-ended question, the length represents the length of the a
   points: 10
 ```
 
-```
+```yaml
 - type: compound
   statement: Consider a function countArguments, which counts the number of arguments of a program.
   children:
@@ -100,7 +100,7 @@ Every question statement can be either a simple text (e.g., this is an statement
 
 The following question exemplifies the use of text styles:
 
-```
+```yaml
 - type: closed-ended
     statement: |
       <bold>Read the code below</bold>. How many function names there are?
@@ -136,7 +136,7 @@ Beware of character escaping when creating an examination. The following charact
 
 A complete specification looks like the following listing:
 
-```
+```yaml
 parameters:
   - COURSE: Fundaments of Programming with Engineering Applications
   - COURSE_REFERENCE_NUMBER: CSC 111
@@ -187,7 +187,7 @@ questions:
 
 The following is the help menu from the application:
 
-```
+```bash
 The following options are required: [--output | -o], [--input | -i]
 Usage: <main class> [options]
   Options:
@@ -212,7 +212,7 @@ Usage: <main class> [options]
 
 An example of usage would be:
 
-```
+```bash
 java -jar target/examgen.jar -o ./quiz -i exam.yaml -l 10 -s 1234
 ```
 
