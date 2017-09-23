@@ -73,14 +73,14 @@ In the case of an open-ended question, the length represents the length of the a
 - type: compound
   statement: Consider a function countArguments, which counts the number of arguments of a program.
   children:
-  	- type: closed-ended
-  	  statement: The return value of the countArguments is
+    - type: closed-ended
+      statement: The return value of the countArguments is
       points: 5
       options:
-      	- {correct: false, statement: double}
-      	- {correct: true, statement: int}
-      	- {correct: false, statement: char}
-      	- {correct: false, statement: float}
+        - {correct: false, statement: double}
+        - {correct: true, statement: int}
+        - {correct: false, statement: char}
+        - {correct: false, statement: float}
     - type: open-ended
       statement: Provide one use case for this function.
       answer: To validate the number of expected arguments.
