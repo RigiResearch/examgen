@@ -28,7 +28,9 @@ java -jar target/examgen.jar --help
 
 #### Specify an examination using the YAML DSL
 
-Every exam has a set of parameters and a set of questions. Currently, the only template supported expects the parameters: course, course reference number, term, time limit, exam title, and class sections. The following listing exemplifies how to specify these parameters:
+Every exam has a set of parameters and a set of questions. Currently, there are two templates supported: LATEX_QUIZ and LATEX_MIDTERM. The parameters required by each template are:
+
+- LATEX_QUIZ: course, course reference number, term, time limit, exam title, and class sections. The following listing exemplifies how to specify these parameters:
 
 ```yaml
 parameters:
@@ -44,6 +46,34 @@ parameters:
     - name: B02
       TA: Jane Doe
       students: 30
+```
+
+- LATEX_MIDTERM: course, course reference number, course id, term, date, time limit, exam title, instructor, and class (or exam) sections. In addition, an optional list of instructions can be specified. The following listing exemplifies how to specify these parameters:
+
+```yaml
+parameters:
+  - COURSE: Fundaments of Programming with Engineering Applications
+  - COURSE_REFERENCE_NUMBER: CSC 111
+  - COURSE_ID: 10691
+  - DATE: August 26, 2017
+  - INSTRUCTORS: John Doe
+  - INSTRUCTIONS:
+    - This examination contains <custom>\numquestions{}</custom> questions on <custom>\numpages{}</custom> pages, including this cover page. Please verify that your copy has all pages and notify the invigilator immediately if any pages are missing.
+    - You have <custom>\timelimit{}</custom> to complete this exam.
+    - Write all of your the answers on this examination paper.
+    - This examination is worth a total of <custom>\numpoints{}</custom> marks. The mark value of each question is given in brackets at the beginning of each question.
+    - No books, notes, calculators, phones, computers, smart devices or other electronic devices are permitted.
+    - In multiple choice questions, clearly mark exactly one choice with an <bold>X</bold>.
+    - Be sure to complete the information on the declaration attached to this examination including your signature. Do not detach the declaration.
+    - Place your student ID card face up on your desk.
+    - Turn in your completed exam at the front of the room as you leave.
+  - TERM: Fall 2017
+  - TIME_LIMIT: 60 Minutes
+  - TITLE: Midterm 1
+  - SECTIONS:
+    - name: A
+    - name: B
+    - name: C
 ```
 
 The list of questions contains questions of type open-close, closed-ended, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
@@ -134,7 +164,7 @@ In the last example, the question statement is formatted as a YAML multiple-line
 
 Beware of character escaping when creating an examination. The following characters are considered special in YAML, and you will have to escape them in order to use them: `[ ] { } : > |`. You may quote text to avoid escaping characters.
 
-A complete specification looks like the following listing:
+A complete quiz specification looks like the following listing. Note: a midterm specification only differs in the parameters section, and the target template (cf. [Generate the examinations and solutions](#generate-the-examinations-and-solutions)).
 
 ```yaml
 parameters:
@@ -195,18 +225,21 @@ Usage: <main class> [options]
       The YAML file
   * --output, -o
       The output directory
+    --template, -t
+      The target template
+      Default: LATEX_QUIZ
     --seed, -s
       The seed to scramble questions and options
       Default: 0
     --limit, -l
       The number of questions to include in an examination
       Default: 0
-    --help, -h
-      Shows this message
-      Default: false
     --process, -p
       Invoke latex after generation (requires pdflatex in the environment. 
       Won't work on Windows!)
+      Default: false
+    --help, -h
+      Shows this message
       Default: false
 ```
 
@@ -214,6 +247,12 @@ An example of usage would be:
 
 ```bash
 java -jar target/examgen.jar -o ./quiz -i exam.yaml -l 10 -s 1234
+```
+
+Or, specifying the template:
+
+```bash
+java -jar target/examgen.jar -o ./quiz -i exam.yaml -t LATEX_QUIZ -l 10 -s 1234
 ```
 
 The current implementation of the YAML parser is optimistic and will fail miserably if something is not right. A suggested troubleshooting procedure would be:
