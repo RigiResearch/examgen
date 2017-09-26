@@ -70,28 +70,38 @@ public final class Application implements Runnable {
     private String output;
 
     @Parameter(
+        names = {"--template", "-t"},
+        description = "The target template",
+        required = false,
+        order = 3
+    )
+    private String template = "LATEX_QUIZ";
+
+    @Parameter(
         names = {"--seed", "-s"},
         description = "The seed to scramble questions and options",
-        order = 3
+        order = 4
     )
     private long seed;
 
     @Parameter(
         names = {"--limit", "-l"},
         description = "The number of questions to include in an examination",
-        order = 4
+        order = 5
     )
     private int limit;
 
     @Parameter(
         names = {"--process", "-p"},
-        description = "Invoke latex after generation (requires pdflatex in the environment. Won't work on Windows!)"
+        description = "Invoke latex after generation (requires pdflatex in the environment. Won't work on Windows!)",
+        order = 6
     )
     private boolean process = false;
 
     @Parameter(
         names = {"--help", "-h"},
-        description = "Shows this message"
+        description = "Shows this message",
+        order = 7
     )
     private boolean help = false;
 
@@ -110,11 +120,13 @@ public final class Application implements Runnable {
             if (app.help) {
                 jc.usage();
                 return;
+            } else if (!app.parameters.isEmpty()) {
+                System.err.printf("Unknown parameter(s) %s\n", app.parameters);
             }
         } catch (ParameterException e) {
             System.err.println(e.getMessage());
             new JCommander(new Application()).usage();
-            System.exit(-1);
+            System.exit(1);
         }
         app.run();
     }
@@ -125,6 +137,8 @@ public final class Application implements Runnable {
     @Override
     public void run() {
         final AtomicInteger i = new AtomicInteger(0);
+        final WritableExamination.Target template =
+                WritableExamination.Target.valueOf(this.template);
         try {
             new ExaminationParser()
                 .examinations(new File(this.input))
@@ -140,7 +154,7 @@ public final class Application implements Runnable {
                     try {
                         examination.variants(this.seed, this.limit)
                             .stream()
-                            .map(e -> new WritableExamination(e, WritableExamination.Target.LATEX_QUIZ))
+                            .map(e -> new WritableExamination(e, template))
                             .forEach(w -> {
                                 try {
                                     w.write(outputDir);

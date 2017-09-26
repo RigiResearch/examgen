@@ -66,6 +66,11 @@ public final class Examination implements Serializable {
         COURSE,
 
         /**
+         * The course identifier number or CRN.
+         */
+        COURSE_ID,
+
+        /**
          * The course identifier.
          */
         COURSE_REFERENCE_NUMBER,
@@ -79,6 +84,11 @@ public final class Examination implements Serializable {
          * The course instructors.
          */
         INSTRUCTORS,
+
+        /**
+         * This examination's instructions.
+         */
+        INSTRUCTIONS,
 
         /**
          * The specific course sections (a list), if any.
@@ -107,27 +117,9 @@ public final class Examination implements Serializable {
     private final Map<Parameter, Object> parameters;
 
     /**
-     * Optional instructions.
-     */
-    private TextSegment instructions = new TextSegment.Simple("");
-
-    /**
      * This exam's set of questions.
      */
     private final List<Question> questions;
-
-    /**
-     * Instantiates an exam setting the instructions field.
-     * @param parameters parameters composing the document header
-     * @param instructions optional exam instructions
-     * @param questions this exam's set of questions
-     */
-    public Examination(final Map<Parameter, Object> parameters,
-        final TextSegment instructions,
-        final List<Question> questions) {
-        this(parameters, questions);
-        this.instructions = instructions;
-    }
 
     /**
      * Scramble this exam.
@@ -144,7 +136,6 @@ public final class Examination implements Serializable {
         );
         return new Examination(
             this.parameters,
-            this.instructions,
             scrambledQuestions
         );
     }

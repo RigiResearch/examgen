@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -86,21 +87,38 @@ public class ExaminationParser {
             .forEach(map -> {
                 String key = map.keySet().stream().findFirst().get();
                 Object value = map.get(key);
-                if (key.equals("SECTIONS")) {
-                    List<Map<String, Object>> data = (List<Map<String, Object>>) value;
-                    List<Section> sections = new ArrayList<>();
-                    data.forEach(smap -> {
-                        sections.add(
-                            new Section(
-                                (String) smap.get("name"),
-                                (String) smap.get("TA"),
-                                (Integer) smap.get("students")
-                            )
+                switch (key) {
+                    case "SECTIONS": {
+                        List<Map<String, Object>> data = (List<Map<String, Object>>) value;
+                        List<Section> sections = new ArrayList<>();
+                        data.forEach(smap -> {
+                            String TA = "";
+                            int students = 0;
+                            if (smap.get("TA") != null)
+                                TA = (String) smap.get("TA");
+                            if (smap.get("students") != null)
+                                students = (Integer) smap.get("students");
+                            sections.add(
+                                new Section(
+                                    (String) smap.get("name"),
+                                    TA,
+                                    students
+                                )
+                            );
+                        });
+                        params.put(Parameter.SECTIONS, sections);
+                    } break;
+                    case "INSTRUCTIONS": {
+                        params.put(
+                            Parameter.INSTRUCTIONS,
+                            ((List<String>) value).stream()
+                                .map(text -> this.textSegment(text))
+                                .collect(Collectors.toList())
                         );
-                    });
-                    params.put(Parameter.SECTIONS, sections);
-                } else {
-                    params.put(Parameter.valueOf(key), value);
+                    } break;
+                    default: {
+                        params.put(Parameter.valueOf(key), value);
+                    }
                 }
             });
         return params;

@@ -54,7 +54,8 @@ public final class WritableExamination {
     @AllArgsConstructor
     @Getter
     public enum Target {
-        LATEX_QUIZ(LatexQuiz.class);
+        LATEX_QUIZ(LatexQuiz.class),
+        LATEX_MIDTERM(LatexMidterm.class);
 
         /**
          * The templates implementation.
