@@ -136,8 +136,7 @@ class LatexMidterm implements Template {
                 «ENDFOR»
             \end{itemize}
         «ENDIF»
-        % \clearpage
-        \vspace{0.5cm}
+        \clearpage
         \noindent
         {\large\bfseries Questions}
         \vspace{0.5cm}
@@ -261,6 +260,7 @@ class LatexMidterm implements Template {
         \question[«question.points»]
         «question.statement.render»
         \noaddpoints % to omit double points count
+        \pointsinmargin\pointformat{} % deactivate points for children
         \begin{parts}
             «FOR child : question.children SEPARATOR "\n"»
                 \part[«child.points»]{}
@@ -272,6 +272,7 @@ class LatexMidterm implements Template {
                 »
             «ENDFOR»
         \end{parts}
+        \nopointsinmargin\pointformat{[\thepoints]} % activate points again
         \addpoints
     '''
 

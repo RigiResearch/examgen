@@ -218,6 +218,7 @@ class LatexQuiz implements Template {
         \question[«question.points»]
         «question.statement.render»
         \noaddpoints % to omit double points count
+        \pointsinmargin\pointformat{} % deactivate points for children
         \begin{parts}
             «FOR child : question.children SEPARATOR "\n"»
                 \part[«child.points»]{}
@@ -229,6 +230,7 @@ class LatexQuiz implements Template {
                 »
             «ENDFOR»
         \end{parts}
+        \nopointsinmargin\pointformat{[\thepoints]} % activate points again
         \addpoints
     '''
 

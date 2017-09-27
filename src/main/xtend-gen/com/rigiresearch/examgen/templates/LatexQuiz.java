@@ -436,6 +436,8 @@ public class LatexQuiz implements Template {
     _builder.newLineIfNotEmpty();
     _builder.append("\\noaddpoints % to omit double points count");
     _builder.newLine();
+    _builder.append("\\pointsinmargin\\pointformat{} % deactivate points for children");
+    _builder.newLine();
     _builder.append("\\begin{parts}");
     _builder.newLine();
     {
@@ -471,6 +473,8 @@ public class LatexQuiz implements Template {
       }
     }
     _builder.append("\\end{parts}");
+    _builder.newLine();
+    _builder.append("\\nopointsinmargin\\pointformat{[\\thepoints]} % activate points again");
     _builder.newLine();
     _builder.append("\\addpoints");
     _builder.newLine();
