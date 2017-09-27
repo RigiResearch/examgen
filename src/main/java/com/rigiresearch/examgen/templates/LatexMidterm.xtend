@@ -29,18 +29,17 @@ import com.rigiresearch.examgen.model.OpenEnded
 import com.rigiresearch.examgen.model.Question
 import com.rigiresearch.examgen.model.Section
 import com.rigiresearch.examgen.model.TextSegment
+import java.util.List
 
 import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE
-import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE_ID
 import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE_REFERENCE_NUMBER
 import static com.rigiresearch.examgen.model.Examination.Parameter.DATE
-import static com.rigiresearch.examgen.model.Examination.Parameter.INSTRUCTORS
 import static com.rigiresearch.examgen.model.Examination.Parameter.INSTRUCTIONS
+import static com.rigiresearch.examgen.model.Examination.Parameter.INSTRUCTORS
 import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 import static com.rigiresearch.examgen.model.Examination.Parameter.TERM
 import static com.rigiresearch.examgen.model.Examination.Parameter.TIME_LIMIT
 import static com.rigiresearch.examgen.model.Examination.Parameter.TITLE
-import java.util.List
 
 /**
  * A Latex template implementation.
@@ -68,7 +67,6 @@ class LatexMidterm implements Template {
         \newcommand{\institution}{University of Victoria}
         \newcommand{\course}{«e.parameters.get(COURSE)»}
         \newcommand{\coursenumber}{«e.parameters.get(COURSE_REFERENCE_NUMBER)»}
-        \newcommand{\courseid}{«e.parameters.get(COURSE_ID)»}
         \newcommand{\sections}{«section.name»}
         \newcommand{\term}{«e.parameters.get(TERM)»}
         \newcommand{\instructors}{«e.parameters.get(INSTRUCTORS)»}
@@ -80,7 +78,7 @@ class LatexMidterm implements Template {
         % page configuration
         \pagestyle{head}
         \firstpageheader{}{}{}
-        \runningheader{\scriptsize \coursenumber{}}{\scriptsize \examtitle\ - Page \thepage\ of \numpages}{\scriptsize \examdate}
+        \runningheader{\scriptsize \coursenumber{}}{\scriptsize \examtitle\ - Page \examversion{}-\thepage\ of \numpages}{\scriptsize \examdate}
         \runningheadrule
 
         \begin{document}
@@ -105,21 +103,19 @@ class LatexMidterm implements Template {
             \hline
             \textbf{First Name} & \\
             \hline
+            \textbf{Course Section} & \hspace{0.5cm} A01 \hspace{0.5cm} A02 \hspace{0.5cm} A03 \hspace{0.5cm} A04 \hspace{0.5cm} (circle your section) \\
+            \hline
             \textbf{UVic Student Number} & \textbf{V00} \\
             \hline
         \end{tabularx}
 
         % course information
-        \vspace{1cm}
+        \vspace{0.5cm}
         \noindent
         \renewcommand{\arraystretch}{1.2}
         \begin{tabularx}{\textwidth}{|l|X|}
             \hline
-            \textbf{Course Number \& Name} & \coursenumber{} (\examversion) - \course \\
-            \hline
-            \textbf{Sections} & \sections \\
-            \hline
-            \textbf{CRN} & \courseid \\
+            \textbf{Course} & \coursenumber{} - \course \\
             \hline
             \textbf{Instructors} & \instructors \\
             \hline
@@ -129,20 +125,22 @@ class LatexMidterm implements Template {
         \renewcommand{\arraystretch}{1}
 
         «IF e.parameters.get(INSTRUCTIONS) !== null»
+            \vspace{0.5cm}
             % exam instructions
-            \vspace{1cm}
+            \vspace{0.5cm}
             \noindent
             {\large\bfseries Instructions}
-            {\small
-                \begin{itemize}[noitemsep]
-                    «FOR i : e.parameters.get(INSTRUCTIONS) as List<TextSegment>»
-                        \item «i.render»
-                    «ENDFOR»
-                \end{itemize}
-            }
+            \begin{itemize}[noitemsep]
+                «FOR i : e.parameters.get(INSTRUCTIONS) as List<TextSegment>»
+                    \item «i.render»
+                «ENDFOR»
+            \end{itemize}
         «ENDIF»
-        \clearpage
-
+        % \clearpage
+        \vspace{0.5cm}
+        \noindent
+        {\large\bfseries Questions}
+        \vspace{0.5cm}
         \begin{questions}
         \bracketedpoints
         \marksnotpoints
@@ -194,7 +192,7 @@ class LatexMidterm implements Template {
             «text»
             \end{lstlisting}
             '''
-            case INLINE_CODE: '''\lstinline|«text.scapedInline»|'''
+            case INLINE_CODE: '''\lstinline!«text.scapedInline»!'''
             case ITALIC: '''\textit{«text.escaped»}'''
             case CUSTOM: text
             case INHERIT: text.escaped
