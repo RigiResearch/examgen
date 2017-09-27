@@ -23,7 +23,6 @@ hs_err_pid*
 
 # Local directories
 /target/
-xtend-gen/
 
 # Latex files
 *.synctex.gz
