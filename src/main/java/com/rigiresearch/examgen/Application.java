@@ -122,11 +122,12 @@ public final class Application implements Runnable {
                 return;
             } else if (!app.parameters.isEmpty()) {
                 System.err.printf("Unknown parameter(s) %s\n", app.parameters);
+                System.exit(1);
             }
         } catch (ParameterException e) {
             System.err.println(e.getMessage());
             new JCommander(new Application()).usage();
-            System.exit(1);
+            System.exit(2);
         }
         app.run();
     }
