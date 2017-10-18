@@ -103,7 +103,7 @@ class LatexMidterm implements Template {
             \hline
             \textbf{First Name} & \\
             \hline
-            \textbf{Course Section} & \hspace{0.5cm} A01 \hspace{0.5cm} A02 \hspace{0.5cm} A03 \hspace{0.5cm} A04 \hspace{0.5cm} (circle your section) \\
+            \textbf{Course Section} & \sections{} \\
             \hline
             \textbf{UVic Student Number} & \textbf{V00} \\
             \hline

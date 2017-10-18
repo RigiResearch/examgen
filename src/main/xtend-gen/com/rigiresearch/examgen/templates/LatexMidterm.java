@@ -197,7 +197,7 @@ public class LatexMidterm implements Template {
     _builder.append("\\hline");
     _builder.newLine();
     _builder.append("    ");
-    _builder.append("\\textbf{Course Section} & \\hspace{0.5cm} A01 \\hspace{0.5cm} A02 \\hspace{0.5cm} A03 \\hspace{0.5cm} A04 \\hspace{0.5cm} (circle your section) \\\\");
+    _builder.append("\\textbf{Course Section} & \\sections{} \\\\");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("\\hline");
