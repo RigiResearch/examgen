@@ -132,30 +132,30 @@ The following question exemplifies the use of text styles:
 
 ```yaml
 - type: closed-ended
-    statement: |
-      <bold>Read the code below</bold>. How many function names there are?
-      <code>#include <stdio.h>
-      #include <stdlib.h>
+  statement: |
+    <bold>Read the code below</bold>. How many function names there are?
+    <code>#include <stdio.h>
+    #include <stdlib.h>
 
-      int main(void) {
-        const double maxfahr = 100.0;
-        const double minfahr = 0.0;
-        double fahr = minfahr;
-        double cels;
-        while (fahr <= maxfahr) {
-          cels = (fahr - 32.0) * 5.0 / 9.0;
-          printf("%6.1f degs F = %6.1f degs C\n", fahr, cels);
-          fahr = fahr + 10;
-        } /*while*/
-        return EXIT_SUCCESS;
-      } /*main*/
-      </code>
-    points: 2
-    options:
-        - {correct: false, statement: <inline_code>null</inline_code>}
-        - {correct: false, statement: 1}
-        - {correct: true, statement: 2}
-        - {correct: false, statement: 3}
+    int main(void) {
+      const double maxfahr = 100.0;
+      const double minfahr = 0.0;
+      double fahr = minfahr;
+      double cels;
+      while (fahr <= maxfahr) {
+        cels = (fahr - 32.0) * 5.0 / 9.0;
+        printf("%6.1f degs F = %6.1f degs C\n", fahr, cels);
+        fahr = fahr + 10;
+      } /*while*/
+      return EXIT_SUCCESS;
+    } /*main*/
+    </code>
+  points: 2
+  options:
+      - {correct: false, statement: <inline_code>null</inline_code>}
+      - {correct: false, statement: 1}
+      - {correct: true, statement: 2}
+      - {correct: false, statement: 3}
 ```
 
 Notice that only sequential tags are currently supported, recursive tags will end up in a bad text formatting.
@@ -187,30 +187,30 @@ questions:
     length: 2cm
     points: 10
   - type: closed-ended
-      statement: |
-        <bold>Read the code below</bold>. How many function names there are?
-        <code>#include <stdio.h>
-        #include <stdlib.h>
+    statement: |
+      <bold>Read the code below</bold>. How many function names there are?
+      <code>#include <stdio.h>
+      #include <stdlib.h>
 
-        int main(void) {
-          const double maxfahr = 100.0;
-          const double minfahr = 0.0;
-          double fahr = minfahr;
-          double cels;
-          while (fahr <= maxfahr) {
-            cels = (fahr - 32.0) * 5.0 / 9.0;
-            printf("%6.1f degs F = %6.1f degs C\n", fahr, cels);
-            fahr = fahr + 10;
-          } /*while*/
-          return EXIT_SUCCESS;
-        } /*main*/
-        </code>
-      points: 2
-      options:
-          - {correct: false, statement: <inline_code>null</inline_code>}
-          - {correct: false, statement: 1}
-          - {correct: true, statement: 2}
-          - {correct: false, statement: 3}
+      int main(void) {
+        const double maxfahr = 100.0;
+        const double minfahr = 0.0;
+        double fahr = minfahr;
+        double cels;
+        while (fahr <= maxfahr) {
+          cels = (fahr - 32.0) * 5.0 / 9.0;
+          printf("%6.1f degs F = %6.1f degs C\n", fahr, cels);
+          fahr = fahr + 10;
+        } /*while*/
+        return EXIT_SUCCESS;
+      } /*main*/
+      </code>
+    points: 2
+    options:
+        - {correct: false, statement: <inline_code>null</inline_code>}
+        - {correct: false, statement: 1}
+        - {correct: true, statement: 2}
+        - {correct: false, statement: 3}
 ```
 
 #### Generate the examinations and solutions
@@ -246,16 +246,16 @@ Usage: <main class> [options]
 An example of usage would be:
 
 ```bash
-java -jar target/examgen.jar -o ./quiz -i exam.yaml -l 10 -s 1234
+java -jar target/examgen.jar -o ./output-directory -i exam.yaml -l 10 -s 1234
 ```
 
 Or, specifying the template:
 
 ```bash
-java -jar target/examgen.jar -o ./quiz -i exam.yaml -t LATEX_QUIZ -l 10 -s 1234
+java -jar target/examgen.jar -o ./output-directory -i exam.yaml -t LATEX_QUIZ -l 10 -s 1234
 ```
 
-The current implementation of the YAML parser is optimistic and will fail miserably if something is not right. A suggested troubleshooting procedure would be:
+The current implementation of the YAML parser is optimistic and will fail miserably if something is not right. A suggested **troubleshooting procedure** would be:
 1. Be sure that all special characters are escaped or placed within quotes
 2. Be sure that all expected attributes are specified
 3. Panic
