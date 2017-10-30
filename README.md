@@ -76,7 +76,7 @@ parameters:
     - name: C
 ```
 
-The list of questions contains questions of type open-close, closed-ended, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
+The list of questions contains questions of type open-close, closed-ended, true-false, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
 
 ```yaml
 - type: closed-ended
@@ -96,6 +96,13 @@ In the case of an open-ended question, the length represents the length of the a
   statement: What is the difference between a multi-line and a single-line comment?
   answer: A single line comment allows to comment out only one line of text, whereas the multiline comment encloses multiple lines of text.
   length: 2cm
+  points: 10
+```
+
+```yaml
+- type: true-false
+  statement: Dennis Ritchie created the C programming language.
+  answer: true
   points: 10
 ```
 
