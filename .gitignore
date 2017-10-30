@@ -28,5 +28,5 @@ hs_err_pid*
 *.synctex.gz
 *.aux
 *.pdf
-*.xtendbin
-*._trace
+.*.xtendbin
+.*._trace
