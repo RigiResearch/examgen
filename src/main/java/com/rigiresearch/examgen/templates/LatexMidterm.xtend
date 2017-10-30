@@ -40,6 +40,7 @@ import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
 import static com.rigiresearch.examgen.model.Examination.Parameter.TERM
 import static com.rigiresearch.examgen.model.Examination.Parameter.TIME_LIMIT
 import static com.rigiresearch.examgen.model.Examination.Parameter.TITLE
+import com.rigiresearch.examgen.model.TrueFalse
 
 /**
  * A Latex template implementation.
@@ -59,6 +60,9 @@ class LatexMidterm implements Template {
 
         % choices configuration
         «choices»
+
+        % True-False question format
+        «trueFalse»
 
         % listings configuration
         «listings»
@@ -154,6 +158,7 @@ class LatexMidterm implements Template {
         switch (question) {
             OpenEnded: question.render(false, printSolutions)
             ClosedEnded: question.render(false, printSolutions)
+            TrueFalse: question.render(false, printSolutions)
             CompoundQuestion: question.render(printSolutions)
         }
     }
@@ -254,6 +259,14 @@ class LatexMidterm implements Template {
     '''
 
     /**
+     * Renders a True-False question.
+     */
+    def render(TrueFalse question, boolean child, boolean printSolutions) '''
+        «IF !child»\question[«question.points»]«ENDIF»
+        \TFQuestion{«IF question.answer»T«ELSE»F«ENDIF»}{«question.statement.render»}
+    '''
+
+    /**
      * Renders a compound question.
      */
     def render(CompoundQuestion question, boolean printSolutions) '''
@@ -268,6 +281,7 @@ class LatexMidterm implements Template {
                     switch (child) {
                         OpenEnded: child.render(true, printSolutions)
                         ClosedEnded: child.render(true, printSolutions)
+                        TrueFalse: child.render(true, printSolutions)
                     }
                 »
             «ENDFOR»
@@ -332,6 +346,29 @@ class LatexMidterm implements Template {
         numberstyle=\scriptsize\ttfamily\color{numbers}
     }
     \lstset{style=code}
+    '''
+
+    def trueFalse() '''
+    \newcommand*{\TrueFalse}[1]{%
+    \ifprintanswers
+        \ifthenelse{\equal{#1}{T}}{%
+            \textbf{TRUE}\hspace*{14pt}False
+        }{
+            True\hspace*{14pt}\textbf{FALSE}
+        }
+    \else
+        {True}\hspace*{20pt}False
+    \fi
+    } 
+    %% The following code is based on an answer by Gonzalo Medina
+    %% https://tex.stackexchange.com/a/13106/39194
+    \newlength\TFlengthA
+    \newlength\TFlengthB
+    \settowidth\TFlengthA{\hspace*{1.16in}}
+    \newcommand\TFQuestion[2]{%
+        \setlength\TFlengthB{\linewidth}
+        \addtolength\TFlengthB{-\TFlengthA}
+        \parbox[t]{\TFlengthA}{\TrueFalse{#1}}\parbox[t]{\TFlengthB}{#2}}
     '''
 
     /**

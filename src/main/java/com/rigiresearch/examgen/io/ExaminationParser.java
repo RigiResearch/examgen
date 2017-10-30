@@ -31,6 +31,7 @@ import com.rigiresearch.examgen.model.Question;
 import com.rigiresearch.examgen.model.Section;
 import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.model.TextSegment.Style;
+import com.rigiresearch.examgen.model.TrueFalse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -136,13 +138,16 @@ public class ExaminationParser {
                 Question question = null;
                 switch ((String) map.get("type")) {
                     case "open-ended":
-                        question = ExaminationParser.this.openEnded(map);
+                        question = this.openEnded(map);
                         break;
                     case "closed-ended":
-                        question = closedEnded(map);
+                        question = this.closedEnded(map);
+                        break;
+                    case "true-false":
+                        question = this.trueFalse(map);
                         break;
                     case "compound":
-                        question = compound(map);
+                        question = this.compound(map);
                         break;
                     default:
                         throw new IllegalArgumentException(
@@ -195,6 +200,19 @@ public class ExaminationParser {
     }
 
     /**
+     * Parses a True-False question.
+     * @param data The question data
+     * @return a question
+     */
+    private Question trueFalse(Map<String, Object> data) {
+        return new TrueFalse(
+            this.textSegment(data.get("statement")),
+            (Boolean) data.get("answer"),
+            (Integer) data.get("points")
+        );
+    }
+
+    /**
      * Parses a compound question.
      * @param data The question data
      * @return a question
@@ -230,7 +248,17 @@ public class ExaminationParser {
     private List<TextSegment> _textSegments(String text) {
         List<TextSegment> segments = new ArrayList<>();
         Pattern pattern = Pattern.compile(
-            "(?<before>[.\\s\\S]*)<(?<style>[a-zA-Z_]+)>(?<text>[.\\s\\S]*)<\\/\\k<style>>(?<after>[.\\s\\S]*)",
+            String.format(
+                "%s%s%s%s%s",
+                "(?<before>[.\\s\\S]*)", // left
+                String.format(
+                    "<(?<style>(%s))>",
+                    ExaminationParser.supportedStylesClass()
+                ), // style - opening tag
+                "(?<text>[.\\s\\S]*)", // styled text
+                "<\\/\\k<style>>", // style - closing tag
+                "(?<after>[.\\s\\S]*)" // right
+            ),
             Pattern.MULTILINE
         );
         Matcher matcher = null;
@@ -252,5 +280,23 @@ public class ExaminationParser {
         if (segments.isEmpty())
             segments.add(new TextSegment.Simple(text));
         return segments;
+    }
+
+    /**
+     * Returns a list of supported styles separated by the pipe character.
+     * @return A string representation of the supported styles
+     */
+    private static String supportedStylesClass() {
+        final StringBuilder sb = new StringBuilder();
+        final Style[] supportedStyles = TextSegment.Style.values();
+        for (int i = 0; i < supportedStyles.length; i++) {
+            sb.append(
+                supportedStyles[i].toString()
+                    .toLowerCase(Locale.ROOT)
+            );
+            if (i < supportedStyles.length - 1)
+                sb.append("|");
+        }
+        return sb.toString();
     }
 }

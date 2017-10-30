@@ -29,6 +29,7 @@ import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.Question;
 import com.rigiresearch.examgen.model.Section;
 import com.rigiresearch.examgen.model.TextSegment;
+import com.rigiresearch.examgen.model.TrueFalse;
 import com.rigiresearch.examgen.templates.Template;
 import java.util.List;
 import javax.annotation.Generated;
@@ -72,6 +73,12 @@ public class LatexQuiz implements Template {
     _builder.newLine();
     CharSequence _choices = this.choices();
     _builder.append(_choices);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% True-False question format");
+    _builder.newLine();
+    CharSequence _trueFalse = this.trueFalse();
+    _builder.append(_trueFalse);
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("% listings configuration");
@@ -217,6 +224,12 @@ public class LatexQuiz implements Template {
       if (question instanceof ClosedEnded) {
         _matched=true;
         _switchResult = this.render(((ClosedEnded)question), false, printSolutions);
+      }
+    }
+    if (!_matched) {
+      if (question instanceof TrueFalse) {
+        _matched=true;
+        _switchResult = this.render(((TrueFalse)question), false, printSolutions);
       }
     }
     if (!_matched) {
@@ -422,6 +435,37 @@ public class LatexQuiz implements Template {
   }
   
   /**
+   * Renders a True-False question.
+   */
+  public CharSequence render(final TrueFalse question, final boolean child, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      if ((!child)) {
+        _builder.append("\\question[");
+        int _points = question.points();
+        _builder.append(_points);
+        _builder.append("]");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\TFQuestion{");
+    {
+      boolean _answer = question.answer();
+      if (_answer) {
+        _builder.append("T");
+      } else {
+        _builder.append("F");
+      }
+    }
+    _builder.append("}{");
+    CharSequence _render = this.render(question.statement());
+    _builder.append(_render);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  /**
    * Renders a compound question.
    */
   public CharSequence render(final CompoundQuestion question, final boolean printSolutions) {
@@ -466,6 +510,12 @@ public class LatexQuiz implements Template {
           if (child instanceof ClosedEnded) {
             _matched=true;
             _switchResult = this.render(((ClosedEnded)child), true, printSolutions);
+          }
+        }
+        if (!_matched) {
+          if (child instanceof TrueFalse) {
+            _matched=true;
+            _switchResult = this.render(((TrueFalse)child), true, printSolutions);
           }
         }
         _builder.append(_switchResult, "    ");
@@ -605,6 +655,60 @@ public class LatexQuiz implements Template {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\\lstset{style=code}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence trueFalse() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\newcommand*{\\TrueFalse}[1]{%");
+    _builder.newLine();
+    _builder.append("\\ifprintanswers");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\ifthenelse{\\equal{#1}{T}}{%");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\textbf{TRUE}\\hspace*{14pt}False");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}{");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("True\\hspace*{14pt}\\textbf{FALSE}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\\else");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{True}\\hspace*{20pt}False");
+    _builder.newLine();
+    _builder.append("\\fi");
+    _builder.newLine();
+    _builder.append("} ");
+    _builder.newLine();
+    _builder.append("%% The following code is based on an answer by Gonzalo Medina");
+    _builder.newLine();
+    _builder.append("%% https://tex.stackexchange.com/a/13106/39194");
+    _builder.newLine();
+    _builder.append("\\newlength\\TFlengthA");
+    _builder.newLine();
+    _builder.append("\\newlength\\TFlengthB");
+    _builder.newLine();
+    _builder.append("\\settowidth\\TFlengthA{\\hspace*{1.16in}}");
+    _builder.newLine();
+    _builder.append("\\newcommand\\TFQuestion[2]{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength\\TFlengthB{\\linewidth}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\addtolength\\TFlengthB{-\\TFlengthA}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\parbox[t]{\\TFlengthA}{\\TrueFalse{#1}}\\parbox[t]{\\TFlengthB}{#2}}");
     _builder.newLine();
     return _builder;
   }
