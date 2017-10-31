@@ -1,3 +1,7 @@
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/YTgqkzC8gPbnecNXzgofDQFC/jachinte/examgen'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/YTgqkzC8gPbnecNXzgofDQFC/jachinte/examgen.svg' />
+</a>
+
 # Exam generator
 
 This project generates examinations along with their solutions from a [YAML](http://www.yaml.org/) input file. The resulting files are rendered according to a specific template; so far, only Latex is supported.
