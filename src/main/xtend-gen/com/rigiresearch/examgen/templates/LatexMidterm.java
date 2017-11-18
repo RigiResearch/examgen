@@ -667,6 +667,8 @@ public class LatexMidterm implements Template {
     _builder.newLine();
     _builder.append("\\usepackage{listings}");
     _builder.newLine();
+    _builder.append("\\usepackage{upquote}");
+    _builder.newLine();
     _builder.append("% horizontal list of options");
     _builder.newLine();
     _builder.append("\\usepackage{environ}");

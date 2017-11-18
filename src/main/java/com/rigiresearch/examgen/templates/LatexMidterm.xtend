@@ -306,6 +306,7 @@ class LatexMidterm implements Template {
     \usepackage{color}
     \usepackage[scaled=0.85]{sourcecodepro}
     \usepackage{listings}
+    \usepackage{upquote}
     % horizontal list of options
     \usepackage{environ}
     \usepackage[normalem]{ulem}
