@@ -34,7 +34,7 @@ Every exam has a set of parameters and a set of questions. Currently, there are 
 
 ```yaml
 parameters:
-  - COURSE: Fundaments of Programming with Engineering Applications
+  - COURSE: Fundamentals of Programming with Engineering Applications
   - COURSE_REFERENCE_NUMBER: CSC 111
   - TERM: Fall 2017
   - TIME_LIMIT: 20 Minutes
