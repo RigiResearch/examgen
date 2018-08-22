@@ -55,8 +55,8 @@ public final class WritableExamination {
     @Getter
     public enum Target {
         LATEX_QUIZ(LatexQuiz.class),
-        LATEX_MIDTERM(LatexMidterm.class);
-
+        LATEX_MIDTERM(LatexMidterm.class),
+        MOODLE_QUIZ(MoodleXMLQuiz.class);
         /**
          * The templates implementation.
          */
@@ -89,10 +89,22 @@ public final class WritableExamination {
         directory.mkdir();
         examination.mkdir();
         solutions.mkdir();
-        final String name = String.format(
-            "%s.tex",
-            this.origin.parameters().get(Parameter.SECTIONS)
-        );
+        final String name;
+        switch(this.target) {
+            case MOODLE_QUIZ: 
+                name = String.format(
+                    "%s.xml",
+                    this.origin.parameters().get(Parameter.SECTIONS)
+                );
+                break;
+            default:  
+                name = String.format(
+                    "%s.tex",
+                    this.origin.parameters().get(Parameter.SECTIONS)
+                );
+                break;
+        }
+
         try {
             Files.write(
                 Paths.get(new File(examination, name).getAbsolutePath()),

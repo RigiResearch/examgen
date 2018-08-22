@@ -38,21 +38,21 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 /**
- * A Latex template implementation.
- * @author Miguel Jimenez (miguel@uvic.ca)
- * @date 2017-09-14
+ * A Moodle XML Quiz template implementation.
+ * @author Prashanti Angara (pangara@uvic.ca)
+ * @date 2018-08-21
  * @version $Id$
  * @since 0.0.1
  */
 @SuppressWarnings("all")
-public class LatexMidterm implements Template {
+public class MoodleXMLQuiz implements Template {
   @Override
   public CharSequence render(final Examination e, final boolean printSolutions) {
     StringConcatenation _builder = new StringConcatenation();
     Object _get = e.parameters().get(Examination.Parameter.SECTIONS);
     final Section section = ((Section) _get);
     _builder.newLineIfNotEmpty();
-    _builder.append("\\documentclass[10pt,addpoints");
+    _builder.append("\\documentclass[9pt,addpoints");
     {
       if (printSolutions) {
         _builder.append(",answers");
@@ -89,6 +89,11 @@ public class LatexMidterm implements Template {
     _builder.newLine();
     _builder.append("\\newcommand{\\institution}{University of Victoria}");
     _builder.newLine();
+    _builder.append("\\newcommand{\\students}{");
+    int _students = section.students();
+    _builder.append(_students);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
     _builder.append("\\newcommand{\\course}{");
     Object _get_1 = e.parameters().get(Examination.Parameter.COURSE);
     _builder.append(_get_1);
@@ -104,34 +109,24 @@ public class LatexMidterm implements Template {
     _builder.append(_name);
     _builder.append("}");
     _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\TA}{");
+    String _TA = section.TA();
+    _builder.append(_TA);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
     _builder.append("\\newcommand{\\term}{");
     Object _get_3 = e.parameters().get(Examination.Parameter.TERM);
     _builder.append(_get_3);
     _builder.append("}");
     _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\instructors}{");
-    Object _get_4 = e.parameters().get(Examination.Parameter.INSTRUCTORS);
+    _builder.append("\\newcommand{\\timelimit}{");
+    Object _get_4 = e.parameters().get(Examination.Parameter.TIME_LIMIT);
     _builder.append(_get_4);
     _builder.append("}");
     _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\timelimit}{");
-    Object _get_5 = e.parameters().get(Examination.Parameter.TIME_LIMIT);
-    _builder.append(_get_5);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
     _builder.append("\\newcommand{\\examtitle}{");
-    Object _get_6 = e.parameters().get(Examination.Parameter.TITLE);
-    _builder.append(_get_6);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\examdate}{");
-    Object _get_7 = e.parameters().get(Examination.Parameter.DATE);
-    _builder.append(_get_7);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\examversion}{");
-    String _name_1 = section.name();
-    _builder.append(_name_1);
+    Object _get_5 = e.parameters().get(Examination.Parameter.TITLE);
+    _builder.append(_get_5);
     _builder.append("}");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -141,74 +136,37 @@ public class LatexMidterm implements Template {
     _builder.newLine();
     _builder.append("\\firstpageheader{}{}{}");
     _builder.newLine();
-    _builder.append("\\runningheader{\\scriptsize \\coursenumber{}}{\\scriptsize \\examtitle\\ - Page \\examversion{}-\\thepage\\ of \\numpages}{\\scriptsize \\examdate}");
+    _builder.append("\\runningheader{\\footnotesize \\coursenumber}{\\footnotesize \\examtitle\\ - Page \\thepage\\ of \\numpages}{\\footnotesize \\term}");
     _builder.newLine();
     _builder.append("\\runningheadrule");
     _builder.newLine();
     _builder.newLine();
     _builder.append("\\begin{document}");
     _builder.newLine();
-    _builder.append("% title");
+    _builder.append("% header");
     _builder.newLine();
-    _builder.append("\\begin{center}");
+    _builder.append("\\noindent");
     _builder.newLine();
-    _builder.append("    ");
-    _builder.append("{\\LARGE\\bfseries");
+    _builder.append("\\section*{\\examtitle}");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("\\term\\\\");
+    _builder.append("\\textbf{\\course{}  -- \\term{}} \\\\");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("\\examtitle\\\\");
+    _builder.append("{\\footnotesize \\coursenumber{} Section \\sections. TA: \\TA{}. \\textbf{\\# of copies: \\students}} \\\\");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("\\institution\\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\vspace{0.2cm}");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("{\\large \\examdate}");
-    _builder.newLine();
-    _builder.append("\\end{center}");
+    _builder.append("{\\footnotesize \\textbf{Instructions:} Circle the appropriate letter in multiple choice questions. Time limit: \\timelimit{}} \\\\");
     _builder.newLine();
     _builder.newLine();
     _builder.append("% student information");
     _builder.newLine();
-    _builder.append("\\vspace{0.5cm}");
-    _builder.newLine();
     _builder.append("\\noindent");
     _builder.newLine();
-    _builder.append("\\renewcommand{\\arraystretch}{3}");
-    _builder.newLine();
-    _builder.append("\\begin{tabularx}{\\textwidth}{|l|X|}");
+    _builder.append("\\begin{tabularx}{\\textwidth}{|X|X|X|X|}");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("\\hline");
     _builder.newLine();
     _builder.append("    ");
-    _builder.append("\\textbf{Last Name} & \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{First Name} & \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{Course Section} & \\sections{} \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{UVic Student Number} & \\textbf{V00} \\\\");
+    _builder.append("\\small{Student name} & \\small{} & \\small{Student ID} & \\small\\bfseries{V00} \\\\");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("\\hline");
@@ -216,79 +174,14 @@ public class LatexMidterm implements Template {
     _builder.append("\\end{tabularx}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("% course information");
+    _builder.append("\\noindent \\\\");
     _builder.newLine();
-    _builder.append("\\vspace{0.5cm}");
-    _builder.newLine();
-    _builder.append("\\noindent");
-    _builder.newLine();
-    _builder.append("\\renewcommand{\\arraystretch}{1.2}");
-    _builder.newLine();
-    _builder.append("\\begin{tabularx}{\\textwidth}{|l|X|}");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{Course} & \\coursenumber{} - \\course \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{Instructors} & \\instructors \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\textbf{Duration} & \\timelimit \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("\\end{tabularx}");
-    _builder.newLine();
-    _builder.append("\\renewcommand{\\arraystretch}{1}");
+    _builder.append("\\rule[2ex]{\\textwidth}{2pt}");
     _builder.newLine();
     _builder.newLine();
-    {
-      Object _get_8 = e.parameters().get(Examination.Parameter.INSTRUCTIONS);
-      boolean _tripleNotEquals = (_get_8 != null);
-      if (_tripleNotEquals) {
-        _builder.append("\\vspace{0.5cm}");
-        _builder.newLine();
-        _builder.append("% exam instructions");
-        _builder.newLine();
-        _builder.append("\\vspace{0.5cm}");
-        _builder.newLine();
-        _builder.append("\\noindent");
-        _builder.newLine();
-        _builder.append("{\\large\\bfseries Instructions}");
-        _builder.newLine();
-        _builder.append("\\begin{itemize}[noitemsep]");
-        _builder.newLine();
-        {
-          Object _get_9 = e.parameters().get(Examination.Parameter.INSTRUCTIONS);
-          for(final TextSegment i : ((List<TextSegment>) _get_9)) {
-            _builder.append("    ");
-            _builder.append("\\item ");
-            CharSequence _render = this.render(i);
-            _builder.append(_render, "    ");
-            _builder.newLineIfNotEmpty();
-          }
-        }
-        _builder.append("\\end{itemize}");
-        _builder.newLine();
-      }
-    }
-    _builder.append("\\clearpage");
+    _builder.append("\\centering");
     _builder.newLine();
-    _builder.append("\\noindent");
-    _builder.newLine();
-    _builder.append("{\\large\\bfseries Questions}");
-    _builder.newLine();
-    _builder.append("\\vspace{0.5cm}");
+    _builder.append("\\vspace{0.2cm}");
     _builder.newLine();
     _builder.append("\\begin{questions}");
     _builder.newLine();
@@ -305,8 +198,8 @@ public class LatexMidterm implements Template {
         } else {
           _builder.appendImmediate("\n", "");
         }
-        CharSequence _render_1 = this.render(q, printSolutions);
-        _builder.append(_render_1);
+        CharSequence _render = this.render(q, printSolutions);
+        _builder.append(_render);
         _builder.newLineIfNotEmpty();
       }
     }
@@ -414,10 +307,10 @@ public class LatexMidterm implements Template {
           break;
         case INLINE_CODE:
           StringConcatenation _builder_2 = new StringConcatenation();
-          _builder_2.append("\\lstinline!");
+          _builder_2.append("\\lstinline|");
           String _scapedInline = this.scapedInline(text);
           _builder_2.append(_scapedInline);
-          _builder_2.append("!");
+          _builder_2.append("|");
           _switchResult = _builder_2;
           break;
         case ITALIC:
@@ -645,7 +538,7 @@ public class LatexMidterm implements Template {
     _builder.newLine();
     _builder.append("\\usepackage[utf8]{inputenc}");
     _builder.newLine();
-    _builder.append("\\usepackage[margin=1in]{geometry}");
+    _builder.append("\\usepackage[margin=0.5in]{geometry}");
     _builder.newLine();
     _builder.append("% math");
     _builder.newLine();
