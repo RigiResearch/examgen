@@ -49,75 +49,25 @@ class MoodleXMLQuiz implements Template {
 
     override render(Examination e, boolean printSolutions) '''
         «val section = e.parameters.get(SECTIONS) as Section»
-        \documentclass[9pt,addpoints«IF printSolutions»,answers«ENDIF»]{exam}
-        
-        % packages configuration
-        «packages»
-
-        % choices configuration
-        «choices»
-
-        % True-False question format
-        «trueFalse»
-
-        % listings configuration
-        «listings»
-        
-        % parameters
-        \newcommand{\institution}{University of Victoria}
-        \newcommand{\students}{«section.students»}
-        \newcommand{\course}{«e.parameters.get(COURSE)»}
-        \newcommand{\coursenumber}{«e.parameters.get(COURSE_REFERENCE_NUMBER)»}
-        \newcommand{\sections}{«section.name»}
-        \newcommand{\TA}{«section.TA»}
-        \newcommand{\term}{«e.parameters.get(TERM)»}
-        \newcommand{\timelimit}{«e.parameters.get(TIME_LIMIT)»}
-        \newcommand{\examtitle}{«e.parameters.get(TITLE)»}
-        
-        % page configuration
-        \pagestyle{head}
-        \firstpageheader{}{}{}
-        \runningheader{\footnotesize \coursenumber}{\footnotesize \examtitle\ - Page \thepage\ of \numpages}{\footnotesize \term}
-        \runningheadrule
-        
-        \begin{document}
-        % header
-        \noindent
-        \section*{\examtitle}
-        \textbf{\course{}  -- \term{}} \\
-        {\footnotesize \coursenumber{} Section \sections. TA: \TA{}. \textbf{\# of copies: \students}} \\
-        {\footnotesize \textbf{Instructions:} Circle the appropriate letter in multiple choice questions. Time limit: \timelimit{}} \\
-        
-        % student information
-        \noindent
-        \begin{tabularx}{\textwidth}{|X|X|X|X|}
-            \hline
-            \small{Student name} & \small{} & \small{Student ID} & \small\bfseries{V00} \\
-            \hline
-        \end{tabularx}
-        
-        \noindent \\
-        \rule[2ex]{\textwidth}{2pt}
-        
-        \centering
-«««        {\footnotesize This exam is worth a total of \numpoints{} marks and contains \numquestions{} questions on \numpages{} pages.}
-        \vspace{0.2cm}
+        <?xml version="1.0" encoding="UTF-8"?>
+        <quiz>
         \begin{questions}
-        \bracketedpoints
-        \marksnotpoints
-        «FOR q : e.questions SEPARATOR "\n"»
-        «q.render(printSolutions)»
-        «ENDFOR»
+                \bracketedpoints
+                \marksnotpoints
+                «FOR q : e.questions SEPARATOR "\n"»
+                «q.render(printSolutions)»
+                «ENDFOR»
         \end{questions}
-        \end{document}
+        </quiz>
+        
     '''
 
     override render(Question question, boolean printSolutions) {
         switch (question) {
-            OpenEnded: question.render(false, printSolutions)
-            ClosedEnded: question.render(false, printSolutions)
-            TrueFalse: question.render(false, printSolutions)
-            CompoundQuestion: question.render(printSolutions)
+//            OpenEnded: question.render(false, printSolutions)
+              ClosedEnded: question.render(false, printSolutions)
+//            TrueFalse: question.render(false, printSolutions)
+//            CompoundQuestion: question.render(printSolutions)
         }
     }
 
@@ -209,11 +159,10 @@ class MoodleXMLQuiz implements Template {
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
         «IF !child»\question[«question.points»]«ENDIF»
         «question.statement.render»
-        \begin{items}
-            «FOR option : question.options»
-                «IF option.answer»\item*«ELSE»\item«ENDIF» «option.statement.render»
-            «ENDFOR»
-        \end{items}
+        «FOR option : question.options»
+            «IF option.answer»\item*«ELSE»\item«ENDIF» «option.statement.render»
+        «ENDFOR»
+    
     '''
 
     /**

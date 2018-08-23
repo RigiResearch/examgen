@@ -52,141 +52,16 @@ public class MoodleXMLQuiz implements Template {
     Object _get = e.parameters().get(Examination.Parameter.SECTIONS);
     final Section section = ((Section) _get);
     _builder.newLineIfNotEmpty();
-    _builder.append("\\documentclass[9pt,addpoints");
-    {
-      if (printSolutions) {
-        _builder.append(",answers");
-      }
-    }
-    _builder.append("]{exam}");
-    _builder.newLineIfNotEmpty();
+    _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     _builder.newLine();
-    _builder.append("% packages configuration");
-    _builder.newLine();
-    CharSequence _packages = this.packages();
-    _builder.append(_packages);
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("% choices configuration");
-    _builder.newLine();
-    CharSequence _choices = this.choices();
-    _builder.append(_choices);
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("% True-False question format");
-    _builder.newLine();
-    CharSequence _trueFalse = this.trueFalse();
-    _builder.append(_trueFalse);
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("% listings configuration");
-    _builder.newLine();
-    CharSequence _listings = this.listings();
-    _builder.append(_listings);
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("% parameters");
-    _builder.newLine();
-    _builder.append("\\newcommand{\\institution}{University of Victoria}");
-    _builder.newLine();
-    _builder.append("\\newcommand{\\students}{");
-    int _students = section.students();
-    _builder.append(_students);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\course}{");
-    Object _get_1 = e.parameters().get(Examination.Parameter.COURSE);
-    _builder.append(_get_1);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\coursenumber}{");
-    Object _get_2 = e.parameters().get(Examination.Parameter.COURSE_REFERENCE_NUMBER);
-    _builder.append(_get_2);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\sections}{");
-    String _name = section.name();
-    _builder.append(_name);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\TA}{");
-    String _TA = section.TA();
-    _builder.append(_TA);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\term}{");
-    Object _get_3 = e.parameters().get(Examination.Parameter.TERM);
-    _builder.append(_get_3);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\timelimit}{");
-    Object _get_4 = e.parameters().get(Examination.Parameter.TIME_LIMIT);
-    _builder.append(_get_4);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\newcommand{\\examtitle}{");
-    Object _get_5 = e.parameters().get(Examination.Parameter.TITLE);
-    _builder.append(_get_5);
-    _builder.append("}");
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("% page configuration");
-    _builder.newLine();
-    _builder.append("\\pagestyle{head}");
-    _builder.newLine();
-    _builder.append("\\firstpageheader{}{}{}");
-    _builder.newLine();
-    _builder.append("\\runningheader{\\footnotesize \\coursenumber}{\\footnotesize \\examtitle\\ - Page \\thepage\\ of \\numpages}{\\footnotesize \\term}");
-    _builder.newLine();
-    _builder.append("\\runningheadrule");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\\begin{document}");
-    _builder.newLine();
-    _builder.append("% header");
-    _builder.newLine();
-    _builder.append("\\noindent");
-    _builder.newLine();
-    _builder.append("\\section*{\\examtitle}");
-    _builder.newLine();
-    _builder.append("\\textbf{\\course{}  -- \\term{}} \\\\");
-    _builder.newLine();
-    _builder.append("{\\footnotesize \\coursenumber{} Section \\sections. TA: \\TA{}. \\textbf{\\# of copies: \\students}} \\\\");
-    _builder.newLine();
-    _builder.append("{\\footnotesize \\textbf{Instructions:} Circle the appropriate letter in multiple choice questions. Time limit: \\timelimit{}} \\\\");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("% student information");
-    _builder.newLine();
-    _builder.append("\\noindent");
-    _builder.newLine();
-    _builder.append("\\begin{tabularx}{\\textwidth}{|X|X|X|X|}");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\small{Student name} & \\small{} & \\small{Student ID} & \\small\\bfseries{V00} \\\\");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("\\hline");
-    _builder.newLine();
-    _builder.append("\\end{tabularx}");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\\noindent \\\\");
-    _builder.newLine();
-    _builder.append("\\rule[2ex]{\\textwidth}{2pt}");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\\centering");
-    _builder.newLine();
-    _builder.append("\\vspace{0.2cm}");
+    _builder.append("<quiz>");
     _builder.newLine();
     _builder.append("\\begin{questions}");
     _builder.newLine();
+    _builder.append("        ");
     _builder.append("\\bracketedpoints");
     _builder.newLine();
+    _builder.append("        ");
     _builder.append("\\marksnotpoints");
     _builder.newLine();
     {
@@ -196,16 +71,18 @@ public class MoodleXMLQuiz implements Template {
         if (!_hasElements) {
           _hasElements = true;
         } else {
-          _builder.appendImmediate("\n", "");
+          _builder.appendImmediate("\n", "        ");
         }
+        _builder.append("        ");
         CharSequence _render = this.render(q, printSolutions);
-        _builder.append(_render);
+        _builder.append(_render, "        ");
         _builder.newLineIfNotEmpty();
       }
     }
     _builder.append("\\end{questions}");
     _builder.newLine();
-    _builder.append("\\end{document}");
+    _builder.append("</quiz>");
+    _builder.newLine();
     _builder.newLine();
     return _builder;
   }
@@ -214,27 +91,9 @@ public class MoodleXMLQuiz implements Template {
   public CharSequence render(final Question question, final boolean printSolutions) {
     CharSequence _switchResult = null;
     boolean _matched = false;
-    if (question instanceof OpenEnded) {
+    if (question instanceof ClosedEnded) {
       _matched=true;
-      _switchResult = this.render(((OpenEnded)question), false, printSolutions);
-    }
-    if (!_matched) {
-      if (question instanceof ClosedEnded) {
-        _matched=true;
-        _switchResult = this.render(((ClosedEnded)question), false, printSolutions);
-      }
-    }
-    if (!_matched) {
-      if (question instanceof TrueFalse) {
-        _matched=true;
-        _switchResult = this.render(((TrueFalse)question), false, printSolutions);
-      }
-    }
-    if (!_matched) {
-      if (question instanceof CompoundQuestion) {
-        _matched=true;
-        _switchResult = this.render(((CompoundQuestion)question), printSolutions);
-      }
+      _switchResult = this.render(((ClosedEnded)question), false, printSolutions);
     }
     return _switchResult;
   }
@@ -407,12 +266,9 @@ public class MoodleXMLQuiz implements Template {
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
     _builder.newLineIfNotEmpty();
-    _builder.append("\\begin{items}");
-    _builder.newLine();
     {
       List<ClosedEnded.Option> _options = question.options();
       for(final ClosedEnded.Option option : _options) {
-        _builder.append("    ");
         {
           boolean _answer = option.answer();
           if (_answer) {
@@ -423,11 +279,11 @@ public class MoodleXMLQuiz implements Template {
         }
         _builder.append(" ");
         CharSequence _render_1 = this.render(option.statement());
-        _builder.append(_render_1, "    ");
+        _builder.append(_render_1);
         _builder.newLineIfNotEmpty();
       }
     }
-    _builder.append("\\end{items}");
+    _builder.append("    ");
     _builder.newLine();
     return _builder;
   }
