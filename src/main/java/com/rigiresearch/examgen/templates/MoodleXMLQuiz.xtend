@@ -51,23 +51,24 @@ class MoodleXMLQuiz implements Template {
         «val section = e.parameters.get(SECTIONS) as Section»
         <?xml version="1.0" encoding="UTF-8"?>
         <quiz>
-        \begin{questions}
-                \bracketedpoints
-                \marksnotpoints
-                «FOR q : e.questions SEPARATOR "\n"»
-                «q.render(printSolutions)»
-                «ENDFOR»
-        \end{questions}
+        <question type="category">
+          <category>
+            <text>$course$/«e.parameters.get(TITLE)»/«section»</text>       
+          </category>
+        </question>
+        «FOR q : e.questions SEPARATOR "\n"»
+          «q.render(false)»
+        «ENDFOR»
         </quiz>
         
     '''
 
     override render(Question question, boolean printSolutions) {
         switch (question) {
-//            OpenEnded: question.render(false, printSolutions)
-              ClosedEnded: question.render(false, printSolutions)
-//            TrueFalse: question.render(false, printSolutions)
-//            CompoundQuestion: question.render(printSolutions)
+            OpenEnded: question.render(false, false)
+            ClosedEnded: question.render(false, false)
+            TrueFalse: question.render(false, false)
+            CompoundQuestion: question.render(false)
         }
     }
 
@@ -87,7 +88,7 @@ class MoodleXMLQuiz implements Template {
             result = result.styled(style)
         }
         return if (segment.styles.contains(TextSegment.Style.NEW_LINE))
-            "\n" + result
+            "<br/>" + result
         else
             result
     }
@@ -97,18 +98,17 @@ class MoodleXMLQuiz implements Template {
      */
     def styled(CharSequence text, TextSegment.Style style) {
         switch (style) {
-            case BOLD: '''\textbf{«text.escaped»}'''
+            case BOLD: '''<strong>«text.escaped»</strong>'''
             case CODE: '''
-            \vspace{0.3cm}
-            \begin{lstlisting}
-            «text»
-            \end{lstlisting}
+            <code>
+            «text.escaped»
+            </code>
             '''
-            case INLINE_CODE: '''\lstinline|«text.scapedInline»|'''
-            case ITALIC: '''\textit{«text.escaped»}'''
+            case INLINE_CODE: '''<code>«text.escaped»</code>'''
+            case ITALIC: '''<i>«text.escaped»</i>'''
             case CUSTOM: text
             case INHERIT: text.escaped
-            case NEW_LINE: '''\n«text.escaped»'''
+            case NEW_LINE: '''<br/>«text.escaped»'''
         }
     }
 
@@ -117,52 +117,70 @@ class MoodleXMLQuiz implements Template {
      */
     def escaped(CharSequence text) {
         text.toString
-            .replace("\\", "\\textbackslash")
-            .replace("~", "\\textasciitilde")
-            .replace("^", "\\textasciicircum")
-            .replace("#", "\\#")
-            .replace("&", "\\&")
-            .replace("%", "\\%")
-            .replace("{", "\\{")
-            .replace("}", "\\}")
-            .replace("$", "\\$")
-            .replace("_", "\\_")
-    }
-
-    def scapedInline(CharSequence text) {
-        text.toString
-            .replace("\\", "\\\\")
-            .replace("&", "\\&")
-            .replace("%", "\\%")
-            .replace("{", "\\{")
-            .replace("}", "\\}")
+            .replace("\'", "&apos;")
+            .replace("&", "&amp;")
+            .replace (">", "&gt;")
+            .replace("<","&lt;")
     }
 
     /**
      * Renders an open-ended question.
      */
     def render(OpenEnded question, boolean child, boolean printSolutions) '''
-        «IF !child»\question[«question.points»]«ENDIF»
-        «question.statement.render»
-        «IF printSolutions»
-            \begin{solution}
-                «question.answer.render»
-            \end{solution}
-        «ELSE»
-            \makeemptybox{«question.expectedLength»}
-        «ENDIF»
+		<question type="shortanswer">
+		<name>
+		  <text>shortanswer</text>
+		</name>
+		<questiontext format="html">
+		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		</questiontext>
+		«feedback»
+		<defaultgrade>«question.points»</defaultgrade>
+		<answer fraction="100" format="html">
+		  <text><![CDATA[<p><pre>«question.answer.render»</pre><br></p>]]></text>
+		</answer>
+		</question>
     '''
 
+     
+    def isMultiChoice(ClosedEnded question) {
+    	var multichoice = 0
+    	for (option : question.options){
+    		if (option.answer){
+    			multichoice+=1;
+    		}
+    		if (multichoice > 1){
+    			return true
+    		}
+    	}
+    	return false
+    }
+    	
     /**
      * Renders a closed-ended question.
      */
+
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
-        «IF !child»\question[«question.points»]«ENDIF»
-        «question.statement.render»
-        «FOR option : question.options»
-            «IF option.answer»\item*«ELSE»\item«ENDIF» «option.statement.render»
-        «ENDFOR»
-    
+			<question type="multichoice">
+			<name>
+			<text>closed-ended</text>
+			</name>
+			<questiontext format="html">
+			<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+			</questiontext>
+			«feedback»
+			<defaultgrade>«question.points»</defaultgrade>
+			<answernumbering>abc</answernumbering>
+			<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
+			«FOR option : question.options»
+			<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
+			  <text><![CDATA[<p><pre>«option.statement.render»</pre><br></p>]]></text>
+			  <feedback format="html">
+			    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
+			  </feedback>
+			</answer>
+			«ENDFOR»
+			</question>
     '''
 
     /**
@@ -197,64 +215,22 @@ class MoodleXMLQuiz implements Template {
         \addpoints
     '''
 
-    /**
-     * Renders the packages to configure the Latex document.
-     */
-    def packages() '''
-    % general
-    \usepackage[utf8]{inputenc}
-    \usepackage[margin=0.5in]{geometry}
-    % math
-    \usepackage{amsmath, amssymb}
-    % tables
-    \usepackage{tabularx}
-    \usepackage{multicol}
-    % listings
-    \usepackage{color}
-    \usepackage[scaled=0.85]{sourcecodepro}
-    \usepackage{listings}
-    \usepackage{upquote}
-    % horizontal list of options
-    \usepackage{environ}
-    \usepackage[normalem]{ulem}
-    \usepackage{etoolbox}
-    \usepackage[export]{adjustbox}
-    \usepackage{enumitem}
-    '''
 
-    /**
-     * Configures the Latex listings.
-     */
-    def listings() '''
-    \definecolor{keywords}{RGB}{127,0,85}
-    \definecolor{comments}{RGB}{63,127,95}
-    \definecolor{strings}{RGB}{42,0,255}
-    \definecolor{frame}{RGB}{150,150,150}
-    \definecolor{numbers}{RGB}{100,100,100}
-    \lstdefinestyle{code}{
-        language=C,
-        tabsize=4,
-        captionpos=b,
-        showspaces=false,
-        showtabs=false,
-        breaklines=true,
-        showstringspaces=false,
-        breakatwhitespace=true,
-        escapeinside={(*@}{@*)},
-        commentstyle=\color{comments},
-        keywordstyle=\bfseries\color{keywords},
-        stringstyle=\color{strings},
-        basicstyle=\small\ttfamily,
-        frame=lines,
-        rulecolor=\color{frame},
-        xleftmargin=2em,
-        framexleftmargin=1.5em,
-        numbers=left,
-        numbersep=10pt,
-        numberstyle=\scriptsize\ttfamily\color{numbers}
-    }
-    \lstset{style=code}
-    '''
+	/**
+	 * Default feedback for a question.
+	 */
+	def feedback() '''
+	<correctfeedback format="html">
+	  <text>Your answer is correct.</text>
+	</correctfeedback>
+	<partiallycorrectfeedback format="html">
+	  <text>Your answer is partially correct.</text>
+	</partiallycorrectfeedback>
+	<incorrectfeedback format="html">
+	  <text>Your answer is incorrect.</text>
+	</incorrectfeedback>
+	'''
+
 
     def trueFalse() '''
     \newcommand*{\TrueFalse}[1]{%
@@ -278,100 +254,4 @@ class MoodleXMLQuiz implements Template {
         \addtolength\TFlengthB{-\TFlengthA}
         \parbox[t]{\TFlengthA}{\TrueFalse{#1}}\parbox[t]{\TFlengthB}{#2}}
     '''
-
-    /**
-     * Configuration to display choices horizontally.
-     */
-    def choices() '''
-    \renewcommand{\questionshook}{%
-        \setlength{\itemsep}{0.5\baselineskip}
-        \setlength{\topsep}{0pt}
-        \setlength\partopsep{0pt} 
-        \setlength\parsep{5pt}
-    }
-    
-    \makeatletter
-    \newlength\choiceitemwidth
-    \newif\ifshowsolution \showsolutiontrue
-    \newcounter{choiceitem}%
-    
-    \def\thechoiceitem{\Alph{choiceitem}}%
-    \setlength{\fboxsep}{0pt}
-    \def\makechoicelabel#1{#1\uline{\bfseries \thechoiceitem.}\else\thechoiceitem.\fi\space}
-    %\def\makechoicelabel#1{#1\uline{\thechoiceitem.}\else\thechoiceitem.\fi\space} %underline the answer item label if we want to print the answer
-    %\def\makechoicelabel#1{#1\framebox[1.25em][l]{\thechoiceitem.}\else\makebox[1.25em][l]{\thechoiceitem.}\fi} %underline the answer item label if we want to print the answer
-    
-    \def\choice@mesureitem#1{\cr\stepcounter{choiceitem}\makechoicelabel#1}%
-    
-    %measure the choices, this is the first time we need to parse the \BODY
-    \def\choicemesureitem{\@ifstar
-        {\choice@mesureitem\ifprintanswers \xappto\theanswer{\thechoiceitem}\ignorespaces}%
-        {\choice@mesureitem\iffalse}}%
-    
-    \def\choice@blockitem#1{%
-        \ifnum\value{choiceitem}>0\hfill\fi
-        \egroup\hskip0pt
-        \hbox to \choiceitemwidth\bgroup\hss\refstepcounter{choiceitem}\makechoicelabel#1}
-    
-    \def\choiceblockitem{\@ifstar
-        {\choice@blockitem\ifprintanswers\ignorespaces}%
-        {\choice@blockitem\iffalse}}
-    
-    \def\choice@paraitem#1{%
-        \par\noindent\refstepcounter{choiceitem}\makechoicelabel#1\hangindent=1.25em\hangafter=1\relax}% only the first line need indent
-    
-    \def\choiceparaitem{\@ifstar
-        {\choice@paraitem\ifprintanswers\ignorespaces}%
-        {\choice@paraitem\iffalse}}
-    
-    \newdimen\qanswd
-    \newdimen\qanswdtmp
-    \newbox\qimgbox
-    \NewEnviron{items}[1][]{%
-        \def\theanswer{}
-        \begingroup
-        \let\item\choicemesureitem
-        \setcounter{choiceitem}{0}%
-        \settowidth{\global\choiceitemwidth}{\vbox{\halign{##\hfil\cr\BODY\crcr}}}%
-        \endgroup
-        \setbox\qimgbox\hbox{#1}%
-        \setlist[trivlist]{nosep}
-        \trivlist\item\relax%
-        \qanswd=\linewidth%
-        \advance\qanswd-\wd\qimgbox%
-        % handle large images (leaving less than 30% space)
-        \qanswdtmp=0.3\linewidth%
-        \ifnum\qanswd<\qanswdtmp%
-        %\strut\hfill% uncomment to right-align large images
-        \unhbox\qimgbox%
-        %\hfill\strut% uncomment this too to center them
-        \par%
-        \qanswd=\linewidth%
-        \setbox\qimgbox\hbox{}%
-        \fi%
-        % end of handling for large images
-        \begin{minipage}[t]{\qanswd}
-            \trivlist\item\relax%
-            \parindent0pt%  
-            \setcounter{choiceitem}{0}%
-            \ifdim\choiceitemwidth<0.25\columnwidth
-            \choiceitemwidth=0.25\columnwidth
-            \let\item\choiceblockitem
-            \bgroup\BODY\hfill\egroup
-            \else\ifdim\choiceitemwidth<0.5\columnwidth
-            \choiceitemwidth=0.5\columnwidth
-            \let\item\choiceblockitem
-            \bgroup\BODY\hfill\egroup
-            \else % \choiceitemwidth > 0.5\columnwidth
-            \let\item\choiceparaitem
-            \BODY
-            \fi\fi
-            \endtrivlist
-        \end{minipage}%
-        \adjustbox{valign=t}{\unhbox\qimgbox}
-        \endtrivlist
-    }
-    \makeatother
-    '''
-
 }
