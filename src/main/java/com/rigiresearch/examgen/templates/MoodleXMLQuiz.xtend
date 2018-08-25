@@ -190,7 +190,7 @@ class MoodleXMLQuiz implements Template {
         «IF !child»\question[«question.points»]«ENDIF»
         \TFQuestion{«IF question.answer»T«ELSE»F«ENDIF»}{«question.statement.render»}
     '''
-
+    
     /**
      * Renders a compound question.
      */
@@ -215,7 +215,6 @@ class MoodleXMLQuiz implements Template {
         \addpoints
     '''
 
-
 	/**
 	 * Default feedback for a question.
 	 */
@@ -230,28 +229,4 @@ class MoodleXMLQuiz implements Template {
 	  <text>Your answer is incorrect.</text>
 	</incorrectfeedback>
 	'''
-
-
-    def trueFalse() '''
-    \newcommand*{\TrueFalse}[1]{%
-    \ifprintanswers
-        \ifthenelse{\equal{#1}{T}}{%
-            \textbf{TRUE}\hspace*{14pt}False
-        }{
-            True\hspace*{14pt}\textbf{FALSE}
-        }
-    \else
-        {True}\hspace*{20pt}False
-    \fi
-    } 
-    %% The following code is based on an answer by Gonzalo Medina
-    %% https://tex.stackexchange.com/a/13106/39194
-    \newlength\TFlengthA
-    \newlength\TFlengthB
-    \settowidth\TFlengthA{\hspace*{1.16in}}
-    \newcommand\TFQuestion[2]{%
-        \setlength\TFlengthB{\linewidth}
-        \addtolength\TFlengthB{-\TFlengthA}
-        \parbox[t]{\TFlengthA}{\TrueFalse{#1}}\parbox[t]{\TFlengthB}{#2}}
-    '''
 }
