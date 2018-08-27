@@ -21,6 +21,7 @@
  */
 package com.rigiresearch.examgen.templates;
 
+import com.google.common.base.Objects;
 import com.rigiresearch.examgen.model.ClosedEnded;
 import com.rigiresearch.examgen.model.CompoundQuestion;
 import com.rigiresearch.examgen.model.CompoundText;
@@ -281,15 +282,11 @@ public class MoodleXMLQuiz implements Template {
     int multichoice = 0;
     List<ClosedEnded.Option> _options = question.options();
     for (final ClosedEnded.Option option : _options) {
-      {
-        boolean _answer = option.answer();
-        if (_answer) {
-          int _multichoice = multichoice;
-          multichoice = (_multichoice + 1);
-        }
-        if ((multichoice > 1)) {
-          return true;
-        }
+      if ((option.answer() && (multichoice < 2))) {
+        int _multichoice = multichoice;
+        multichoice = (_multichoice + 1);
+      } else {
+        return true;
       }
     }
     return false;
@@ -381,29 +378,89 @@ public class MoodleXMLQuiz implements Template {
    */
   public CharSequence render(final TrueFalse question, final boolean child, final boolean printSolutions) {
     StringConcatenation _builder = new StringConcatenation();
-    {
-      if ((!child)) {
-        _builder.append("\\question[");
-        int _points = question.points();
-        _builder.append(_points);
-        _builder.append("]");
-      }
-    }
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\TFQuestion{");
-    {
-      boolean _answer = question.answer();
-      if (_answer) {
-        _builder.append("T");
-      } else {
-        _builder.append("F");
-      }
-    }
-    _builder.append("}{");
+    _builder.append("<question type=\"truefalse\">");
+    _builder.newLine();
+    _builder.append("<name>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<text>True/False</text>");
+    _builder.newLine();
+    _builder.append("</name>");
+    _builder.newLine();
+    _builder.append("<questiontext format=\"html\">");
+    _builder.newLine();
+    _builder.append("<text><![CDATA[<p><pre>");
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
-    _builder.append("}");
+    _builder.append("</pre><br></p>]]></text>");
     _builder.newLineIfNotEmpty();
+    _builder.append("</questiontext>");
+    _builder.newLine();
+    CharSequence _feedback = this.feedback();
+    _builder.append(_feedback);
+    _builder.newLineIfNotEmpty();
+    _builder.append("<defaultgrade>");
+    int _points = question.points();
+    _builder.append(_points);
+    _builder.append("</defaultgrade>");
+    _builder.newLineIfNotEmpty();
+    _builder.append("<answernumbering>abc</answernumbering>");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("<answer fraction=");
+    {
+      boolean _answer = question.answer();
+      boolean _equals = Objects.equal(Boolean.valueOf(_answer), "true");
+      if (_equals) {
+        _builder.append("\"100\"");
+      } else {
+        _builder.append("\"0\"");
+      }
+    }
+    _builder.append(" format=\"moodle_auto_format\">");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("<text><![CDATA[<p><pre>true</pre><br></p>]]></text>");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("<feedback format=\"html\">");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("<text><![CDATA[<p><pre><br></pre><br></p>]]></text>");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("</feedback>");
+    _builder.newLine();
+    _builder.append("</answer>");
+    _builder.newLine();
+    _builder.append("<answer fraction=");
+    {
+      boolean _answer_1 = question.answer();
+      boolean _equals_1 = Objects.equal(Boolean.valueOf(_answer_1), "false");
+      if (_equals_1) {
+        _builder.append("\"100\"");
+      } else {
+        _builder.append("\"0\"");
+      }
+    }
+    _builder.append(" format=\"moodle_auto_format\">");
+    _builder.newLineIfNotEmpty();
+    _builder.append("  ");
+    _builder.append("<text><![CDATA[<p><pre>false</pre><br></p>]]></text>");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("<feedback format=\"html\">");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("<text><![CDATA[<p><pre><br></pre><br></p>]]></text>");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("</feedback>");
+    _builder.newLine();
+    _builder.append("</answer>");
+    _builder.newLine();
+    _builder.append("</question>");
+    _builder.newLine();
     return _builder;
   }
   

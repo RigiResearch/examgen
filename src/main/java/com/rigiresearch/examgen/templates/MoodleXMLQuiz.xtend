@@ -146,10 +146,10 @@ class MoodleXMLQuiz implements Template {
     def isMultiChoice(ClosedEnded question) {
     	var multichoice = 0
     	for (option : question.options){
-    		if (option.answer){
+    		if (option.answer && multichoice < 2){
     			multichoice+=1;
     		}
-    		if (multichoice > 1){
+    		else {
     			return true
     		}
     	}
@@ -161,34 +161,56 @@ class MoodleXMLQuiz implements Template {
      */
 
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
-			<question type="multichoice">
-			<name>
-			<text>closed-ended</text>
-			</name>
-			<questiontext format="html">
-			<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
-			</questiontext>
-			«feedback»
-			<defaultgrade>«question.points»</defaultgrade>
-			<answernumbering>abc</answernumbering>
-			<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
-			«FOR option : question.options»
-			<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
-			  <text><![CDATA[<p><pre>«option.statement.render»</pre><br></p>]]></text>
-			  <feedback format="html">
-			    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-			  </feedback>
-			</answer>
-			«ENDFOR»
-			</question>
+		<question type="multichoice">
+		<name>
+		<text>closed-ended</text>
+		</name>
+		<questiontext format="html">
+		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		</questiontext>
+		«feedback»
+		<defaultgrade>«question.points»</defaultgrade>
+		<answernumbering>abc</answernumbering>
+		<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
+		«FOR option : question.options»
+		<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
+		  <text><![CDATA[<p><pre>«option.statement.render»</pre><br></p>]]></text>
+		  <feedback format="html">
+		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
+		  </feedback>
+		</answer>
+		«ENDFOR»
+		</question>
     '''
 
     /**
      * Renders a True-False question.
      */
     def render(TrueFalse question, boolean child, boolean printSolutions) '''
-        «IF !child»\question[«question.points»]«ENDIF»
-        \TFQuestion{«IF question.answer»T«ELSE»F«ENDIF»}{«question.statement.render»}
+		<question type="truefalse">
+		<name>
+			<text>True/False</text>
+		</name>
+		<questiontext format="html">
+		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		</questiontext>
+		«feedback»
+		<defaultgrade>«question.points»</defaultgrade>
+		<answernumbering>abc</answernumbering>
+		
+		<answer fraction=«IF question.answer=="true"»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		  <text><![CDATA[<p><pre>true</pre><br></p>]]></text>
+		  <feedback format="html">
+		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
+		  </feedback>
+		</answer>
+		<answer fraction=«IF question.answer=="false"»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		  <text><![CDATA[<p><pre>false</pre><br></p>]]></text>
+		  <feedback format="html">
+		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
+		  </feedback>
+		</answer>
+		</question>
     '''
     
     /**
