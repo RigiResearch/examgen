@@ -197,7 +197,6 @@ class MoodleXMLQuiz implements Template {
 		«feedback»
 		<defaultgrade>«question.points»</defaultgrade>
 		<answernumbering>abc</answernumbering>
-		
 		<answer fraction=«IF question.answer=="true"»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
 		  <text><![CDATA[<p><pre>true</pre><br></p>]]></text>
 		  <feedback format="html">

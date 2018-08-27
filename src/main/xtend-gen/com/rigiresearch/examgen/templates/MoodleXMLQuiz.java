@@ -406,7 +406,6 @@ public class MoodleXMLQuiz implements Template {
     _builder.newLineIfNotEmpty();
     _builder.append("<answernumbering>abc</answernumbering>");
     _builder.newLine();
-    _builder.newLine();
     _builder.append("<answer fraction=");
     {
       boolean _answer = question.answer();
