@@ -21,14 +21,12 @@
  */
 package com.rigiresearch.examgen.templates;
 
-import com.google.common.base.Objects;
 import com.rigiresearch.examgen.model.ClosedEnded;
 import com.rigiresearch.examgen.model.CompoundQuestion;
 import com.rigiresearch.examgen.model.CompoundText;
 import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.OpenEnded;
 import com.rigiresearch.examgen.model.Question;
-import com.rigiresearch.examgen.model.Section;
 import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.model.TrueFalse;
 import com.rigiresearch.examgen.templates.Template;
@@ -50,9 +48,6 @@ public class MoodleXMLQuiz implements Template {
   @Override
   public CharSequence render(final Examination e, final boolean printSolutions) {
     StringConcatenation _builder = new StringConcatenation();
-    Object _get = e.parameters().get(Examination.Parameter.SECTIONS);
-    final Section section = ((Section) _get);
-    _builder.newLineIfNotEmpty();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     _builder.newLine();
     _builder.append("<quiz>");
@@ -64,10 +59,8 @@ public class MoodleXMLQuiz implements Template {
     _builder.newLine();
     _builder.append("    ");
     _builder.append("<text>$course$/");
-    Object _get_1 = e.parameters().get(Examination.Parameter.TITLE);
-    _builder.append(_get_1, "    ");
-    _builder.append("/");
-    _builder.append(section, "    ");
+    Object _get = e.parameters().get(Examination.Parameter.TITLE);
+    _builder.append(_get, "    ");
     _builder.append("</text>       ");
     _builder.newLineIfNotEmpty();
     _builder.append("  ");
@@ -242,7 +235,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("<name>");
     _builder.newLine();
     _builder.append("  ");
-    _builder.append("<text>shortanswer</text>");
+    _builder.append("<text>Short Answer</text>");
     _builder.newLine();
     _builder.append("</name>");
     _builder.newLine();
@@ -301,7 +294,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.newLine();
     _builder.append("<name>");
     _builder.newLine();
-    _builder.append("<text>closed-ended</text>");
+    _builder.append("<text>Multiple Choice</text>");
     _builder.newLine();
     _builder.append("</name>");
     _builder.newLine();
@@ -383,33 +376,38 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("<name>");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("<text>True/False</text>");
+    _builder.append("<text>True False</text>");
     _builder.newLine();
     _builder.append("</name>");
     _builder.newLine();
     _builder.append("<questiontext format=\"html\">");
     _builder.newLine();
-    _builder.append("<text><![CDATA[<p><pre>");
+    _builder.append("<text><![CDATA[<p>");
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
-    _builder.append("</pre><br></p>]]></text>");
+    _builder.append("<br></p>]]></text>");
     _builder.newLineIfNotEmpty();
     _builder.append("</questiontext>");
     _builder.newLine();
-    CharSequence _feedback = this.feedback();
-    _builder.append(_feedback);
-    _builder.newLineIfNotEmpty();
+    _builder.append("<generalfeedback format=\"html\">");
+    _builder.newLine();
+    _builder.append("<text></text>");
+    _builder.newLine();
+    _builder.append("</generalfeedback>");
+    _builder.newLine();
+    _builder.append("<penalty>1</penalty>");
+    _builder.newLine();
+    _builder.append("<hidden>0</hidden>");
+    _builder.newLine();
     _builder.append("<defaultgrade>");
     int _points = question.points();
     _builder.append(_points);
     _builder.append("</defaultgrade>");
     _builder.newLineIfNotEmpty();
-    _builder.append("<answernumbering>abc</answernumbering>");
-    _builder.newLine();
     _builder.append("<answer fraction=");
     {
       boolean _answer = question.answer();
-      boolean _equals = Objects.equal(Boolean.valueOf(_answer), "true");
+      boolean _equals = (_answer == true);
       if (_equals) {
         _builder.append("\"100\"");
       } else {
@@ -419,7 +417,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.append(" format=\"moodle_auto_format\">");
     _builder.newLineIfNotEmpty();
     _builder.append("  ");
-    _builder.append("<text><![CDATA[<p><pre>true</pre><br></p>]]></text>");
+    _builder.append("<text>true</text>");
     _builder.newLine();
     _builder.append("  ");
     _builder.append("<feedback format=\"html\">");
@@ -435,7 +433,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("<answer fraction=");
     {
       boolean _answer_1 = question.answer();
-      boolean _equals_1 = Objects.equal(Boolean.valueOf(_answer_1), "false");
+      boolean _equals_1 = (_answer_1 == false);
       if (_equals_1) {
         _builder.append("\"100\"");
       } else {
@@ -445,7 +443,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.append(" format=\"moodle_auto_format\">");
     _builder.newLineIfNotEmpty();
     _builder.append("  ");
-    _builder.append("<text><![CDATA[<p><pre>false</pre><br></p>]]></text>");
+    _builder.append("<text>false</text>");
     _builder.newLine();
     _builder.append("  ");
     _builder.append("<feedback format=\"html\">");
@@ -468,11 +466,6 @@ public class MoodleXMLQuiz implements Template {
    */
   public CharSequence render(final CompoundQuestion question, final boolean printSolutions) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("\\question[");
-    int _points = question.points();
-    _builder.append(_points);
-    _builder.append("]");
-    _builder.newLineIfNotEmpty();
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
     _builder.newLineIfNotEmpty();
@@ -493,8 +486,8 @@ public class MoodleXMLQuiz implements Template {
         }
         _builder.append("    ");
         _builder.append("\\part[");
-        int _points_1 = child.points();
-        _builder.append(_points_1, "    ");
+        int _points = child.points();
+        _builder.append(_points, "    ");
         _builder.append("]{}");
         _builder.newLineIfNotEmpty();
         _builder.append("    ");

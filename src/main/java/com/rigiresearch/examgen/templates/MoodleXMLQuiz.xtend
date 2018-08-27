@@ -27,14 +27,7 @@ import com.rigiresearch.examgen.model.CompoundText
 import com.rigiresearch.examgen.model.Examination
 import com.rigiresearch.examgen.model.OpenEnded
 import com.rigiresearch.examgen.model.Question
-import com.rigiresearch.examgen.model.Section
 import com.rigiresearch.examgen.model.TextSegment
-
-import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE
-import static com.rigiresearch.examgen.model.Examination.Parameter.COURSE_REFERENCE_NUMBER
-import static com.rigiresearch.examgen.model.Examination.Parameter.SECTIONS
-import static com.rigiresearch.examgen.model.Examination.Parameter.TERM
-import static com.rigiresearch.examgen.model.Examination.Parameter.TIME_LIMIT
 import static com.rigiresearch.examgen.model.Examination.Parameter.TITLE
 import com.rigiresearch.examgen.model.TrueFalse
 
@@ -48,12 +41,11 @@ import com.rigiresearch.examgen.model.TrueFalse
 class MoodleXMLQuiz implements Template {
 
     override render(Examination e, boolean printSolutions) '''
-        «val section = e.parameters.get(SECTIONS) as Section»
         <?xml version="1.0" encoding="UTF-8"?>
         <quiz>
         <question type="category">
           <category>
-            <text>$course$/«e.parameters.get(TITLE)»/«section»</text>       
+            <text>$course$/«e.parameters.get(TITLE)»</text>       
           </category>
         </question>
         «FOR q : e.questions SEPARATOR "\n"»
@@ -129,7 +121,7 @@ class MoodleXMLQuiz implements Template {
     def render(OpenEnded question, boolean child, boolean printSolutions) '''
 		<question type="shortanswer">
 		<name>
-		  <text>shortanswer</text>
+		  <text>Short Answer</text>
 		</name>
 		<questiontext format="html">
 		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
@@ -163,7 +155,7 @@ class MoodleXMLQuiz implements Template {
     def render(ClosedEnded question, boolean child, boolean printSolutions) '''
 		<question type="multichoice">
 		<name>
-		<text>closed-ended</text>
+		<text>Multiple Choice</text>
 		</name>
 		<questiontext format="html">
 		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
@@ -189,22 +181,25 @@ class MoodleXMLQuiz implements Template {
     def render(TrueFalse question, boolean child, boolean printSolutions) '''
 		<question type="truefalse">
 		<name>
-			<text>True/False</text>
+			<text>True False</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		<text><![CDATA[<p>«question.statement.render»<br></p>]]></text>
 		</questiontext>
-		«feedback»
+		<generalfeedback format="html">
+		<text></text>
+		</generalfeedback>
+		<penalty>1</penalty>
+		<hidden>0</hidden>
 		<defaultgrade>«question.points»</defaultgrade>
-		<answernumbering>abc</answernumbering>
-		<answer fraction=«IF question.answer=="true"»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
-		  <text><![CDATA[<p><pre>true</pre><br></p>]]></text>
+		<answer fraction=«IF question.answer==true»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		  <text>true</text>
 		  <feedback format="html">
 		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
 		  </feedback>
 		</answer>
-		<answer fraction=«IF question.answer=="false"»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
-		  <text><![CDATA[<p><pre>false</pre><br></p>]]></text>
+		<answer fraction=«IF question.answer==false»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		  <text>false</text>
 		  <feedback format="html">
 		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
 		  </feedback>
@@ -216,7 +211,6 @@ class MoodleXMLQuiz implements Template {
      * Renders a compound question.
      */
     def render(CompoundQuestion question, boolean printSolutions) '''
-        \question[«question.points»]
         «question.statement.render»
         \noaddpoints % to omit double points count
         \pointsinmargin\pointformat{} % deactivate points for children
