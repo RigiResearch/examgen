@@ -32,7 +32,6 @@ import com.rigiresearch.examgen.model.TextSegment;
 import com.rigiresearch.examgen.model.TrueFalse;
 import com.rigiresearch.examgen.templates.Template;
 import java.util.List;
-import javax.annotation.Generated;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -46,7 +45,6 @@ import org.eclipse.xtext.xbase.lib.ListExtensions;
  * @since 0.0.1
  */
 @SuppressWarnings("all")
-@Generated("org.eclipse.xtend.core.compiler.XtendGenerator")
 public class LatexQuiz implements Template {
   @Override
   public CharSequence render(final Examination e, final boolean printSolutions) {
