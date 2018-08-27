@@ -1,6 +1,6 @@
 # Exam generator
 
-This project generates examinations along with their solutions from a [YAML](http://www.yaml.org/) input file. The resulting files are rendered according to a specific template; so far, only Latex is supported.
+This project generates examinations along with their solutions from a [YAML](http://www.yaml.org/) input file. The resulting files are rendered according to a specific template; so far, only Latex and Moodle's XML format are supported.
 
 #### Benefits
 - Quizzes and midterms can be managed through version control, improving them every term/semester.
@@ -76,7 +76,24 @@ parameters:
     - name: C
 ```
 
-The list of questions contains questions of type open-close, closed-ended, true-false, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
+- MOODLE_QUIZ: title, and class sections. The following listing exemplifies how to specify these parameters:
+```yaml
+parameters:
+  - TITLE: Quiz 1
+  - SECTIONS:
+    - name: Q1
+questions:
+  - type: closed-ended
+    statement: Who created the C programming language?
+    points: 10
+    options:
+      - {correct: true, statement: Dennis Ritchie}
+      - {correct: false, statement: Lionel Ritchie}
+      - {correct: true, statement: Steve Jobs}
+      - {correct: false, statement: Michael Bublé}
+```
+
+The list of questions contains questions of type open-ended, closed-ended, true-false, and compound questions (i.e., a question composed of other questions). The following listings show how to describe each type of questions supported:
 
 ```yaml
 - type: closed-ended
