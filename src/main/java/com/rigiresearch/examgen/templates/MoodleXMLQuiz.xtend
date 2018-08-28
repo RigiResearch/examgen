@@ -207,28 +207,23 @@ class MoodleXMLQuiz implements Template {
 		</question>
     '''
     
-    /**
-     * Renders a compound question.
-     */
-    def render(CompoundQuestion question, boolean printSolutions) '''
-        «question.statement.render»
-        \noaddpoints % to omit double points count
-        \pointsinmargin\pointformat{} % deactivate points for children
-        \begin{parts}
-            «FOR child : question.children SEPARATOR "\n"»
-                \part[«child.points»]{}
-                «
-                    switch (child) {
-                        OpenEnded: child.render(true, printSolutions)
-                        ClosedEnded: child.render(true, printSolutions)
-                        TrueFalse: child.render(true, printSolutions)
-                    }
-                »
-            «ENDFOR»
-        \end{parts}
-        \nopointsinmargin\pointformat{[\thepoints]} % activate points again
-        \addpoints
-    '''
+//    /**
+//     * Renders a compound question.
+//     */
+//    def render(CompoundQuestion question, boolean printSolutions) '''
+//  
+//        «FOR child : question.children»
+//            «question.statement.render»
+//            «
+//                switch (child) {
+//                    OpenEnded: child.render(true, printSolutions)
+//                    ClosedEnded: child.render(true, printSolutions)
+//                    TrueFalse: child.render(true, printSolutions)
+//                }
+//            »
+//        «ENDFOR»
+//
+//    '''
 
 	/**
 	 * Default feedback for a question.
