@@ -124,12 +124,12 @@ class MoodleXMLQuiz implements Template {
 		  <text>Short Answer</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>«question.statement.render»</pre></p>]]></text>
+		<text><![CDATA[«question.statement.render»]]></text>
 		</questiontext>
 		«feedback»
 		<defaultgrade>«question.points»</defaultgrade>
 		<answer fraction="100" format="html">
-		  <text><![CDATA[<p><pre>«question.answer.render»</pre><br></p>]]></text>
+		  <text><![CDATA[«question.answer.render»]]></text>
 		</answer>
 		</question>
     '''
@@ -158,7 +158,7 @@ class MoodleXMLQuiz implements Template {
 		<text>Multiple Choice</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
+		<text><![CDATA[«question.statement.render»]]></text>
 		</questiontext>
 		«feedback»
 		<defaultgrade>«question.points»</defaultgrade>
@@ -166,7 +166,7 @@ class MoodleXMLQuiz implements Template {
 		<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
 		«FOR option : question.options»
 		<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
-		  <text><![CDATA[<pre>«option.statement.render»</pre>]]></text>
+		  <text><![CDATA[«option.statement.render»]]></text>
 		</answer>
 		«ENDFOR»
 		</question>
@@ -181,7 +181,7 @@ class MoodleXMLQuiz implements Template {
 			<text>True False</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
+		<text><![CDATA[«question.statement.render»]]></text>
 		</questiontext>
 		<penalty>1</penalty>
 		<hidden>0</hidden>
@@ -227,4 +227,3 @@ class MoodleXMLQuiz implements Template {
 	  <text>Your answer is incorrect.</text>
 	</incorrectfeedback>
 	'''
-}
