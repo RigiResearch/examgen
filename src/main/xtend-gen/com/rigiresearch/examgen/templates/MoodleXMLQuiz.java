@@ -268,11 +268,15 @@ public class MoodleXMLQuiz implements Template {
     int multichoice = 0;
     List<ClosedEnded.Option> _options = question.options();
     for (final ClosedEnded.Option option : _options) {
-      if ((option.answer() && (multichoice < 1))) {
-        int _multichoice = multichoice;
-        multichoice = (_multichoice + 1);
-      } else {
-        return true;
+      {
+        boolean _answer = option.answer();
+        if (_answer) {
+          int _multichoice = multichoice;
+          multichoice = (_multichoice + 1);
+        }
+        if ((multichoice > 1)) {
+          return true;
+        }
       }
     }
     return false;
