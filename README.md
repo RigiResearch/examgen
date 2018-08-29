@@ -10,6 +10,10 @@ This project generates examinations along with their solutions from a [YAML](htt
 
 ## Instructions
 
+#### Development
+
+If you are planning to use the Eclipse IDE, please install [the Lombok project](https://projectlombok.org/) and the [Xtend](http://www.eclipse.org/xtend/) language.
+
 #### Build the application from the sources
 
 First, clone or download this repository and then package the application artefacts using [Maven](https://maven.apache.org/):
