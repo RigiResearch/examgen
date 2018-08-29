@@ -54,13 +54,18 @@ public final class WritableExamination {
     @AllArgsConstructor
     @Getter
     public enum Target {
-        LATEX_QUIZ(LatexQuiz.class),
-        LATEX_MIDTERM(LatexMidterm.class),
-        MOODLE_QUIZ(MoodleXMLQuiz.class);
+        LATEX_QUIZ(LatexQuiz.class, "tex"),
+        LATEX_MIDTERM(LatexMidterm.class, "tex"),
+        MOODLE_QUIZ(MoodleXMLQuiz.class, "xml");
         /**
          * The templates implementation.
          */
         private final Class<? extends Template> clazz;
+
+        /**
+         * The file extension associated with the target template.
+         */
+        private final String extension;
     }
 
     /**
@@ -89,22 +94,11 @@ public final class WritableExamination {
         directory.mkdir();
         examination.mkdir();
         solutions.mkdir();
-        final String name;
-        switch(this.target) {
-            case MOODLE_QUIZ: 
-                name = String.format(
-                    "%s.xml",
-                    this.origin.parameters().get(Parameter.SECTIONS)
-                );
-                break;
-            default:  
-                name = String.format(
-                    "%s.tex",
-                    this.origin.parameters().get(Parameter.SECTIONS)
-                );
-                break;
-        }
-
+        final String name = String.format(
+            "%s.%s",
+            this.origin.parameters().get(Parameter.SECTIONS),
+            this.target.extension()
+        );
         try {
             Files.write(
                 Paths.get(new File(examination, name).getAbsolutePath()),

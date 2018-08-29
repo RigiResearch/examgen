@@ -32,15 +32,35 @@
             </roles>
             <timezone>-8</timezone>
         </developer>
+        <developer>
+            <id>2</id>
+            <name>Prashanti Angara</name>
+            <organization>University of Victoria</organization>
+            <organizationUrl>https://www.uvic.ca</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-8</timezone>
+        </developer>
+        <developer>
+            <id>3</id>
+            <name>Giovanni Murguía</name>
+            <organization>University of Victoria</organization>
+            <organizationUrl>https://www.uvic.ca</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-8</timezone>
+        </developer>
     </developers>
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/jachinte/examgen/issues</url>
+        <url>https://github.com/rigiresearch/examgen/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:git@github.com:jachinte/examgen.git</connection>
-        <developerConnection>scm:git:git@github.com:jachinte/examgen.git</developerConnection>
-        <url>https://github.com/jachinte/examgen</url>
+        <connection>scm:git:git@github.com:rigiresearch/examgen.git</connection>
+        <developerConnection>scm:git:git@github.com:rigiresearch/examgen.git</developerConnection>
+        <url>https://github.com/rigiresearch/examgen</url>
     </scm>
 	<properties>
         <maven.compiler.source>1.8</maven.compiler.source>
