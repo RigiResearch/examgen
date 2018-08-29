@@ -60,7 +60,7 @@ class MoodleXMLQuiz implements Template {
             OpenEnded: question.render(false, false)
             ClosedEnded: question.render(false, false)
             TrueFalse: question.render(false, false)
-            CompoundQuestion: question.render(false)
+   //         CompoundQuestion: question.render(false)
         }
     }
 
@@ -124,7 +124,7 @@ class MoodleXMLQuiz implements Template {
 		  <text>Short Answer</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		<text><![CDATA[<p><pre>«question.statement.render»</pre></p>]]></text>
 		</questiontext>
 		«feedback»
 		<defaultgrade>«question.points»</defaultgrade>
@@ -138,7 +138,7 @@ class MoodleXMLQuiz implements Template {
     def isMultiChoice(ClosedEnded question) {
     	var multichoice = 0
     	for (option : question.options){
-    		if (option.answer && multichoice < 2){
+    		if (option.answer && multichoice < 1){
     			multichoice+=1;
     		}
     		else {
@@ -158,7 +158,7 @@ class MoodleXMLQuiz implements Template {
 		<text>Multiple Choice</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>«question.statement.render»</pre><br></p>]]></text>
+		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
 		</questiontext>
 		«feedback»
 		<defaultgrade>«question.points»</defaultgrade>
@@ -166,10 +166,7 @@ class MoodleXMLQuiz implements Template {
 		<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
 		«FOR option : question.options»
 		<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
-		  <text><![CDATA[<p><pre>«option.statement.render»</pre><br></p>]]></text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
+		  <text><![CDATA[<pre>«option.statement.render»</pre>]]></text>
 		</answer>
 		«ENDFOR»
 		</question>
@@ -184,25 +181,16 @@ class MoodleXMLQuiz implements Template {
 			<text>True False</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p>«question.statement.render»<br></p>]]></text>
+		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
 		</questiontext>
-		<generalfeedback format="html">
-		<text></text>
-		</generalfeedback>
 		<penalty>1</penalty>
 		<hidden>0</hidden>
 		<defaultgrade>«question.points»</defaultgrade>
 		<answer fraction=«IF question.answer==true»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
 		  <text>true</text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
 		</answer>
 		<answer fraction=«IF question.answer==false»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
 		  <text>false</text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
 		</answer>
 		</question>
     '''
