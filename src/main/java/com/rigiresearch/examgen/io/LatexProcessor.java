@@ -52,7 +52,6 @@ public final class LatexProcessor {
 
     /**
      * Invokes pdflatex to process the generated tex files.
-     * @param directory The directory containing the .tex files
      */
     public void process() {
         this.output.mkdir();
