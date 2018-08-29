@@ -22,7 +22,6 @@
 package com.rigiresearch.examgen.templates;
 
 import com.rigiresearch.examgen.model.ClosedEnded;
-import com.rigiresearch.examgen.model.CompoundQuestion;
 import com.rigiresearch.examgen.model.CompoundText;
 import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.OpenEnded;
@@ -106,12 +105,6 @@ public class MoodleXMLQuiz implements Template {
       if (question instanceof TrueFalse) {
         _matched=true;
         _switchResult = this.render(((TrueFalse)question), false, false);
-      }
-    }
-    if (!_matched) {
-      if (question instanceof CompoundQuestion) {
-        _matched=true;
-        _switchResult = this.render(((CompoundQuestion)question), false);
       }
     }
     return _switchResult;
@@ -244,7 +237,7 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("<text><![CDATA[<p><pre>");
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
-    _builder.append("</pre><br></p>]]></text>");
+    _builder.append("</pre></p>]]></text>");
     _builder.newLineIfNotEmpty();
     _builder.append("</questiontext>");
     _builder.newLine();
@@ -275,11 +268,15 @@ public class MoodleXMLQuiz implements Template {
     int multichoice = 0;
     List<ClosedEnded.Option> _options = question.options();
     for (final ClosedEnded.Option option : _options) {
-      if ((option.answer() && (multichoice < 2))) {
-        int _multichoice = multichoice;
-        multichoice = (_multichoice + 1);
-      } else {
-        return true;
+      {
+        boolean _answer = option.answer();
+        if (_answer) {
+          int _multichoice = multichoice;
+          multichoice = (_multichoice + 1);
+        }
+        if ((multichoice > 1)) {
+          return true;
+        }
       }
     }
     return false;
@@ -300,10 +297,10 @@ public class MoodleXMLQuiz implements Template {
     _builder.newLine();
     _builder.append("<questiontext format=\"html\">");
     _builder.newLine();
-    _builder.append("<text><![CDATA[<p><pre>");
+    _builder.append("<text><![CDATA[<pre>");
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
-    _builder.append("</pre><br></p>]]></text>");
+    _builder.append("</pre>]]></text>");
     _builder.newLineIfNotEmpty();
     _builder.append("</questiontext>");
     _builder.newLine();
@@ -343,20 +340,11 @@ public class MoodleXMLQuiz implements Template {
         _builder.append(" format=\"html\">");
         _builder.newLineIfNotEmpty();
         _builder.append("  ");
-        _builder.append("<text><![CDATA[<p><pre>");
+        _builder.append("<text><![CDATA[<pre>");
         CharSequence _render_1 = this.render(option.statement());
         _builder.append(_render_1, "  ");
-        _builder.append("</pre><br></p>]]></text>");
+        _builder.append("</pre>]]></text>");
         _builder.newLineIfNotEmpty();
-        _builder.append("  ");
-        _builder.append("<feedback format=\"html\">");
-        _builder.newLine();
-        _builder.append("    ");
-        _builder.append("<text><![CDATA[<p><pre><br></pre><br></p>]]></text>");
-        _builder.newLine();
-        _builder.append("  ");
-        _builder.append("</feedback>");
-        _builder.newLine();
         _builder.append("</answer>");
         _builder.newLine();
       }
@@ -382,18 +370,12 @@ public class MoodleXMLQuiz implements Template {
     _builder.newLine();
     _builder.append("<questiontext format=\"html\">");
     _builder.newLine();
-    _builder.append("<text><![CDATA[<p>");
+    _builder.append("<text><![CDATA[<pre>");
     CharSequence _render = this.render(question.statement());
     _builder.append(_render);
-    _builder.append("<br></p>]]></text>");
+    _builder.append("</pre>]]></text>");
     _builder.newLineIfNotEmpty();
     _builder.append("</questiontext>");
-    _builder.newLine();
-    _builder.append("<generalfeedback format=\"html\">");
-    _builder.newLine();
-    _builder.append("<text></text>");
-    _builder.newLine();
-    _builder.append("</generalfeedback>");
     _builder.newLine();
     _builder.append("<penalty>1</penalty>");
     _builder.newLine();
@@ -419,15 +401,6 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("  ");
     _builder.append("<text>true</text>");
     _builder.newLine();
-    _builder.append("  ");
-    _builder.append("<feedback format=\"html\">");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("<text><![CDATA[<p><pre><br></pre><br></p>]]></text>");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("</feedback>");
-    _builder.newLine();
     _builder.append("</answer>");
     _builder.newLine();
     _builder.append("<answer fraction=");
@@ -445,79 +418,9 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("  ");
     _builder.append("<text>false</text>");
     _builder.newLine();
-    _builder.append("  ");
-    _builder.append("<feedback format=\"html\">");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("<text><![CDATA[<p><pre><br></pre><br></p>]]></text>");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("</feedback>");
-    _builder.newLine();
     _builder.append("</answer>");
     _builder.newLine();
     _builder.append("</question>");
-    _builder.newLine();
-    return _builder;
-  }
-  
-  /**
-   * Renders a compound question.
-   */
-  public CharSequence render(final CompoundQuestion question, final boolean printSolutions) {
-    StringConcatenation _builder = new StringConcatenation();
-    CharSequence _render = this.render(question.statement());
-    _builder.append(_render);
-    _builder.newLineIfNotEmpty();
-    _builder.append("\\noaddpoints % to omit double points count");
-    _builder.newLine();
-    _builder.append("\\pointsinmargin\\pointformat{} % deactivate points for children");
-    _builder.newLine();
-    _builder.append("\\begin{parts}");
-    _builder.newLine();
-    {
-      List<Question> _children = question.children();
-      boolean _hasElements = false;
-      for(final Question child : _children) {
-        if (!_hasElements) {
-          _hasElements = true;
-        } else {
-          _builder.appendImmediate("\n", "    ");
-        }
-        _builder.append("    ");
-        _builder.append("\\part[");
-        int _points = child.points();
-        _builder.append(_points, "    ");
-        _builder.append("]{}");
-        _builder.newLineIfNotEmpty();
-        _builder.append("    ");
-        CharSequence _switchResult = null;
-        boolean _matched = false;
-        if (child instanceof OpenEnded) {
-          _matched=true;
-          _switchResult = this.render(((OpenEnded)child), true, printSolutions);
-        }
-        if (!_matched) {
-          if (child instanceof ClosedEnded) {
-            _matched=true;
-            _switchResult = this.render(((ClosedEnded)child), true, printSolutions);
-          }
-        }
-        if (!_matched) {
-          if (child instanceof TrueFalse) {
-            _matched=true;
-            _switchResult = this.render(((TrueFalse)child), true, printSolutions);
-          }
-        }
-        _builder.append(_switchResult, "    ");
-        _builder.newLineIfNotEmpty();
-      }
-    }
-    _builder.append("\\end{parts}");
-    _builder.newLine();
-    _builder.append("\\nopointsinmargin\\pointformat{[\\thepoints]} % activate points again");
-    _builder.newLine();
-    _builder.append("\\addpoints");
     _builder.newLine();
     return _builder;
   }

@@ -45,12 +45,12 @@ class MoodleXMLQuiz implements Template {
         <quiz>
         <question type="category">
           <category>
-            <text>$course$/Â«e.parameters.get(TITLE)Â»</text>       
+            <text>$course$/«e.parameters.get(TITLE)»</text>       
           </category>
         </question>
-        Â«FOR q : e.questions SEPARATOR "\n"Â»
-          Â«q.render(false)Â»
-        Â«ENDFORÂ»
+        «FOR q : e.questions SEPARATOR "\n"»
+          «q.render(false)»
+        «ENDFOR»
         </quiz>
         
     '''
@@ -60,7 +60,7 @@ class MoodleXMLQuiz implements Template {
             OpenEnded: question.render(false, false)
             ClosedEnded: question.render(false, false)
             TrueFalse: question.render(false, false)
-            CompoundQuestion: question.render(false)
+   //         CompoundQuestion: question.render(false)
         }
     }
 
@@ -90,17 +90,17 @@ class MoodleXMLQuiz implements Template {
      */
     def styled(CharSequence text, TextSegment.Style style) {
         switch (style) {
-            case BOLD: '''<strong>Â«text.escapedÂ»</strong>'''
+            case BOLD: '''<strong>«text.escaped»</strong>'''
             case CODE: '''
             <code>
-            Â«text.escapedÂ»
+            «text.escaped»
             </code>
             '''
-            case INLINE_CODE: '''<code>Â«text.escapedÂ»</code>'''
-            case ITALIC: '''<i>Â«text.escapedÂ»</i>'''
+            case INLINE_CODE: '''<code>«text.escaped»</code>'''
+            case ITALIC: '''<i>«text.escaped»</i>'''
             case CUSTOM: text
             case INHERIT: text.escaped
-            case NEW_LINE: '''<br/>Â«text.escapedÂ»'''
+            case NEW_LINE: '''<br/>«text.escaped»'''
         }
     }
 
@@ -124,12 +124,12 @@ class MoodleXMLQuiz implements Template {
 		  <text>Short Answer</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>Â«question.statement.renderÂ»</pre><br></p>]]></text>
+		<text><![CDATA[<p><pre>«question.statement.render»</pre></p>]]></text>
 		</questiontext>
-		Â«feedbackÂ»
-		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
+		«feedback»
+		<defaultgrade>«question.points»</defaultgrade>
 		<answer fraction="100" format="html">
-		  <text><![CDATA[<p><pre>Â«question.answer.renderÂ»</pre><br></p>]]></text>
+		  <text><![CDATA[<p><pre>«question.answer.render»</pre><br></p>]]></text>
 		</answer>
 		</question>
     '''
@@ -138,10 +138,10 @@ class MoodleXMLQuiz implements Template {
     def isMultiChoice(ClosedEnded question) {
     	var multichoice = 0
     	for (option : question.options){
-    		if (option.answer && multichoice < 2){
+    		if (option.answer){
     			multichoice+=1;
     		}
-    		else {
+    		if (multichoice > 1) {
     			return true
     		}
     	}
@@ -158,20 +158,17 @@ class MoodleXMLQuiz implements Template {
 		<text>Multiple Choice</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>Â«question.statement.renderÂ»</pre><br></p>]]></text>
+		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
 		</questiontext>
-		Â«feedbackÂ»
-		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
+		«feedback»
+		<defaultgrade>«question.points»</defaultgrade>
 		<answernumbering>abc</answernumbering>
-		<single>Â«IF question.isMultiChoiceÂ»falseÂ«ELSEÂ»trueÂ«ENDIFÂ»</single>
-		Â«FOR option : question.optionsÂ»
-		<answer fraction=Â«IF option.answerÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="html">
-		  <text><![CDATA[<p><pre>Â«option.statement.renderÂ»</pre><br></p>]]></text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
+		<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
+		«FOR option : question.options»
+		<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
+		  <text><![CDATA[<pre>«option.statement.render»</pre>]]></text>
 		</answer>
-		Â«ENDFORÂ»
+		«ENDFOR»
 		</question>
     '''
 
@@ -184,51 +181,37 @@ class MoodleXMLQuiz implements Template {
 			<text>True False</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p>Â«question.statement.renderÂ»<br></p>]]></text>
+		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
 		</questiontext>
-		<generalfeedback format="html">
-		<text></text>
-		</generalfeedback>
 		<penalty>1</penalty>
 		<hidden>0</hidden>
-		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
-		<answer fraction=Â«IF question.answer==trueÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="moodle_auto_format">
+		<defaultgrade>«question.points»</defaultgrade>
+		<answer fraction=«IF question.answer==true»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
 		  <text>true</text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
 		</answer>
-		<answer fraction=Â«IF question.answer==falseÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="moodle_auto_format">
+		<answer fraction=«IF question.answer==false»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
 		  <text>false</text>
-		  <feedback format="html">
-		    <text><![CDATA[<p><pre><br></pre><br></p>]]></text>
-		  </feedback>
 		</answer>
 		</question>
     '''
     
-    /**
-     * Renders a compound question.
-     */
-    def render(CompoundQuestion question, boolean printSolutions) '''
-        Â«question.statement.renderÂ»
-        \noaddpoints % to omit double points count
-        \pointsinmargin\pointformat{} % deactivate points for children
-        \begin{parts}
-            Â«FOR child : question.children SEPARATOR "\n"Â»
-                \part[Â«child.pointsÂ»]{}
-                Â«
-                    switch (child) {
-                        OpenEnded: child.render(true, printSolutions)
-                        ClosedEnded: child.render(true, printSolutions)
-                        TrueFalse: child.render(true, printSolutions)
-                    }
-                Â»
-            Â«ENDFORÂ»
-        \end{parts}
-        \nopointsinmargin\pointformat{[\thepoints]} % activate points again
-        \addpoints
-    '''
+//    /**
+//     * Renders a compound question.
+//     */
+//    def render(CompoundQuestion question, boolean printSolutions) '''
+//  
+//        «FOR child : question.children»
+//            «question.statement.render»
+//            «
+//                switch (child) {
+//                    OpenEnded: child.render(true, printSolutions)
+//                    ClosedEnded: child.render(true, printSolutions)
+//                    TrueFalse: child.render(true, printSolutions)
+//                }
+//            »
+//        «ENDFOR»
+//
+//    '''
 
 	/**
 	 * Default feedback for a question.
