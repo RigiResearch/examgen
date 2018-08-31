@@ -45,12 +45,12 @@ class MoodleXMLQuiz implements Template {
         <quiz>
         <question type="category">
           <category>
-            <text>$course$/«e.parameters.get(TITLE)»</text>       
+            <text>$course$/Â«e.parameters.get(TITLE)Â»</text>       
           </category>
         </question>
-        «FOR q : e.questions SEPARATOR "\n"»
-          «q.render(false)»
-        «ENDFOR»
+        Â«FOR q : e.questions SEPARATOR "\n"Â»
+          Â«q.render(false)Â»
+        Â«ENDFORÂ»
         </quiz>
         
     '''
@@ -90,17 +90,17 @@ class MoodleXMLQuiz implements Template {
      */
     def styled(CharSequence text, TextSegment.Style style) {
         switch (style) {
-            case BOLD: '''<strong>«text.escaped»</strong>'''
+            case BOLD: '''<strong>Â«text.escapedÂ»</strong>'''
             case CODE: '''
             <code>
-            «text.escaped»
+            Â«text.escapedÂ»
             </code>
             '''
-            case INLINE_CODE: '''<code>«text.escaped»</code>'''
-            case ITALIC: '''<i>«text.escaped»</i>'''
+            case INLINE_CODE: '''<code>Â«text.escapedÂ»</code>'''
+            case ITALIC: '''<i>Â«text.escapedÂ»</i>'''
             case CUSTOM: text
             case INHERIT: text.escaped
-            case NEW_LINE: '''<br/>«text.escaped»'''
+            case NEW_LINE: '''<br/>Â«text.escapedÂ»'''
         }
     }
 
@@ -124,12 +124,12 @@ class MoodleXMLQuiz implements Template {
 		  <text>Short Answer</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<p><pre>«question.statement.render»</pre></p>]]></text>
+		<text><![CDATA[Â«question.statement.renderÂ»]]></text>
 		</questiontext>
-		«feedback»
-		<defaultgrade>«question.points»</defaultgrade>
+		Â«feedbackÂ»
+		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
 		<answer fraction="100" format="html">
-		  <text><![CDATA[<p><pre>«question.answer.render»</pre><br></p>]]></text>
+		  <text><![CDATA[Â«question.answer.renderÂ»]]></text>
 		</answer>
 		</question>
     '''
@@ -137,13 +137,12 @@ class MoodleXMLQuiz implements Template {
      
     def isMultiChoice(ClosedEnded question) {
     	var multichoice = 0
-    	for (option : question.options){
-    		if (option.answer){
-    			multichoice+=1;
-    		}
-    		if (multichoice > 1) {
+    	for (option : question.options) {
+    		if (option.answer) 
+    			multichoice++
+    		
+    		if (multichoice > 1)
     			return true
-    		}
     	}
     	return false
     }
@@ -158,17 +157,17 @@ class MoodleXMLQuiz implements Template {
 		<text>Multiple Choice</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
+		<text><![CDATA[Â«question.statement.renderÂ»]]></text>
 		</questiontext>
-		«feedback»
-		<defaultgrade>«question.points»</defaultgrade>
+		Â«feedbackÂ»
+		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
 		<answernumbering>abc</answernumbering>
-		<single>«IF question.isMultiChoice»false«ELSE»true«ENDIF»</single>
-		«FOR option : question.options»
-		<answer fraction=«IF option.answer»"100"«ELSE»"0"«ENDIF» format="html">
-		  <text><![CDATA[<pre>«option.statement.render»</pre>]]></text>
+		<single>Â«IF question.isMultiChoiceÂ»falseÂ«ELSEÂ»trueÂ«ENDIFÂ»</single>
+		Â«FOR option : question.optionsÂ»
+		<answer fraction=Â«IF option.answerÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="html">
+		  <text><![CDATA[Â«option.statement.renderÂ»]]></text>
 		</answer>
-		«ENDFOR»
+		Â«ENDFORÂ»
 		</question>
     '''
 
@@ -181,50 +180,50 @@ class MoodleXMLQuiz implements Template {
 			<text>True False</text>
 		</name>
 		<questiontext format="html">
-		<text><![CDATA[<pre>«question.statement.render»</pre>]]></text>
+		<text><![CDATA[Â«question.statement.renderÂ»]]></text>
 		</questiontext>
 		<penalty>1</penalty>
 		<hidden>0</hidden>
-		<defaultgrade>«question.points»</defaultgrade>
-		<answer fraction=«IF question.answer==true»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		<defaultgrade>Â«question.pointsÂ»</defaultgrade>
+		<answer fraction=Â«IF question.answer==trueÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="moodle_auto_format">
 		  <text>true</text>
 		</answer>
-		<answer fraction=«IF question.answer==false»"100"«ELSE»"0"«ENDIF» format="moodle_auto_format">
+		<answer fraction=Â«IF question.answer==falseÂ»"100"Â«ELSEÂ»"0"Â«ENDIFÂ» format="moodle_auto_format">
 		  <text>false</text>
 		</answer>
 		</question>
     '''
     
-//    /**
-//     * Renders a compound question.
-//     */
-//    def render(CompoundQuestion question, boolean printSolutions) '''
-//  
-//        «FOR child : question.children»
-//            «question.statement.render»
-//            «
-//                switch (child) {
-//                    OpenEnded: child.render(true, printSolutions)
-//                    ClosedEnded: child.render(true, printSolutions)
-//                    TrueFalse: child.render(true, printSolutions)
-//                }
-//            »
-//        «ENDFOR»
-//
-//    '''
+    /**
+     * Renders a compound question.
+     */
+    def render(CompoundQuestion question, boolean printSolutions) '''
+  
+        Â«FOR child : question.childrenÂ»
+            Â«question.statement.renderÂ»
+            Â«
+                switch (child) {
+                    OpenEnded: child.render(true, printSolutions)
+                    ClosedEnded: child.render(true, printSolutions)
+                    TrueFalse: child.render(true, printSolutions)
+                }
+            Â»
+        Â«ENDFORÂ»
+
+    '''
 
 	/**
 	 * Default feedback for a question.
 	 */
 	def feedback() '''
-	<correctfeedback format="html">
-	  <text>Your answer is correct.</text>
-	</correctfeedback>
-	<partiallycorrectfeedback format="html">
-	  <text>Your answer is partially correct.</text>
-	</partiallycorrectfeedback>
-	<incorrectfeedback format="html">
-	  <text>Your answer is incorrect.</text>
-	</incorrectfeedback>
+		<correctfeedback format="html">
+		  <text>Your answer is correct.</text>
+		</correctfeedback>
+		<partiallycorrectfeedback format="html">
+		  <text>Your answer is partially correct.</text>
+		</partiallycorrectfeedback>
+		<incorrectfeedback format="html">
+		  <text>Your answer is incorrect.</text>
+		</incorrectfeedback>
 	'''
 }
