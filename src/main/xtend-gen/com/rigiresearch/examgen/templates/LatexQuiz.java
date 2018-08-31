@@ -21,8 +21,21 @@
  */
 package com.rigiresearch.examgen.templates;
 
+import com.rigiresearch.examgen.model.ClosedEnded;
+import com.rigiresearch.examgen.model.CompoundQuestion;
+import com.rigiresearch.examgen.model.CompoundText;
 import com.rigiresearch.examgen.model.Examination;
+import com.rigiresearch.examgen.model.OpenEnded;
+import com.rigiresearch.examgen.model.Question;
+import com.rigiresearch.examgen.model.Section;
+import com.rigiresearch.examgen.model.TextSegment;
+import com.rigiresearch.examgen.model.TrueFalse;
 import com.rigiresearch.examgen.templates.Template;
+import java.util.List;
+import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 /**
  * A Latex template implementation.
@@ -35,315 +48,901 @@ import com.rigiresearch.examgen.templates.Template;
 public class LatexQuiz implements Template {
   @Override
   public CharSequence render(final Examination e, final boolean printSolutions) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'«\'"
-      + "\nno viable alternative at input \'«\'"
-      + "\nmismatched input \'\\\' expecting \'}\'"
-      + "\nno viable alternative at input \'footnotesize\'"
-      + "\nno viable alternative at input \'This\'"
-      + "\nno viable alternative at input \'exam\'"
-      + "\nno viable alternative at input \'is\'"
-      + "\nno viable alternative at input \'worth\'"
-      + "\nno viable alternative at input \'a\'"
-      + "\nno viable alternative at input \'total\'"
-      + "\nno viable alternative at input \'of\'"
-      + "\nno viable alternative at input \'numpoints\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'marks\'"
-      + "\nno viable alternative at input \'and\'"
-      + "\nno viable alternative at input \'contains\'"
-      + "\nno viable alternative at input \'numquestions\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'questions\'"
-      + "\nno viable alternative at input \'on\'"
-      + "\nno viable alternative at input \'numpages\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'pages\'"
-      + "\nno viable alternative at input \'}\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'\\\'"
-      + "\nno viable alternative at input \'begin\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'\\\'"
-      + "\nno viable alternative at input \'bracketedpoints\'"
-      + "\nno viable alternative at input \'marksnotpoints\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'FOR\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'»\\r\\n        \\end{questions}\\r\\n        \\end{document}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'override\'"
-      + "\nmissing \')\' at \'question\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'printSolutions\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'override\'"
-      + "\nno viable alternative at input \'render\'"
-      + "\nextraneous input \'segment\' expecting \')\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'styled\'"
-      + "\nextraneous input \'segment\' expecting \')\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'styled\'"
-      + "\nmissing \')\' at \'text\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'style\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'escaped\'"
-      + "\nextraneous input \'text\' expecting \')\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'scapedInline\'"
-      + "\nextraneous input \'text\' expecting \')\'"
-      + "\nno viable alternative at input \'{\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'render\'"
-      + "\nmissing \')\' at \'question\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'child\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'printSolutions\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'»\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nmissing \')\' at \'question\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'child\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'printSolutions\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'»\\r\\n        \\end{items}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nmissing \')\' at \'question\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'child\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'printSolutions\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'»}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nmissing \')\' at \'question\'"
-      + "\nno viable alternative at input \',\'"
-      + "\nno viable alternative at input \'printSolutions\'"
-      + "\nno viable alternative at input \')\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nno viable alternative at input \'»\\r\\n        \\end{parts}\\r\\n        \\nopointsinmargin\\pointformat{[\\thepoints]} % activate points again\\r\\n        \\addpoints\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'packages\'"
-      + "\nno viable alternative at input \'\'\'\'\\r\\n    % general\\r\\n    \\usepackage[utf8]{inputenc}\\r\\n    \\usepackage[margin=0.5in]{geometry}\\r\\n    % math\\r\\n    \\usepackage{amsmath, amssymb}\\r\\n    % tables\\r\\n    \\usepackage{tabularx}\\r\\n    \\usepackage{multicol}\\r\\n    % listings\\r\\n    \\usepackage{color}\\r\\n    \\usepackage[scaled=0.85]{sourcecodepro}\\r\\n    \\usepackage{listings}\\r\\n    \\usepackage{upquote}\\r\\n    % horizontal list of options\\r\\n    \\usepackage{environ}\\r\\n    \\usepackage[normalem]{ulem}\\r\\n    \\usepackage{etoolbox}\\r\\n    \\usepackage[export]{adjustbox}\\r\\n    \\usepackage{enumitem}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'listings\'"
-      + "\nno viable alternative at input \'\'\'\'\\r\\n    \\definecolor{keywords}{RGB}{127,0,85}\\r\\n    \\definecolor{comments}{RGB}{63,127,95}\\r\\n    \\definecolor{strings}{RGB}{42,0,255}\\r\\n    \\definecolor{frame}{RGB}{150,150,150}\\r\\n    \\definecolor{numbers}{RGB}{100,100,100}\\r\\n    \\lstdefinestyle{code}{\\r\\n        language=C,\\r\\n        tabsize=4,\\r\\n        captionpos=b,\\r\\n        showspaces=false,\\r\\n        showtabs=false,\\r\\n        breaklines=true,\\r\\n        showstringspaces=false,\\r\\n        breakatwhitespace=true,\\r\\n        escapeinside={(*@}{@*)},\\r\\n        commentstyle=\\color{comments},\\r\\n        keywordstyle=\\bfseries\\color{keywords},\\r\\n        stringstyle=\\color{strings},\\r\\n        basicstyle=\\small\\ttfamily,\\r\\n        frame=lines,\\r\\n        rulecolor=\\color{frame},\\r\\n        xleftmargin=2em,\\r\\n        framexleftmargin=1.5em,\\r\\n        numbers=left,\\r\\n        numbersep=10pt,\\r\\n        numberstyle=\\scriptsize\\ttfamily\\color{numbers}\\r\\n    }\\r\\n    \\lstset{style=code}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'trueFalse\'"
-      + "\nno viable alternative at input \'\'\'\'\\r\\n    \\newcommand*{\\TrueFalse}[1]{%\\r\\n    \\ifprintanswers\\r\\n        \\ifthenelse{\\equal{#1}{T}}{%\\r\\n            \\textbf{TRUE}\\hspace*{14pt}False\\r\\n        }{\\r\\n            True\\hspace*{14pt}\\textbf{FALSE}\\r\\n        }\\r\\n    \\else\\r\\n        {True}\\hspace*{20pt}False\\r\\n    \\fi\\r\\n    } \\r\\n    %% The following code is based on an answer by Gonzalo Medina\\r\\n    %% https://tex.stackexchange.com/a/13106/39194\\r\\n    \\newlength\\TFlengthA\\r\\n    \\newlength\\TFlengthB\\r\\n    \\settowidth\\TFlengthA{\\hspace*{1.16in}}\\r\\n    \\newcommand\\TFQuestion[2]{%\\r\\n        \\setlength\\TFlengthB{\\linewidth}\\r\\n        \\addtolength\\TFlengthB{-\\TFlengthA}\\r\\n        \\parbox[t]{\\TFlengthA}{\\TrueFalse{#1}}\\parbox[t]{\\TFlengthB}{#2}}\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'def\'"
-      + "\nno viable alternative at input \'choices\'"
-      + "\nno viable alternative at input \'\'\'\'\\r\\n    \\renewcommand{\\questionshook}{%\\r\\n        \\setlength{\\itemsep}{0.5\\baselineskip}\\r\\n        \\setlength{\\topsep}{0pt}\\r\\n        \\setlength\\partopsep{0pt} \\r\\n        \\setlength\\parsep{5pt}\\r\\n    }\\r\\n    \\r\\n    \\makeatletter\\r\\n    \\newlength\\choiceitemwidth\\r\\n    \\newif\\ifshowsolution \\showsolutiontrue\\r\\n    \\newcounter{choiceitem}%\\r\\n    \\r\\n    \\def\\thechoiceitem{\\Alph{choiceitem}}%\\r\\n    \\setlength{\\fboxsep}{0pt}\\r\\n    \\def\\makechoicelabel#1{#1\\uline{\\bfseries \\thechoiceitem.}\\else\\thechoiceitem.\\fi\\space}\\r\\n    %\\def\\makechoicelabel#1{#1\\uline{\\thechoiceitem.}\\else\\thechoiceitem.\\fi\\space} %underline the answer item label if we want to print the answer\\r\\n    %\\def\\makechoicelabel#1{#1\\framebox[1.25em][l]{\\thechoiceitem.}\\else\\makebox[1.25em][l]{\\thechoiceitem.}\\fi} %underline the answer item label if we want to print the answer\\r\\n    \\r\\n    \\def\\choice@mesureitem#1{\\cr\\stepcounter{choiceitem}\\makechoicelabel#1}%\\r\\n    \\r\\n    %measure the choices, this is the first time we need to parse the \\BODY\\r\\n    \\def\\choicemesureitem{\\@ifstar\\r\\n        {\\choice@mesureitem\\ifprintanswers \\xappto\\theanswer{\\thechoiceitem}\\ignorespaces}%\\r\\n        {\\choice@mesureitem\\iffalse}}%\\r\\n    \\r\\n    \\def\\choice@blockitem#1{%\\r\\n        \\ifnum\\value{choiceitem}>0\\hfill\\fi\\r\\n        \\egroup\\hskip0pt\\r\\n        \\hbox to \\choiceitemwidth\\bgroup\\hss\\refstepcounter{choiceitem}\\makechoicelabel#1}\\r\\n    \\r\\n    \\def\\choiceblockitem{\\@ifstar\\r\\n        {\\choice@blockitem\\ifprintanswers\\ignorespaces}%\\r\\n        {\\choice@blockitem\\iffalse}}\\r\\n    \\r\\n    \\def\\choice@paraitem#1{%\\r\\n        \\par\\noindent\\refstepcounter{choiceitem}\\makechoicelabel#1\\hangindent=1.25em\\hangafter=1\\relax}% only the first line need indent\\r\\n    \\r\\n    \\def\\choiceparaitem{\\@ifstar\\r\\n        {\\choice@paraitem\\ifprintanswers\\ignorespaces}%\\r\\n        {\\choice@paraitem\\iffalse}}\\r\\n    \\r\\n    \\newdimen\\qanswd\\r\\n    \\newdimen\\qanswdtmp\\r\\n    \\newbox\\qimgbox\\r\\n    \\NewEnviron{items}[1][]{%\\r\\n        \\def\\theanswer{}\\r\\n        \\begingroup\\r\\n        \\let\\item\\choicemesureitem\\r\\n        \\setcounter{choiceitem}{0}%\\r\\n        \\settowidth{\\global\\choiceitemwidth}{\\vbox{\\halign{##\\hfil\\cr\\BODY\\crcr}}}%\\r\\n        \\endgroup\\r\\n        \\setbox\\qimgbox\\hbox{#1}%\\r\\n        \\setlist[trivlist]{nosep}\\r\\n        \\trivlist\\item\\relax%\\r\\n        \\qanswd=\\linewidth%\\r\\n        \\advance\\qanswd-\\wd\\qimgbox%\\r\\n        % handle large images (leaving less than 30% space)\\r\\n        \\qanswdtmp=0.3\\linewidth%\\r\\n        \\ifnum\\qanswd<\\qanswdtmp%\\r\\n        %\\strut\\hfill% uncomment to right-align large images\\r\\n        \\unhbox\\qimgbox%\\r\\n        %\\hfill\\strut% uncomment this too to center them\\r\\n        \\par%\\r\\n        \\qanswd=\\linewidth%\\r\\n        \\setbox\\qimgbox\\hbox{}%\\r\\n        \\fi%\\r\\n        % end of handling for large images\\r\\n        \\begin{minipage}[t]{\\qanswd}\\r\\n            \\trivlist\\item\\relax%\\r\\n            \\parindent0pt%  \\r\\n            \\setcounter{choiceitem}{0}%\\r\\n            \\ifdim\\choiceitemwidth<0.25\\columnwidth\\r\\n            \\choiceitemwidth=0.25\\columnwidth\\r\\n            \\let\\item\\choiceblockitem\\r\\n            \\bgroup\\BODY\\hfill\\egroup\\r\\n            \\else\\ifdim\\choiceitemwidth<0.5\\columnwidth\\r\\n            \\choiceitemwidth=0.5\\columnwidth\\r\\n            \\let\\item\\choiceblockitem\\r\\n            \\bgroup\\BODY\\hfill\\egroup\\r\\n            \\else % \\choiceitemwidth > 0.5\\columnwidth\\r\\n            \\let\\item\\choiceparaitem\\r\\n            \\BODY\\r\\n            \\fi\\fi\\r\\n            \\endtrivlist\\r\\n        \\end{minipage}%\\r\\n        \\adjustbox{valign=t}{\\unhbox\\qimgbox}\\r\\n        \\endtrivlist\\r\\n    }\\r\\n    \\makeatother\\r\\n    \'\'\'\'"
-      + "\nno viable alternative at input \'}\'"
-      + "\nSectionÂ cannot be resolved to a type."
-      + "\nThe method or field printSolutionsÂ is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field packagesÂ is undefined"
-      + "\nThe method or field choicesÂ is undefined"
-      + "\nThe method or field trueFalseÂ is undefined"
-      + "\nThe method or field listingsÂ is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field footnotesize is undefined"
-      + "\nThe method or field This is undefined"
-      + "\nThe method or field exam is undefined"
-      + "\nThe method or field is is undefined"
-      + "\nThe method or field worth is undefined"
-      + "\nThe method or field a is undefined"
-      + "\nThe method or field total is undefined"
-      + "\nThe method or field numpoints is undefined"
-      + "\nThe method or field marks is undefined"
-      + "\nThe method or field and is undefined"
-      + "\nThe method or field numquestions is undefined"
-      + "\nThe method or field questions is undefined"
-      + "\nThe method or field numpages is undefined"
-      + "\nThe method or field pages is undefined"
-      + "\nThe method or field vspace is undefined"
-      + "\nThe method or field cm is undefined"
-      + "\nThe method or field begin is undefined"
-      + "\nThe method or field questions is undefined"
-      + "\nThe method or field marksnotpoints is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field ENDFORÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field override is undefined"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method or field styled is undefined for the type Object"
-      + "\nThe method or field def is undefined"
-      + "\nThe method styled(Class<TextSegment>) is undefined"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method styled(Object) is undefined for the type CharSequence"
-      + "\nThe method or field segment is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method styled(Class<CharSequence>) is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field style is undefined"
-      + "\nThe method or field style is undefined"
-      + "\nThe method or field BOLD is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field CODE is undefined"
-      + "\nThe method or field textÂ is undefined"
-      + "\nThe method or field INLINE_CODE is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field ITALIC is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field CUSTOM is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field INHERIT is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field NEW_LINE is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method escaped(Class<CharSequence>) is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method scapedInline(Class<CharSequence>) is undefined"
-      + "\nThe method or field text is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field child is undefined"
-      + "\nThe method or field childÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field printSolutionsÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ELSEÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field child is undefined"
-      + "\nThe method or field childÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ELSEÂ is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field ENDFORÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field child is undefined"
-      + "\nThe method or field childÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field ELSEÂ is undefined"
-      + "\nThe method or field ENDIFÂ is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field question is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field Â is undefined"
-      + "\nThe method or field ENDFORÂ is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method packages() is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method listings() is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method trueFalse() is undefined"
-      + "\nThe method or field def is undefined"
-      + "\nThe method choices() is undefined"
-      + "\nType mismatch: cannot convert from Class<Question> to TextSegment"
-      + "\nType mismatch: cannot convert from Class<TextSegment> to TextSegment"
-      + "\nType mismatch: cannot convert from Class<OpenEnded> to TextSegment"
-      + "\nType mismatch: cannot convert from Class<ClosedEnded> to TextSegment"
-      + "\nType mismatch: cannot convert from Class<TrueFalse> to TextSegment"
-      + "\nType mismatch: cannot convert from Class<CompoundQuestion> to TextSegment"
-      + "\nUnreachable expression."
-      + "\nThis expression is not allowed in this context, since it doesn\'t cause any side effects."
-      + "\nstudentsÂ cannot be resolved"
-      + "\nnameÂ cannot be resolved"
-      + "\nTAÂ cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nstyled cannot be resolved"
-      + "\nsegments cannot be resolved"
-      + "\nmap cannot be resolved"
-      + "\njoin cannot be resolved"
-      + "\ntext cannot be resolved"
-      + "\nstyles cannot be resolved"
-      + "\nstyles cannot be resolved"
-      + "\ncontains cannot be resolved"
-      + "\nescapedÂ cannot be resolved"
-      + "\nscapedInlineÂ cannot be resolved"
-      + "\nescapedÂ cannot be resolved"
-      + "\nescaped cannot be resolved"
-      + "\nescapedÂ cannot be resolved"
-      + "\ntoString cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\ntoString cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\nreplace cannot be resolved"
-      + "\n! cannot be resolved"
-      + "\npointsÂ cannot be resolved"
-      + "\nstatement cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\nanswer cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\nexpectedLengthÂ cannot be resolved"
-      + "\n! cannot be resolved"
-      + "\npointsÂ cannot be resolved"
-      + "\nstatement cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\noptionsÂ cannot be resolved"
-      + "\nanswerÂ cannot be resolved"
-      + "\nstatement cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\n! cannot be resolved"
-      + "\npointsÂ cannot be resolved"
-      + "\nanswerÂ cannot be resolved"
-      + "\nstatement cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\npointsÂ cannot be resolved"
-      + "\nstatement cannot be resolved"
-      + "\nrenderÂ cannot be resolved"
-      + "\nchildren cannot be resolved"
-      + "\npointsÂ cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nrender cannot be resolved"
-      + "\nrender cannot be resolved");
+    StringConcatenation _builder = new StringConcatenation();
+    Object _get = e.parameters().get(Examination.Parameter.SECTIONS);
+    final Section section = ((Section) _get);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\documentclass[9pt,addpoints");
+    {
+      if (printSolutions) {
+        _builder.append(",answers");
+      }
+    }
+    _builder.append("]{exam}");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% packages configuration");
+    _builder.newLine();
+    CharSequence _packages = this.packages();
+    _builder.append(_packages);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% choices configuration");
+    _builder.newLine();
+    CharSequence _choices = this.choices();
+    _builder.append(_choices);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% True-False question format");
+    _builder.newLine();
+    CharSequence _trueFalse = this.trueFalse();
+    _builder.append(_trueFalse);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% listings configuration");
+    _builder.newLine();
+    CharSequence _listings = this.listings();
+    _builder.append(_listings);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% parameters");
+    _builder.newLine();
+    _builder.append("\\newcommand{\\institution}{University of Victoria}");
+    _builder.newLine();
+    _builder.append("\\newcommand{\\students}{");
+    int _students = section.students();
+    _builder.append(_students);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\course}{");
+    Object _get_1 = e.parameters().get(Examination.Parameter.COURSE);
+    _builder.append(_get_1);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\coursenumber}{");
+    Object _get_2 = e.parameters().get(Examination.Parameter.COURSE_REFERENCE_NUMBER);
+    _builder.append(_get_2);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\sections}{");
+    String _name = section.name();
+    _builder.append(_name);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\TA}{");
+    String _TA = section.TA();
+    _builder.append(_TA);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\term}{");
+    Object _get_3 = e.parameters().get(Examination.Parameter.TERM);
+    _builder.append(_get_3);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\timelimit}{");
+    Object _get_4 = e.parameters().get(Examination.Parameter.TIME_LIMIT);
+    _builder.append(_get_4);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\newcommand{\\examtitle}{");
+    Object _get_5 = e.parameters().get(Examination.Parameter.TITLE);
+    _builder.append(_get_5);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("% page configuration");
+    _builder.newLine();
+    _builder.append("\\pagestyle{head}");
+    _builder.newLine();
+    _builder.append("\\firstpageheader{}{}{}");
+    _builder.newLine();
+    _builder.append("\\runningheader{\\footnotesize \\coursenumber}{\\footnotesize \\examtitle\\ - Page \\thepage\\ of \\numpages}{\\footnotesize \\term}");
+    _builder.newLine();
+    _builder.append("\\runningheadrule");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\begin{document}");
+    _builder.newLine();
+    _builder.append("% header");
+    _builder.newLine();
+    _builder.append("\\noindent");
+    _builder.newLine();
+    _builder.append("\\section*{\\examtitle}");
+    _builder.newLine();
+    _builder.append("\\textbf{\\course{}  -- \\term{}} \\\\");
+    _builder.newLine();
+    _builder.append("{\\footnotesize \\coursenumber{} Section \\sections. TA: \\TA{}. \\textbf{\\# of copies: \\students}} \\\\");
+    _builder.newLine();
+    _builder.append("{\\footnotesize \\textbf{Instructions:} Circle the appropriate letter in multiple choice questions. Time limit: \\timelimit{}} \\\\");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("% student information");
+    _builder.newLine();
+    _builder.append("\\noindent");
+    _builder.newLine();
+    _builder.append("\\begin{tabularx}{\\textwidth}{|X|X|X|X|}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\hline");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\small{Student name} & \\small{} & \\small{Student ID} & \\small\\bfseries{V00} \\\\");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\hline");
+    _builder.newLine();
+    _builder.append("\\end{tabularx}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\noindent \\\\");
+    _builder.newLine();
+    _builder.append("\\rule[2ex]{\\textwidth}{2pt}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\centering");
+    _builder.newLine();
+    _builder.append("\\vspace{0.2cm}");
+    _builder.newLine();
+    _builder.append("\\begin{questions}");
+    _builder.newLine();
+    _builder.append("\\bracketedpoints");
+    _builder.newLine();
+    _builder.append("\\marksnotpoints");
+    _builder.newLine();
+    {
+      List<Question> _questions = e.questions();
+      boolean _hasElements = false;
+      for(final Question q : _questions) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate("\n", "");
+        }
+        CharSequence _render = this.render(q, printSolutions);
+        _builder.append(_render);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\\end{questions}");
+    _builder.newLine();
+    _builder.append("\\end{document}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  @Override
+  public CharSequence render(final Question question, final boolean printSolutions) {
+    CharSequence _switchResult = null;
+    boolean _matched = false;
+    if (question instanceof OpenEnded) {
+      _matched=true;
+      _switchResult = this.render(((OpenEnded)question), false, printSolutions);
+    }
+    if (!_matched) {
+      if (question instanceof ClosedEnded) {
+        _matched=true;
+        _switchResult = this.render(((ClosedEnded)question), false, printSolutions);
+      }
+    }
+    if (!_matched) {
+      if (question instanceof TrueFalse) {
+        _matched=true;
+        _switchResult = this.render(((TrueFalse)question), false, printSolutions);
+      }
+    }
+    if (!_matched) {
+      if (question instanceof CompoundQuestion) {
+        _matched=true;
+        _switchResult = this.render(((CompoundQuestion)question), printSolutions);
+      }
+    }
+    return _switchResult;
+  }
+  
+  @Override
+  public CharSequence render(final TextSegment segment) {
+    CharSequence _switchResult = null;
+    boolean _matched = false;
+    if (segment instanceof TextSegment.Simple) {
+      _matched=true;
+      _switchResult = this.styled(segment);
+    }
+    if (!_matched) {
+      if (segment instanceof CompoundText) {
+        _matched=true;
+        final Function1<TextSegment, CharSequence> _function = (TextSegment it) -> {
+          return this.styled(it);
+        };
+        _switchResult = IterableExtensions.join(ListExtensions.<TextSegment, CharSequence>map(((CompoundText)segment).segments(), _function));
+      }
+    }
+    return _switchResult;
+  }
+  
+  /**
+   * Applies styles to a rendered text segment.
+   */
+  public CharSequence styled(final TextSegment segment) {
+    CharSequence result = segment.text();
+    List<TextSegment.Style> _styles = segment.styles();
+    for (final TextSegment.Style style : _styles) {
+      result = this.styled(result, style);
+    }
+    CharSequence _xifexpression = null;
+    boolean _contains = segment.styles().contains(TextSegment.Style.NEW_LINE);
+    if (_contains) {
+      _xifexpression = ("\n" + result);
+    } else {
+      _xifexpression = result;
+    }
+    return _xifexpression;
+  }
+  
+  /**
+   * Applies the given style to a rendered text.
+   */
+  public CharSequence styled(final CharSequence text, final TextSegment.Style style) {
+    CharSequence _switchResult = null;
+    if (style != null) {
+      switch (style) {
+        case BOLD:
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("\\textbf{");
+          String _escaped = this.escaped(text);
+          _builder.append(_escaped);
+          _builder.append("}");
+          _switchResult = _builder;
+          break;
+        case CODE:
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("\\vspace{0.3cm}");
+          _builder_1.newLine();
+          _builder_1.append("\\begin{lstlisting}");
+          _builder_1.newLine();
+          _builder_1.append(text);
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\\end{lstlisting}");
+          _builder_1.newLine();
+          _switchResult = _builder_1;
+          break;
+        case INLINE_CODE:
+          StringConcatenation _builder_2 = new StringConcatenation();
+          _builder_2.append("\\lstinline|");
+          String _scapedInline = this.scapedInline(text);
+          _builder_2.append(_scapedInline);
+          _builder_2.append("|");
+          _switchResult = _builder_2;
+          break;
+        case ITALIC:
+          StringConcatenation _builder_3 = new StringConcatenation();
+          _builder_3.append("\\textit{");
+          String _escaped_1 = this.escaped(text);
+          _builder_3.append(_escaped_1);
+          _builder_3.append("}");
+          _switchResult = _builder_3;
+          break;
+        case CUSTOM:
+          _switchResult = text;
+          break;
+        case INHERIT:
+          _switchResult = this.escaped(text);
+          break;
+        case NEW_LINE:
+          StringConcatenation _builder_4 = new StringConcatenation();
+          _builder_4.append("\\n");
+          String _escaped_2 = this.escaped(text);
+          _builder_4.append(_escaped_2);
+          _switchResult = _builder_4;
+          break;
+        default:
+          break;
+      }
+    }
+    return _switchResult;
+  }
+  
+  /**
+   * Escapes special Latex characters
+   */
+  public String escaped(final CharSequence text) {
+    return text.toString().replace("\\", "\\textbackslash").replace("~", "\\textasciitilde").replace("^", "\\textasciicircum").replace("#", "\\#").replace("&", "\\&").replace("%", "\\%").replace("{", "\\{").replace("}", "\\}").replace("$", "\\$").replace("_", "\\_");
+  }
+  
+  public String scapedInline(final CharSequence text) {
+    return text.toString().replace("\\", "\\\\").replace("&", "\\&").replace("%", "\\%").replace("{", "\\{").replace("}", "\\}");
+  }
+  
+  /**
+   * Renders an open-ended question.
+   */
+  public CharSequence render(final OpenEnded question, final boolean child, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      if ((!child)) {
+        _builder.append("\\question[");
+        int _points = question.points();
+        _builder.append(_points);
+        _builder.append("]");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    CharSequence _render = this.render(question.statement());
+    _builder.append(_render);
+    _builder.newLineIfNotEmpty();
+    {
+      if (printSolutions) {
+        _builder.append("\\begin{solution}");
+        _builder.newLine();
+        _builder.append("    ");
+        CharSequence _render_1 = this.render(question.answer());
+        _builder.append(_render_1, "    ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\\end{solution}");
+        _builder.newLine();
+      } else {
+        _builder.append("\\makeemptybox{");
+        String _expectedLength = question.expectedLength();
+        _builder.append(_expectedLength);
+        _builder.append("}");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder;
+  }
+  
+  /**
+   * Renders a closed-ended question.
+   */
+  public CharSequence render(final ClosedEnded question, final boolean child, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      if ((!child)) {
+        _builder.append("\\question[");
+        int _points = question.points();
+        _builder.append(_points);
+        _builder.append("]");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    CharSequence _render = this.render(question.statement());
+    _builder.append(_render);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\begin{items}");
+    _builder.newLine();
+    {
+      List<ClosedEnded.Option> _options = question.options();
+      for(final ClosedEnded.Option option : _options) {
+        _builder.append("    ");
+        {
+          boolean _answer = option.answer();
+          if (_answer) {
+            _builder.append("\\item*");
+          } else {
+            _builder.append("\\item");
+          }
+        }
+        _builder.append(" ");
+        CharSequence _render_1 = this.render(option.statement());
+        _builder.append(_render_1, "    ");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\\end{items}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  /**
+   * Renders a True-False question.
+   */
+  public CharSequence render(final TrueFalse question, final boolean child, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      if ((!child)) {
+        _builder.append("\\question[");
+        int _points = question.points();
+        _builder.append(_points);
+        _builder.append("]");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\TFQuestion{");
+    {
+      boolean _answer = question.answer();
+      if (_answer) {
+        _builder.append("T");
+      } else {
+        _builder.append("F");
+      }
+    }
+    _builder.append("}{");
+    CharSequence _render = this.render(question.statement());
+    _builder.append(_render);
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  /**
+   * Renders a compound question.
+   */
+  public CharSequence render(final CompoundQuestion question, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\question[");
+    int _points = question.points();
+    _builder.append(_points);
+    _builder.append("]");
+    _builder.newLineIfNotEmpty();
+    CharSequence _render = this.render(question.statement());
+    _builder.append(_render);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\\noaddpoints % to omit double points count");
+    _builder.newLine();
+    _builder.append("\\pointsinmargin\\pointformat{} % deactivate points for children");
+    _builder.newLine();
+    _builder.append("\\begin{parts}");
+    _builder.newLine();
+    {
+      List<Question> _children = question.children();
+      boolean _hasElements = false;
+      for(final Question child : _children) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate("\n", "    ");
+        }
+        _builder.append("    ");
+        _builder.append("\\part[");
+        int _points_1 = child.points();
+        _builder.append(_points_1, "    ");
+        _builder.append("]{}");
+        _builder.newLineIfNotEmpty();
+        _builder.append("    ");
+        CharSequence _switchResult = null;
+        boolean _matched = false;
+        if (child instanceof OpenEnded) {
+          _matched=true;
+          _switchResult = this.render(((OpenEnded)child), true, printSolutions);
+        }
+        if (!_matched) {
+          if (child instanceof ClosedEnded) {
+            _matched=true;
+            _switchResult = this.render(((ClosedEnded)child), true, printSolutions);
+          }
+        }
+        if (!_matched) {
+          if (child instanceof TrueFalse) {
+            _matched=true;
+            _switchResult = this.render(((TrueFalse)child), true, printSolutions);
+          }
+        }
+        _builder.append(_switchResult, "    ");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\\end{parts}");
+    _builder.newLine();
+    _builder.append("\\nopointsinmargin\\pointformat{[\\thepoints]} % activate points again");
+    _builder.newLine();
+    _builder.append("\\addpoints");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  /**
+   * Renders the packages to configure the Latex document.
+   */
+  public CharSequence packages() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("% general");
+    _builder.newLine();
+    _builder.append("\\usepackage[utf8]{inputenc}");
+    _builder.newLine();
+    _builder.append("\\usepackage[margin=0.5in]{geometry}");
+    _builder.newLine();
+    _builder.append("% math");
+    _builder.newLine();
+    _builder.append("\\usepackage{amsmath, amssymb}");
+    _builder.newLine();
+    _builder.append("% tables");
+    _builder.newLine();
+    _builder.append("\\usepackage{tabularx}");
+    _builder.newLine();
+    _builder.append("\\usepackage{multicol}");
+    _builder.newLine();
+    _builder.append("% listings");
+    _builder.newLine();
+    _builder.append("\\usepackage{color}");
+    _builder.newLine();
+    _builder.append("\\usepackage[scaled=0.85]{sourcecodepro}");
+    _builder.newLine();
+    _builder.append("\\usepackage{listings}");
+    _builder.newLine();
+    _builder.append("\\usepackage{upquote}");
+    _builder.newLine();
+    _builder.append("% horizontal list of options");
+    _builder.newLine();
+    _builder.append("\\usepackage{environ}");
+    _builder.newLine();
+    _builder.append("\\usepackage[normalem]{ulem}");
+    _builder.newLine();
+    _builder.append("\\usepackage{etoolbox}");
+    _builder.newLine();
+    _builder.append("\\usepackage[export]{adjustbox}");
+    _builder.newLine();
+    _builder.append("\\usepackage{enumitem}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  /**
+   * Configures the Latex listings.
+   */
+  public CharSequence listings() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\definecolor{keywords}{RGB}{127,0,85}");
+    _builder.newLine();
+    _builder.append("\\definecolor{comments}{RGB}{63,127,95}");
+    _builder.newLine();
+    _builder.append("\\definecolor{strings}{RGB}{42,0,255}");
+    _builder.newLine();
+    _builder.append("\\definecolor{frame}{RGB}{150,150,150}");
+    _builder.newLine();
+    _builder.append("\\definecolor{numbers}{RGB}{100,100,100}");
+    _builder.newLine();
+    _builder.append("\\lstdefinestyle{code}{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("language=C,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("tabsize=4,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("captionpos=b,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("showspaces=false,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("showtabs=false,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("breaklines=true,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("showstringspaces=false,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("breakatwhitespace=true,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("escapeinside={(*@}{@*)},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("commentstyle=\\color{comments},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("keywordstyle=\\bfseries\\color{keywords},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("stringstyle=\\color{strings},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("basicstyle=\\small\\ttfamily,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("frame=lines,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("rulecolor=\\color{frame},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("xleftmargin=2em,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("framexleftmargin=1.5em,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("numbers=left,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("numbersep=10pt,");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("numberstyle=\\scriptsize\\ttfamily\\color{numbers}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\\lstset{style=code}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence trueFalse() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\newcommand*{\\TrueFalse}[1]{%");
+    _builder.newLine();
+    _builder.append("\\ifprintanswers");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\ifthenelse{\\equal{#1}{T}}{%");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\textbf{TRUE}\\hspace*{14pt}False");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}{");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("True\\hspace*{14pt}\\textbf{FALSE}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\\else");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{True}\\hspace*{20pt}False");
+    _builder.newLine();
+    _builder.append("\\fi");
+    _builder.newLine();
+    _builder.append("} ");
+    _builder.newLine();
+    _builder.append("%% The following code is based on an answer by Gonzalo Medina");
+    _builder.newLine();
+    _builder.append("%% https://tex.stackexchange.com/a/13106/39194");
+    _builder.newLine();
+    _builder.append("\\newlength\\TFlengthA");
+    _builder.newLine();
+    _builder.append("\\newlength\\TFlengthB");
+    _builder.newLine();
+    _builder.append("\\settowidth\\TFlengthA{\\hspace*{1.16in}}");
+    _builder.newLine();
+    _builder.append("\\newcommand\\TFQuestion[2]{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength\\TFlengthB{\\linewidth}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\addtolength\\TFlengthB{-\\TFlengthA}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\parbox[t]{\\TFlengthA}{\\TrueFalse{#1}}\\parbox[t]{\\TFlengthB}{#2}}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  /**
+   * Configuration to display choices horizontally.
+   */
+  public CharSequence choices() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\renewcommand{\\questionshook}{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength{\\itemsep}{0.5\\baselineskip}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength{\\topsep}{0pt}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength\\partopsep{0pt} ");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlength\\parsep{5pt}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\makeatletter");
+    _builder.newLine();
+    _builder.append("\\newlength\\choiceitemwidth");
+    _builder.newLine();
+    _builder.append("\\newif\\ifshowsolution \\showsolutiontrue");
+    _builder.newLine();
+    _builder.append("\\newcounter{choiceitem}%");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\thechoiceitem{\\Alph{choiceitem}}%");
+    _builder.newLine();
+    _builder.append("\\setlength{\\fboxsep}{0pt}");
+    _builder.newLine();
+    _builder.append("\\def\\makechoicelabel#1{#1\\uline{\\bfseries \\thechoiceitem.}\\else\\thechoiceitem.\\fi\\space}");
+    _builder.newLine();
+    _builder.append("%\\def\\makechoicelabel#1{#1\\uline{\\thechoiceitem.}\\else\\thechoiceitem.\\fi\\space} %underline the answer item label if we want to print the answer");
+    _builder.newLine();
+    _builder.append("%\\def\\makechoicelabel#1{#1\\framebox[1.25em][l]{\\thechoiceitem.}\\else\\makebox[1.25em][l]{\\thechoiceitem.}\\fi} %underline the answer item label if we want to print the answer");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\choice@mesureitem#1{\\cr\\stepcounter{choiceitem}\\makechoicelabel#1}%");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("%measure the choices, this is the first time we need to parse the \\BODY");
+    _builder.newLine();
+    _builder.append("\\def\\choicemesureitem{\\@ifstar");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@mesureitem\\ifprintanswers \\xappto\\theanswer{\\thechoiceitem}\\ignorespaces}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@mesureitem\\iffalse}}%");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\choice@blockitem#1{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\ifnum\\value{choiceitem}>0\\hfill\\fi");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\egroup\\hskip0pt");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\hbox to \\choiceitemwidth\\bgroup\\hss\\refstepcounter{choiceitem}\\makechoicelabel#1}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\choiceblockitem{\\@ifstar");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@blockitem\\ifprintanswers\\ignorespaces}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@blockitem\\iffalse}}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\choice@paraitem#1{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\par\\noindent\\refstepcounter{choiceitem}\\makechoicelabel#1\\hangindent=1.25em\\hangafter=1\\relax}% only the first line need indent");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\def\\choiceparaitem{\\@ifstar");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@paraitem\\ifprintanswers\\ignorespaces}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("{\\choice@paraitem\\iffalse}}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\newdimen\\qanswd");
+    _builder.newLine();
+    _builder.append("\\newdimen\\qanswdtmp");
+    _builder.newLine();
+    _builder.append("\\newbox\\qimgbox");
+    _builder.newLine();
+    _builder.append("\\NewEnviron{items}[1][]{%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\def\\theanswer{}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\begingroup");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\let\\item\\choicemesureitem");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setcounter{choiceitem}{0}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\settowidth{\\global\\choiceitemwidth}{\\vbox{\\halign{##\\hfil\\cr\\BODY\\crcr}}}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\endgroup");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setbox\\qimgbox\\hbox{#1}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setlist[trivlist]{nosep}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\trivlist\\item\\relax%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\qanswd=\\linewidth%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\advance\\qanswd-\\wd\\qimgbox%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("% handle large images (leaving less than 30% space)");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\qanswdtmp=0.3\\linewidth%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\ifnum\\qanswd<\\qanswdtmp%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("%\\strut\\hfill% uncomment to right-align large images");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\unhbox\\qimgbox%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("%\\hfill\\strut% uncomment this too to center them");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\par%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\qanswd=\\linewidth%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\setbox\\qimgbox\\hbox{}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\fi%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("% end of handling for large images");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\begin{minipage}[t]{\\qanswd}");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\trivlist\\item\\relax%");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\parindent0pt%  ");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\setcounter{choiceitem}{0}%");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\ifdim\\choiceitemwidth<0.25\\columnwidth");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\choiceitemwidth=0.25\\columnwidth");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\let\\item\\choiceblockitem");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\bgroup\\BODY\\hfill\\egroup");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\else\\ifdim\\choiceitemwidth<0.5\\columnwidth");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\choiceitemwidth=0.5\\columnwidth");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\let\\item\\choiceblockitem");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\bgroup\\BODY\\hfill\\egroup");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\else % \\choiceitemwidth > 0.5\\columnwidth");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\let\\item\\choiceparaitem");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\BODY");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\fi\\fi");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\\endtrivlist");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\end{minipage}%");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\adjustbox{valign=t}{\\unhbox\\qimgbox}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\\endtrivlist");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\\makeatother");
+    _builder.newLine();
+    return _builder;
   }
 }

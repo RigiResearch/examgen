@@ -22,6 +22,7 @@
 package com.rigiresearch.examgen.templates;
 
 import com.rigiresearch.examgen.model.ClosedEnded;
+import com.rigiresearch.examgen.model.CompoundQuestion;
 import com.rigiresearch.examgen.model.CompoundText;
 import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.OpenEnded;
@@ -271,8 +272,7 @@ public class MoodleXMLQuiz implements Template {
       {
         boolean _answer = option.answer();
         if (_answer) {
-          int _multichoice = multichoice;
-          multichoice = (_multichoice + 1);
+          multichoice++;
         }
         if ((multichoice > 1)) {
           return true;
@@ -421,6 +421,46 @@ public class MoodleXMLQuiz implements Template {
     _builder.append("</answer>");
     _builder.newLine();
     _builder.append("</question>");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  /**
+   * Renders a compound question.
+   */
+  public CharSequence render(final CompoundQuestion question, final boolean printSolutions) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.newLine();
+    {
+      List<Question> _children = question.children();
+      for(final Question child : _children) {
+        _builder.append("      ");
+        CharSequence _render = this.render(question.statement());
+        _builder.append(_render, "      ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("      ");
+        CharSequence _switchResult = null;
+        boolean _matched = false;
+        if (child instanceof OpenEnded) {
+          _matched=true;
+          _switchResult = this.render(((OpenEnded)child), true, printSolutions);
+        }
+        if (!_matched) {
+          if (child instanceof ClosedEnded) {
+            _matched=true;
+            _switchResult = this.render(((ClosedEnded)child), true, printSolutions);
+          }
+        }
+        if (!_matched) {
+          if (child instanceof TrueFalse) {
+            _matched=true;
+            _switchResult = this.render(((TrueFalse)child), true, printSolutions);
+          }
+        }
+        _builder.append(_switchResult, "      ");
+        _builder.newLineIfNotEmpty();
+      }
+    }
     _builder.newLine();
     return _builder;
   }
