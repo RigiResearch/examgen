@@ -23,6 +23,7 @@ hs_err_pid*
 
 # Local directories
 /target/
+/output-directory/
 
 # Latex files
 *.synctex.gz
@@ -30,3 +31,7 @@ hs_err_pid*
 *.pdf
 .*.xtendbin
 .*._trace
+
+# IDE resources
+/.idea/
+*.iml
