@@ -25,6 +25,7 @@ import com.rigiresearch.examgen.model.Examination;
 import com.rigiresearch.examgen.model.Examination.Parameter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import lombok.AllArgsConstructor;
@@ -106,7 +107,7 @@ public final class WritableExamination {
                     .newInstance()
                     .render(this.origin, false)
                     .toString()
-                    .getBytes()
+                    .getBytes(StandardCharsets.UTF_8)
             );
             Files.write(
                 Paths.get(new File(solutions, name).getAbsolutePath()),
@@ -114,7 +115,7 @@ public final class WritableExamination {
                     .newInstance()
                     .render(this.origin, true)
                     .toString()
-                    .getBytes()
+                    .getBytes(StandardCharsets.UTF_8)
             );
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
