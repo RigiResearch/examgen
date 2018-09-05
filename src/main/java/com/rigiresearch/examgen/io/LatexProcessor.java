@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.SequenceInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,7 +75,8 @@ public final class LatexProcessor {
                         new SequenceInputStream(
                             p.getInputStream(),
                             p.getErrorStream()
-                        )
+                        ),
+                            StandardCharsets.UTF_8
                     )
                 );
                 while ((line = in.readLine()) != null) {
