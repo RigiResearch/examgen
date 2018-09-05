@@ -1,5 +1,7 @@
 # Exam generator
 
+[![CircleCI](https://circleci.com/gh/RigiResearch/examgen.svg?style=svg)](https://circleci.com/gh/RigiResearch/examgen)
+
 This project generates examinations along with their solutions from a [YAML](http://www.yaml.org/) input file. The resulting files are rendered according to a specific template; so far, only Latex and Moodle's XML format are supported.
 
 #### Benefits
