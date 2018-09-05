@@ -36,6 +36,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Main program.
@@ -48,6 +49,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Setter
+@Slf4j
 public final class Application implements Runnable {
 
     @Parameter
@@ -121,13 +123,15 @@ public final class Application implements Runnable {
                 jc.usage();
                 return;
             } else if (!app.parameters.isEmpty()) {
-                System.err.printf("Unknown parameter(s) %s\n", app.parameters);
-                System.exit(1);
+                log.error("Unknown parameter(s) {}", app.parameters);
+//                System.exit(1);
+                return;
             }
         } catch (ParameterException e) {
-            System.err.println(e.getMessage());
+            log.error("Error with input parameters.", e);
             new JCommander(new Application()).usage();
-            System.exit(2);
+//            System.exit(2);
+            return;
         }
         app.run();
     }
