@@ -22,7 +22,7 @@
 hs_err_pid*
 
 # Local directories
-/target/
+**/target/
 /output-directory/
 
 # Latex files
