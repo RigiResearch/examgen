@@ -34,7 +34,7 @@ java -jar target/examgen.jar --help
 
 #### Specify an examination using the YAML DSL
 
-Every exam has a set of parameters and a set of questions. Currently, there are two templates supported: LATEX_QUIZ and LATEX_MIDTERM. The parameters required by each template are:
+Every exam has a set of parameters and a set of questions. Currently, there are three templates supported: LATEX_QUIZ, LATEX_MIDTERM and MOODLE_QUIZ. The parameters required by each template are:
 
 - LATEX_QUIZ: course, course reference number, term, time limit, exam title, and class sections. The following listing exemplifies how to specify these parameters:
 
