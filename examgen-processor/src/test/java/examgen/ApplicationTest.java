@@ -1,5 +1,6 @@
-package com.rigiresearch.examgen;
+package examgen;
 
+import com.rigiresearch.examgen.Application;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,18 @@ class ApplicationTest {
     }
 
     @Test
-    void name() {
+    void whenStartedWithoutAllParametersThenErrorMessageShouldSayParametersProblem() {
         Application.main(new String[]{});
         assertThat(errContent.toString(), containsString("Error with input parameters"));
+    }
+
+    @Test
+    void whenStartedWithExtraParametersThenErrorMessageShouldSayTooManyParameters() {
+        Application.main(new String[]{
+                "-i", "input.yaml",
+                "-o", "output.tex",
+                "-x",
+        });
+        assertThat(errContent.toString(), containsString("Unknown parameter(s) [-x]"));
     }
 }
