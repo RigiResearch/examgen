@@ -3,7 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rigiresearch</groupId>
     <artifactId>examgen</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>examgen-model</module>
+        <module>examgen-processor</module>
+    </modules>
     <name>Exam generator</name>
     <description>Latex exam generator</description>
     <url>https://github.com/jachinte/examgen</url>
@@ -65,6 +70,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <xtext.version>2.12.0</xtext.version>
+        <junit.version>5.3.0</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -79,7 +86,7 @@
         <dependency>
             <groupId>org.eclipse.xtend</groupId>
             <artifactId>org.eclipse.xtend.lib</artifactId>
-            <version>2.12.0</version>
+            <version>${xtext.version}</version>
         </dependency>
         <!-- YAML -->
         <dependency>
@@ -118,7 +125,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -173,6 +180,32 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Xtext -->
+            <plugin>
+                <groupId>org.eclipse.xtend</groupId>
+                <artifactId>xtend-maven-plugin</artifactId>
+                <version>${xtext.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.platform</groupId>
+                        <artifactId>org.eclipse.equinox.common</artifactId>
+                        <version>3.10.0</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>xtend-install-debug-info</goal>
+                            <goal>testCompile</goal>
+                            <goal>xtend-test-install-debug-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>xtend-gen</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
