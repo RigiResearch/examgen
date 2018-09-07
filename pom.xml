@@ -192,6 +192,11 @@
                         <artifactId>org.eclipse.equinox.common</artifactId>
                         <version>3.10.0</version>
                     </dependency>
+                    <dependency>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                        <version>19.0-rc3</version>
+                    </dependency>
                 </dependencies>
                 <executions>
                     <execution>
