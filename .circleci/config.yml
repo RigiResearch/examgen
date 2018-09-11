@@ -41,5 +41,5 @@ jobs:
     - run: mvn integration-test
 
     - store_test_results:
-        path: target/test-results
+        path: examgen-processor/target/surefire-reports
 
