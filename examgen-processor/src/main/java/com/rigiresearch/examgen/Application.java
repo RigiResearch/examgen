@@ -20,23 +20,31 @@ package com.rigiresearch.examgen;
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.rigiresearch.examgen.io.ExaminationParser;
 import com.rigiresearch.examgen.io.LatexProcessor;
 import com.rigiresearch.examgen.templates.WritableExamination;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Main program.
@@ -50,7 +58,16 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Setter
 @Slf4j
-public final class Application implements Runnable {
+@Configuration
+@Import(ApplicationConfig.class)
+@ComponentScan("com.rigiresearch.examgen")
+public class Application implements Runnable {
+
+    @Autowired
+    private ExaminationParser examinationParser;
+
+    @Autowired
+    private JCommander jc;
 
     @Parameter
     private List<String> parameters = new ArrayList<>();
@@ -112,28 +129,27 @@ public final class Application implements Runnable {
      * @param args The application input arguments
      */
     public static void main(final String[] args) {
-        Application app = new Application();
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(Application.class);
+        Application app = ctx.getBean(Application.class);
+        app.parse(args);
+        app.run();
+    }
+
+    public void parse(String[] args) {
         try {
-            JCommander jc = JCommander.newBuilder()
-                .addObject(app)
-                .build();
-            jc.setProgramName("java -jar examgen.jar");
             jc.parse(args);
-            if (app.help) {
+            if (help) {
                 jc.usage();
                 return;
-            } else if (!app.parameters.isEmpty()) {
-                log.error("Unknown parameter(s) {}", app.parameters);
-//                System.exit(1);
+            } else if (!parameters.isEmpty()) {
+                log.error("Unknown parameter(s) {}", parameters);
                 return;
             }
         } catch (ParameterException e) {
             log.error("Error with input parameters.", e);
-            new JCommander(new Application()).usage();
-//            System.exit(2);
+            jc.usage();
             return;
         }
-        app.run();
     }
 
     /* (non-Javadoc)
@@ -145,7 +161,7 @@ public final class Application implements Runnable {
         final WritableExamination.Target template =
                 WritableExamination.Target.valueOf(this.template);
         try {
-            new ExaminationParser()
+            examinationParser
                 .examinations(new File(this.input))
                 .stream()
                 .forEach(examination -> {

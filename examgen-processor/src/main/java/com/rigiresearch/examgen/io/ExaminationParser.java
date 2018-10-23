@@ -44,6 +44,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -55,6 +57,7 @@ import org.yaml.snakeyaml.Yaml;
  * @since 0.0.1
  */
 @SuppressWarnings("unchecked")
+@Component
 public class ExaminationParser {
 
     /**
